@@ -14,4 +14,9 @@
     <ProjectReference Include="..\ShortSharing.DAL\ShortSharing.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

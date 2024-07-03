@@ -2,9 +2,8 @@
 
 namespace ShortSharing.DAL.Entities
 {
-    public class RentEntity : IBaseEntity
+    public class RentEntity : BaseEntity
     {
-        public int Id { get; set; }
         public DateOnly StartRentDate { get; set; }
         public DateOnly EndRentDate { get; set; }
         public required ThingEntity Thing { get; set; }

@@ -2,9 +2,8 @@
 
 namespace ShortSharing.DAL.Entities
 {
-    public class TypeEntity : IBaseEntity
+    public class TypeEntity : BaseEntity
     {
-        public int Id { get; set; }
         public required string Name { get; set; }
         public required CategoryEntity Category { get; set; }
     }

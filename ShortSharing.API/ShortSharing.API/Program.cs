@@ -23,7 +23,6 @@ namespace ShortSharing.API
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();

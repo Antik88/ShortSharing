@@ -2,9 +2,8 @@
 
 namespace ShortSharing.DAL.Entities
 {
-    public class UserEntity : IBaseEntity
+    public class UserEntity : BaseEntity
     {
-        public int Id { get; set; }
         public required string Name { get; set; }
         public required string Email { get; set; }
         public DateOnly DateOfBirth { get; set; }
