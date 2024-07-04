@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using ShortSharing.DAL.Abstractions;
@@ -28,6 +27,7 @@ namespace ShortSharing.DAL.Interceptors
                 if (entityEntry.State == EntityState.Added)
                 {
                     entityEntry.Property(a => a.CreatedAt).CurrentValue = DateTime.UtcNow;
+                    entityEntry.Property(a => a.UpdatedAt).CurrentValue = DateTime.UtcNow;
                 }
 
                 if (entityEntry.State == EntityState.Modified)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShortSharing.BLL.Mappers;
 using ShortSharing.DAL.DI;
 using ShortSharing.DAL.Interceptors;
 
@@ -12,6 +13,8 @@ namespace ShortSharing.BLL.DI
             services.AddScoped<AuditableEntitiesInterceptor>();
 
             services.AddDataAccessDependencies(configuration);
+
+            services.AddAutoMapper(typeof(MapperBllProfile).Assembly);
         }
     }
 }
