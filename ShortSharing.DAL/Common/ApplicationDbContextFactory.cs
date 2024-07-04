@@ -19,6 +19,7 @@ namespace ShortSharing.DAL.Common
             options.UseNpgsql(configuration.GetConnectionString(DataAccessConstants.DbConnection));
 
             var context = new ApplicationDbContext(options.Options);
+            context.Database.Migrate();
 
             return context;
         }
