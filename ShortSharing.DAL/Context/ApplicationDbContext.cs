@@ -1,12 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShortSharing.DAL.Entities;
+using ShortSharing.DAL.Interceptors;
 
 namespace ShortSharing.DAL.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        private readonly AuditableEntitiesInterceptor _auditInterceptor;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+            AuditableEntitiesInterceptor auditInterceptor) : base(options)
         {
+            _auditInterceptor = auditInterceptor;
+
             if (Database.IsNpgsql())
             {
                 Database.Migrate();

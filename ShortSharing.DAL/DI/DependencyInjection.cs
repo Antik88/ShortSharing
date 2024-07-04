@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShortSharing.DAL.Constants;
 using ShortSharing.DAL.Context;
+using ShortSharing.DAL.Interceptors;
 
 namespace ShortSharing.DAL.DI
 {
@@ -10,6 +11,7 @@ namespace ShortSharing.DAL.DI
     {
         public static void AddDataAccessDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<AuditableEntitiesInterceptor>();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString(DataAccessConstants.DbConnection));

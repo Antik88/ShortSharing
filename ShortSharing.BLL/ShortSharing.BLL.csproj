@@ -7,16 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Abstractions\**" />
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Abstractions\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Abstractions\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShortSharing.DAL\ShortSharing.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Abstractions\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
