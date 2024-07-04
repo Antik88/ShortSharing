@@ -1,3 +1,4 @@
+using ShortSharing.BLL.DI;
 
 namespace ShortSharing.API
 {
@@ -6,10 +7,13 @@ namespace ShortSharing.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var configurations = builder.Configuration;
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddBusinessLogicDependencies(configurations);
 
             var app = builder.Build();
 
@@ -22,7 +26,6 @@ namespace ShortSharing.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
