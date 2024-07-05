@@ -12,6 +12,7 @@ public class MapperAPIProfiler : Profile
 {
     public MapperAPIProfiler()
     {
+        CreateMap<ThingModel, CreateThingDto>().ReverseMap();
         CreateMap<ThingModel, ThingDto>().ReverseMap();
         CreateMap<CategoryModel, CategoryDto>().ReverseMap();
         CreateMap<TypeModel, TypeDto>().ReverseMap();

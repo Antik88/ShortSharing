@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
+using ShortSharing.BLL.Models;
 
 namespace ShortSharing.API.Controllers.ThingsController
 {
@@ -32,6 +33,15 @@ namespace ShortSharing.API.Controllers.ThingsController
             var things = await _thingsService.GetAllAsync();
 
             return _mapper.Map<List<ThingDto>>(things);
+        }
+
+        [HttpPost("create")]
+        public async Task<ActionResult<CreateThingDto>> CreateThingAsync([FromBody] CreateThingDto thingDto)
+        {
+            var thingModel = _mapper.Map<ThingModel>(thingDto);
+            await _thingsService.CreateAsync(thingModel);
+
+            return thingDto;
         }
 
         [HttpDelete("{id}")]

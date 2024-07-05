@@ -9,5 +9,5 @@ public interface IThingsService
     Task<List<ThingModel>> GetAllAsync();
     Task<ThingModel?> UpdateAsync(Guid id, ThingEntity entity);
     Task DeleteAsync(Guid id);
-    Task<ThingModel> CreateAsync(ThingEntity entity);
+    Task<ThingModel> CreateAsync(ThingModel entity);
 }

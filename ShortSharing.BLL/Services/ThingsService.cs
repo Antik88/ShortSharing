@@ -17,11 +17,13 @@ public class ThingsService : IThingsService
         _mapper = mapper;
     }
 
-    public async Task<ThingModel> CreateAsync(ThingEntity thingModel)
+    public async Task<ThingModel> CreateAsync(ThingModel thingModel)
     {
-        var thing = await _repository.CreateAsync(thingModel);
+        var thingEntity = _mapper.Map<ThingEntity>(thingModel);
 
-        return _mapper.Map<ThingModel>(thing);
+        var thing = await _repository.CreateAsync(thingEntity);
+
+        return thingModel;
     }
 
     public async Task DeleteAsync(Guid id)
