@@ -1,4 +1,7 @@
+using ShortSharing.API.Mappers;
+using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.DI;
+using ShortSharing.BLL.Services;
 
 namespace ShortSharing.API
 {
@@ -14,6 +17,10 @@ namespace ShortSharing.API
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddBusinessLogicDependencies(configurations);
+
+            builder.Services.AddAutoMapper(typeof(MapperAPIProfiler));
+
+            builder.Services.AddScoped<IThingsService, ThingsService>();
 
             var app = builder.Build();
 
