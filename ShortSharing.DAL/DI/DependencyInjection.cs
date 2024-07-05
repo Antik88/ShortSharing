@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Constants;
 using ShortSharing.DAL.Context;
 using ShortSharing.DAL.Interceptors;
+using ShortSharing.DAL.Repositories;
 
 namespace ShortSharing.DAL.DI
 {
@@ -16,6 +18,8 @@ namespace ShortSharing.DAL.DI
             {
                 options.UseNpgsql(configuration.GetConnectionString(DataAccessConstants.DbConnection));
             });
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         }
     }
 }
