@@ -1,4 +1,6 @@
-﻿namespace ShortSharing.API.Middlewares;
+﻿using System.Diagnostics;
+
+namespace ShortSharing.API.Middlewares;
 
 public class LoggingMiddleware 
 {
@@ -13,24 +15,28 @@ public class LoggingMiddleware
 
     public async void Invoke(HttpContext context) 
     {
+        var timer = new Stopwatch();
+        timer.Start();
+
         try
         {
             await _next(context);
         }
         finally 
         {
-            LogRequest(context);
+            timer.Stop();
+            LogRequest(context, timer.Elapsed);
         }
     }
 
-    private void LogRequest(HttpContext context)
+    private void LogRequest(HttpContext context, TimeSpan duration)
     {
         var method = context.Request.Method;
         var path = context.Request.Path;
         var statusCode = context.Response.StatusCode;
 
         _logger.LogInformation(
-            $"HTTP {method} {path} responded with {statusCode}"
+            $"HTTP {method} {path} responded with {statusCode} in {duration.TotalMilliseconds}ms"
         );
     }
 }
