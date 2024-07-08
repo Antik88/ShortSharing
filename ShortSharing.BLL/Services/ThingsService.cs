@@ -17,37 +17,37 @@ public class ThingsService : IThingsService
         _mapper = mapper;
     }
 
-    public async Task<ThingModel> CreateAsync(ThingModel thingModel)
+    public async Task<ThingModel> CreateAsync(ThingModel thingModel, CancellationToken token)
     {
         var thingEntity = _mapper.Map<ThingEntity>(thingModel);
 
-        var thing = await _repository.CreateAsync(thingEntity);
+        var thing = await _repository.CreateAsync(thingEntity, token);
 
         return thingModel;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id, CancellationToken token)
     {
-        await _repository.DeleteAsync(id);
+        await _repository.DeleteAsync(id, token);
     }
 
-    public async Task<List<ThingModel>> GetAllAsync()
+    public async Task<List<ThingModel>> GetAllAsync(CancellationToken token)
     {
-        var things = await _repository.GetAllAsync();
+        var things = await _repository.GetAllAsync(token);
 
         return _mapper.Map<List<ThingModel>>(things);
     }
 
-    public async Task<ThingModel?> GetByIdAsync(Guid id)
+    public async Task<ThingModel?> GetByIdAsync(Guid id, CancellationToken token)
     {
-        var things = await _repository.GetByIdAsync(id);
+        var things = await _repository.GetByIdAsync(id, token);
 
         return _mapper.Map<ThingModel>(things);
     }
 
-    public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity thingModel)
+    public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity thingModel, CancellationToken token)
     {
-        var thing = await _repository.UpdateAsync(id, thingModel);
+        var thing = await _repository.UpdateAsync(id, thingModel, token);
 
         return _mapper.Map<ThingModel>(thing);
     }

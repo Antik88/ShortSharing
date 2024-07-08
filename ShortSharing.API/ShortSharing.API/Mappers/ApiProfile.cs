@@ -8,9 +8,9 @@ using ShortSharing.BLL.Models;
 
 namespace ShortSharing.API.Mappers;
 
-public class MapperAPIProfiler : Profile
+public class ApiProfile : Profile
 {
-    public MapperAPIProfiler()
+    public ApiProfile()
     {
         CreateMap<ThingModel, CreateThingDto>().ReverseMap();
         CreateMap<ThingModel, ThingDto>().ReverseMap();

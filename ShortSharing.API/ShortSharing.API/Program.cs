@@ -18,7 +18,7 @@ namespace ShortSharing.API
 
             builder.Services.AddBusinessLogicDependencies(configurations);
 
-            builder.Services.AddAutoMapper(typeof(MapperAPIProfiler));
+            builder.Services.AddAutoMapper(typeof(ApiProfile));
 
             builder.Services.AddScoped<IThingsService, ThingsService>();
 

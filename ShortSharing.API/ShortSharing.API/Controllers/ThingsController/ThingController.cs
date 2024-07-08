@@ -1,55 +1,62 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using ShortSharing.API.Constants;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
-namespace ShortSharing.API.Controllers.ThingsController
+
+namespace ShortSharing.API.Controllers.ThingsController;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ThingController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ThingController : ControllerBase
+    private readonly IThingsService _thingsService;
+    private readonly IMapper _mapper;
+
+    public ThingController(IThingsService thingsService, IMapper mapper)
     {
-        private readonly IThingsService _thingsService;
-        private readonly IMapper _mapper;
+        _thingsService = thingsService;
+        _mapper = mapper;
+    }
 
-        public ThingController(IThingsService thingsService, IMapper mapper)
-        {
-            _thingsService = thingsService;
-            _mapper = mapper;
-        }
+    [HttpGet(ApiConstants.Id)]
+    [ProducesResponseType(Status200OK, Type = typeof(ThingDto))]
+    public async Task<ThingDto> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var thing = await _thingsService.GetByIdAsync(id, cancellationToken);
+        return _mapper.Map<ThingDto>(thing);
+    }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ThingDto>> GetByIdAsync(Guid id)
-        {
-            var thing = await _thingsService.GetByIdAsync(id);
+    [HttpGet(ApiConstants.All)]
+    [ProducesResponseType(Status200OK, Type = typeof(List<ThingDto>))]
+    public async Task<List<ThingDto>> GetAllAsync(CancellationToken token)
+    {
+        var things = await _thingsService.GetAllAsync(token);
 
-            return _mapper.Map<ThingDto>(thing);            
-        }
+        return _mapper.Map<List<ThingDto>>(things);
+    }
 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<ThingDto>>> GetAllAsync()
-        {
-            var things = await _thingsService.GetAllAsync();
+    [HttpPost]
+    [ProducesResponseType(Status200OK, Type = typeof(CreateThingDto))]
+    public async Task<CreateThingDto> CreateThingAsync(
+        [FromBody] CreateThingDto thingDto,
+        CancellationToken token)
+    {
+        var thingModel = _mapper.Map<ThingModel>(thingDto);
+        await _thingsService.CreateAsync(thingModel, token);
 
-            return _mapper.Map<List<ThingDto>>(things);
-        }
+        return thingDto;
+    }
 
-        [HttpPost("create")]
-        public async Task<ActionResult<CreateThingDto>> CreateThingAsync([FromBody] CreateThingDto thingDto)
-        {
-            var thingModel = _mapper.Map<ThingModel>(thingDto);
-            await _thingsService.CreateAsync(thingModel);
+    [HttpDelete(ApiConstants.Id)]
+    [ProducesResponseType(Status200OK)]
+    public async Task<NoContentResult> DeleteAsync(Guid id, CancellationToken token)
+    {
+        await _thingsService.DeleteAsync(id, token);
 
-            return thingDto;
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(Guid id)
-        {
-            await _thingsService.DeleteAsync(id);
-
-            return NoContent();
-        }
+        return NoContent();
     }
 }
