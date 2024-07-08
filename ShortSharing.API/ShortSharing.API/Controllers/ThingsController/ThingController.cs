@@ -53,10 +53,8 @@ public class ThingController : ControllerBase
 
     [HttpDelete(ApiConstants.Id)]
     [ProducesResponseType(Status200OK)]
-    public async Task<NoContentResult> DeleteAsync(Guid id, CancellationToken token)
+    public async Task DeleteAsync(Guid id, CancellationToken token)
     {
         await _thingsService.DeleteAsync(id, token);
-
-        return NoContent();
     }
 }
