@@ -1,3 +1,4 @@
+using ShortSharing.API.Middlewares;
 using ShortSharing.BLL.DI;
 
 namespace ShortSharing.API
@@ -16,6 +17,8 @@ namespace ShortSharing.API
             builder.Services.AddBusinessLogicDependencies(configurations);
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {
