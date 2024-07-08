@@ -13,7 +13,7 @@ public class LoggingMiddleware
         _logger = loggerFactory.CreateLogger<LoggingMiddleware>();
     }
 
-    public async void Invoke(HttpContext context) 
+    public async Task Invoke(HttpContext context) 
     {
         var timer = new Stopwatch();
         timer.Start();
