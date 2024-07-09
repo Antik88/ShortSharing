@@ -25,6 +25,7 @@ namespace ShortSharing.API
 
             var app = builder.Build();
 
+            app.UseMiddleware<LoggingMiddleware>();
             app.UseMiddleware<ExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
