@@ -10,9 +10,13 @@ namespace ShortSharing.BLL.Mappers
         {
             CreateMap<UserEntity, UserModel>().ReverseMap();
 
-            CreateMap<TypeEntity, TypeModel>().ReverseMap();
+            CreateMap<TypeEntity, TypeModel>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category))
+                .ReverseMap();
 
-            CreateMap<CategoryEntity, CategoryModel>().ReverseMap();
+            CreateMap<CategoryEntity, CategoryModel>()
+                .ForMember(dest => dest.Types, opt => opt.MapFrom(src => src.Types))
+                .ReverseMap();
 
             CreateMap<RentEntity, RentModel>().ReverseMap();
 
