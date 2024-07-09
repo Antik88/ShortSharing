@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace ShortSharing.API.Middlewares;
 
-public class ExceptionMiddleware : IMiddleware
+public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
 
@@ -15,7 +15,7 @@ public class ExceptionMiddleware : IMiddleware
         _next = next; 
     }
 
-    public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
+    public async Task InvokeAsync(HttpContext httpContext)
     {
         try
         {
