@@ -1,4 +1,4 @@
-﻿namespace ShortSharing.API.Constants;
+namespace ShortSharing.API.Constants;
 
 public class ApiConstants
 {

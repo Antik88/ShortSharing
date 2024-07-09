@@ -1,3 +1,4 @@
+using ShortSharing.API.Middlewares;
 using ShortSharing.API.Mappers;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.DI;
@@ -23,6 +24,8 @@ namespace ShortSharing.API
             builder.Services.AddScoped<IThingsService, ThingsService>();
 
             var app = builder.Build();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())
             {
