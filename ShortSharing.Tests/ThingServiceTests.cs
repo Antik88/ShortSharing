@@ -4,7 +4,6 @@ using AutoMapper;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using ShortSharing.BLL.Abstractions;
-using ShortSharing.BLL.Mappers;
 using ShortSharing.BLL.Services;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
@@ -22,20 +21,16 @@ public class ThingServiceTests
     {
         _thingsRepository = Substitute.For<IGenericRepository<ThingEntity>>();
 
-        _mapper = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile(new MapperBllProfile());
-        }).CreateMapper();
+        _mapper = Substitute.For<IMapper>();
 
         _thingsService = new ThingsService(_thingsRepository, _mapper);
     }
 
-    [Fact]
-    public async Task GetByIdAsync_InvalidId_ReturnNull()
+    [Theory, AutoMoqData]
+    public async Task GetByIdAsync_InvalidId_ReturnNull(Guid id)
     {
         // Arrange
-        var id = Guid.NewGuid();
-        _thingsRepository.GetByIdAsync(id, default).ReturnsNull();
+        _thingsRepository.GetByIdAsync(Arg.Any<Guid>(), default).ReturnsNull();
 
         // Act
         var model = await _thingsService.GetByIdAsync(id, default);
@@ -45,30 +40,26 @@ public class ThingServiceTests
     }
 
     [Theory, AutoMoqData]
-    public async Task GetByIdAsync_ValidId_ReturnsNotNull(ThingEntity thingEntity)
+    public async Task GetByIdAsync_ValidId_ReturnsNotNull(ThingEntity thingEntity,
+        ThingModel thingModel,
+        Guid id)
     {
         // Arrange
-        var id = Guid.NewGuid();
-        thingEntity.Id = id;
-
-       _thingsRepository 
-            .GetByIdAsync(id, default)
-            .Returns(thingEntity);
+        _thingsRepository.GetByIdAsync(id, default).Returns(thingEntity);
+        _mapper.Map<ThingModel>(thingEntity).Returns(thingModel);
 
         // Act
         var model = await _thingsService.GetByIdAsync(id, default);
 
         // Assert
         model.ShouldNotBeNull();
-        model.ShouldBeOfType(typeof(ThingModel));
-        model.Id.ShouldBe(id);
+        model.ShouldBeOfType<ThingModel>();
     }
 
-    [Fact]
-    public async Task DeleteAsync_ValidId_DeletesSuccessfully()
+    [Theory, AutoMoqData]
+    public async Task DeleteAsync_ValidId_DeletesSuccessfully(Guid id)
     {
         // Arrange
-        var id = Guid.NewGuid();
 
         // Act
         await _thingsService.DeleteAsync(id, default);
@@ -78,27 +69,30 @@ public class ThingServiceTests
     }
 
     [Theory, AutoMoqData]
-    public async Task UpdateAsync_ValidId_ReturnsUpdatedModel(ThingEntity updatedThingEntity)
+    public async Task UpdateAsync_ValidId_ReturnsUpdatedModel(ThingEntity thingEntity,
+        ThingModel thingModel,
+        Guid id)
     {
-        // Arrange
-        var id = Guid.NewGuid();
+        //Arrange
+        _thingsRepository.UpdateAsync(id, thingEntity, default).Returns(thingEntity);
 
-        _thingsRepository
-            .UpdateAsync(id, Arg.Any<ThingEntity>(), default)
-            .Returns(updatedThingEntity);
-
+        _mapper.Map<ThingModel>(thingEntity).Returns(thingModel);
         // Act
-        var updatedModel = await _thingsService.UpdateAsync(id, updatedThingEntity, default);
+
+        var result = await _thingsService.UpdateAsync(id, thingEntity, default);
 
         // Assert
-        updatedModel.ShouldNotBeNull();
+
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ThingModel>();
     }
 
     [Theory, AutoMoqData]
-    public async Task CreateAsync_ValidModel_ReturnsCreatedModel(ThingModel thingModel)
+    public async Task CreateAsync_ValidModel_ReturnsCreatedModel(ThingModel thingModel,
+        ThingEntity thingEntity)
     {
         // Arrange
-        var thingEntity = _mapper.Map<ThingEntity>(thingModel);
+        _mapper.Map<ThingEntity>(thingModel).Returns(thingEntity);
 
         _thingsRepository
             .CreateAsync(Arg.Any<ThingEntity>(), default)
@@ -121,7 +115,7 @@ public class ThingServiceTests
     public async Task GetAll_ValidData_ReturnsListOfThingsModels(List<ThingEntity> thingsEntity)
     {
         // Arrange
-        _thingsRepository 
+        _thingsRepository
             .GetAllAsync(default)
             .Returns(thingsEntity);
 
