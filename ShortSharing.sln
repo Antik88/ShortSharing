@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortSharing.BLL", "ShortSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortSharing.DAL", "ShortSharing.DAL\ShortSharing.DAL.csproj", "{FFE2C62C-7428-40FC-8C4D-6777F395371F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShortSharing.Tests", "ShortSharing.Tests\ShortSharing.Tests.csproj", "{995B8936-F7FC-46F7-B1BD-2548E031887C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +29,15 @@ Global
 		{FFE2C62C-7428-40FC-8C4D-6777F395371F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFE2C62C-7428-40FC-8C4D-6777F395371F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFE2C62C-7428-40FC-8C4D-6777F395371F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{995B8936-F7FC-46F7-B1BD-2548E031887C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{995B8936-F7FC-46F7-B1BD-2548E031887C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{995B8936-F7FC-46F7-B1BD-2548E031887C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{995B8936-F7FC-46F7-B1BD-2548E031887C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8633F9EA-91D9-4707-A2EB-EE2D1ACC339F}
 	EndGlobalSection
 EndGlobal
