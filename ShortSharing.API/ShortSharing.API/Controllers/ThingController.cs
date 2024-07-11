@@ -50,7 +50,7 @@ public class ThingController : ControllerBase
         [FromBody] CreateThingDto thingDto,
         CancellationToken token)
     {
-        _validator.ValidateAndThrow(thingDto);
+        await _validator.ValidateAndThrowAsync(thingDto);
 
         var thingModel = _mapper.Map<ThingModel>(thingDto);
         await _thingsService.CreateAsync(thingModel, token);

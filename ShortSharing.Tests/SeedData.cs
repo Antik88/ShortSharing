@@ -20,7 +20,7 @@ public static class SeedData
     {
         return new CreateThingDto
         {
-            Name = null,
+            Name = string.Empty,
             Description = "valid description",
             Price = 100.0,
             CategoryId = Guid.NewGuid(),
