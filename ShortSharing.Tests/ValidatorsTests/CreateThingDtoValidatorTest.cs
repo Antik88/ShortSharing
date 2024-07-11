@@ -16,9 +16,7 @@ public class CreateThingDtoValidatorTest
     [Fact]
     public void Validator_ShouldValidateCreateThingDto()
     {
-        CreateThingDtoValidator validator = new();
-
-        validator.TestValidate(SeedData.GetValidCreateThingDto())
+        _validator.TestValidate(SeedData.GetValidCreateThingDto())
             .ShouldNotHaveAnyValidationErrors();
     }
 
@@ -41,5 +39,19 @@ public class CreateThingDtoValidatorTest
     {
         _validator.TestValidate(SeedData.GetInvalidCreateThingDto_EmptyDescription())
            .ShouldHaveValidationErrorFor(x => x.Description);
+    }
+
+    [Fact]
+    public void Validate_InvalidCreateThingDto_InvalidTypeId_ShouldHaveValidationError()
+    {
+        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidTypeId())
+           .ShouldHaveValidationErrorFor(x => x.TypeId);
+    }
+
+    [Fact]
+    public void Validate_InvalidCreateThingDto_InvalidCategoryId_ShouldHaveValidationError()
+    {
+        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidCategoryId())
+           .ShouldHaveValidationErrorFor(x => x.CategoryId);
     }
 }

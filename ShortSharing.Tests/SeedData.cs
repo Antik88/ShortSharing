@@ -51,4 +51,26 @@ public static class SeedData
             TypeId = Guid.NewGuid()
         };
     }
+    public static CreateThingDto GetInvalidCreateThingDto_InvalidTypeId()
+    {
+        return new CreateThingDto
+        {
+            Name = "Thing",
+            Description = "",
+            Price = 100.0,
+            CategoryId = Guid.NewGuid(),
+            TypeId = Guid.Empty
+        };
+    }
+    public static CreateThingDto GetInvalidCreateThingDto_InvalidCategoryId()
+    {
+        return new CreateThingDto
+        {
+            Name = "Thing",
+            Description = "",
+            Price = 100.0,
+            CategoryId = Guid.Empty,
+            TypeId = Guid.NewGuid()
+        };
+    }
 }
