@@ -25,7 +25,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         // Assert
         Assert.NotNull(result);
         Assert.IsType<List<ThingDto>>(result);
-        Assert.Equal(2, result.Count);
+        Assert.Equal(3, result.Count);
     }
 
     [Fact]

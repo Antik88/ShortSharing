@@ -39,6 +39,7 @@ public class IntegrationTestWebAppFactory : IAsyncLifetime
             var scopedServices = scope.ServiceProvider;
             var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
 
+            await dbContext.Database.EnsureDeletedAsync();
             await dbContext.Database.EnsureCreatedAsync();
 
             Seeding.InitializeTestDatabase(dbContext);
@@ -55,6 +56,8 @@ public class IntegrationTestWebAppFactory : IAsyncLifetime
             var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
 
             await dbContext.Database.EnsureDeletedAsync();
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }
