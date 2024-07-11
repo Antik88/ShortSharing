@@ -16,7 +16,9 @@ public class CreateThingDtoValidatorTest
     [Fact]
     public void Validator_ShouldValidateCreateThingDto()
     {
-        _validator.TestValidate(SeedData.GetValidCreateThingDto())
+        CreateThingDtoValidator validator = new();
+
+        validator.TestValidate(SeedData.GetValidCreateThingDto())
             .ShouldNotHaveAnyValidationErrors();
     }
 
