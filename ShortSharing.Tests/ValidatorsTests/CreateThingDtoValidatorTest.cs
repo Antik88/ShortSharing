@@ -16,42 +16,52 @@ public class CreateThingDtoValidatorTest
     [Fact]
     public void Validator_ShouldValidateCreateThingDto()
     {
-        _validator.TestValidate(SeedData.GetValidCreateThingDto())
+        CreateThingDtoValidator validator = new();
+
+        validator.TestValidate(SeedData.GetValidCreateThingDto())
             .ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]
     public void Validate_InvalidCreateThingDto_MissingName_ShouldHaveValidationError()
     {
-        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_MissingName())
+        CreateThingDtoValidator validator = new();
+
+        validator.TestValidate(SeedData.GetInvalidCreateThingDto_MissingName())
             .ShouldHaveValidationErrorFor(x => x.Name);
     }
 
     [Fact]
     public void Validate_InvalidCreateThingDto_NegativePrice_ShouldHaveValidationError()
     {
-        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_NegativePrice())
+        CreateThingDtoValidator validator = new();
+
+        validator.TestValidate(SeedData.GetInvalidCreateThingDto_NegativePrice())
             .ShouldHaveValidationErrorFor(x => x.Price);
     }
 
     [Fact]
     public void Validate_InvalidCreateThingDto_EmptyDescription_ShouldHaveValidationError()
     {
-        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_EmptyDescription())
+        CreateThingDtoValidator validator = new();
+
+        validator.TestValidate(SeedData.GetInvalidCreateThingDto_EmptyDescription())
            .ShouldHaveValidationErrorFor(x => x.Description);
     }
 
     [Fact]
     public void Validate_InvalidCreateThingDto_InvalidTypeId_ShouldHaveValidationError()
     {
-        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidTypeId())
+        CreateThingDtoValidator validator = new();
+        validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidTypeId())
            .ShouldHaveValidationErrorFor(x => x.TypeId);
     }
 
     [Fact]
     public void Validate_InvalidCreateThingDto_InvalidCategoryId_ShouldHaveValidationError()
     {
-        _validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidCategoryId())
+        CreateThingDtoValidator validator = new();
+        validator.TestValidate(SeedData.GetInvalidCreateThingDto_InvalidCategoryId())
            .ShouldHaveValidationErrorFor(x => x.CategoryId);
     }
 }
