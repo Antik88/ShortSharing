@@ -1,35 +1,60 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using ShortSharing.API;
 using ShortSharing.DAL.Context;
-using ShortSharing.DAL.DI;
-using ShortSharing.Tests.Constants;
+using Microsoft.Extensions.DependencyInjection;
+using ShortSharing.API;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Xunit;
 
 namespace ShortSharing.Tests.IntegrationsTests;
 
-
-public class IntegrationTestWebAppFactory : WebApplicationFactory<Program>
+public class IntegrationTestWebAppFactory : IAsyncLifetime
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    private const string _connectionString = "test";
+
+    private WebApplicationFactory<Program> _factory;
+    public HttpClient Client { get; private set; }
+
+    public IntegrationTestWebAppFactory()
     {
-        builder.ConfigureTestServices(services =>
+        _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
-            var descriptor = services
-                .SingleOrDefault(s => s.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-
-            if (descriptor != null)
+            builder.ConfigureServices(services =>
             {
-                services.Remove(descriptor);
-            }
-
-            var configuration = new ConfigurationBuilder()
-                   .AddJsonFile(TestingConstants.AppSettings)
-                   .Build();
-
-            services.AddDataAccessDependencies(configuration);
+                services.RemoveAll(typeof(DbContextOptions<ApplicationDbContext>));
+                services.AddDbContext<ApplicationDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase(_connectionString);
+                });
+            });
         });
+
+        Client = _factory.CreateClient();
+    }
+
+    public async Task InitializeAsync()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var scopedServices = scope.ServiceProvider;
+            var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+
+            await dbContext.Database.EnsureCreatedAsync();
+
+            Seeding.InitializeTestDatabase(dbContext);
+
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+    public async Task DisposeAsync()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var scopedServices = scope.ServiceProvider;
+            var dbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+
+            await dbContext.Database.EnsureDeletedAsync();
+        }
     }
 }

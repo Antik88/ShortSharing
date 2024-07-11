@@ -3,5 +3,6 @@
 public class ApiUrls 
 {
     public const string GetAll = "api/Thing/all";
-    public const string ById = "api/Thing/";
+    public const string ById = "api/Thing";
+    public const string Create = "api/Thing";
 }
