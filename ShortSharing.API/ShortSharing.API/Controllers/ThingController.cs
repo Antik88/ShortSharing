@@ -50,9 +50,7 @@ public class ThingController : ControllerBase
         [FromBody] CreateThingDto thingDto,
         CancellationToken token)
     {
-        var validationResult = _validator.Validate(thingDto);
-        if (!validationResult.IsValid)
-            throw new BadRequestException(validationResult.ToString());
+        _validator.ValidateAndThrow(thingDto);
 
         var thingModel = _mapper.Map<ThingModel>(thingDto);
         await _thingsService.CreateAsync(thingModel, token);

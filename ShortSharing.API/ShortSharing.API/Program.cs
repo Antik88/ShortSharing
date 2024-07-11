@@ -3,6 +3,9 @@ using ShortSharing.API.Mappers;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.DI;
 using ShortSharing.BLL.Services;
+using FluentValidation;
+using ShortSharing.API.Dtos.ThingDtos;
+using ShortSharing.API.Dtos.Validators;
 
 namespace ShortSharing.API
 {
@@ -22,6 +25,7 @@ namespace ShortSharing.API
             builder.Services.AddAutoMapper(typeof(ApiProfile));
 
             builder.Services.AddScoped<IThingsService, ThingsService>();
+            builder.Services.AddTransient<IValidator<CreateThingDto>, CreateThingDtoValidator>();
 
             var app = builder.Build();
 
