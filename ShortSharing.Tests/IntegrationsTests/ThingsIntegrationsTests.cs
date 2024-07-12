@@ -1,5 +1,6 @@
 ﻿using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.Tests.Constants;
+using System;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -25,7 +26,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         // Assert
         Assert.NotNull(result);
         Assert.IsType<List<ThingDto>>(result);
-        Assert.Equal(3, result.Count);
+        Assert.Equal(2, result.Count);
     }
 
     [Fact]
@@ -64,5 +65,20 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
 
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Delete_ShouldReturn_Ok()
+    {
+        // Arrange
+
+        // Act
+        var response = await _factory.Client.DeleteAsync($"{ApiUrls.Delete}/{Seeding.MacBookId}");
+
+        var getDeletedResponse = await _factory.Client.GetAsync($"{ApiUrls.ById}/{Seeding.MacBookId}");
+
+        //Assert
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, getDeletedResponse.StatusCode);
     }
 }
