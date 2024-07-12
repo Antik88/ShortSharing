@@ -57,6 +57,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
             Price = 100.0,
             CategoryId = Seeding.CategoryId,
             TypeId = Seeding.TypeId, 
+            OwnerId = Seeding.OwnerId,
         };
 
 

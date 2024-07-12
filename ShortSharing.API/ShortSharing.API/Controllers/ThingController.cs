@@ -7,7 +7,7 @@ using ShortSharing.BLL.Models;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 
-namespace ShortSharing.API.Controllers.ThingsController;
+namespace ShortSharing.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -32,10 +32,14 @@ public class ThingController : ControllerBase
 
     [HttpGet(ApiConstants.All)]
     [ProducesResponseType(Status200OK, Type = typeof(List<ThingDto>))]
-    public async Task<List<ThingDto>> GetAllAsync(CancellationToken token)
+    public async Task<ActionResult<List<ThingDto>>> GetAllAsync(
+        CancellationToken token,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] Guid? categoryId = null,
+        [FromQuery] Guid? typeId = null)
     {
-        var things = await _thingsService.GetAllAsync(token);
-
+        var things = await _thingsService.GetAllAsync(token, pageNumber, pageSize, categoryId, typeId);
         return _mapper.Map<List<ThingDto>>(things);
     }
 
