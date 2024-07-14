@@ -2,7 +2,7 @@
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Context;
 using ShortSharing.DAL.Entities;
-
+using ShortSharing.Shared;
 
 namespace ShortSharing.DAL.Repositories;
 public class ThingRepository : IThingRepository
@@ -16,8 +16,6 @@ public class ThingRepository : IThingRepository
 
     public async Task<ThingEntity> CreateAsync(ThingEntity entity, CancellationToken token)
     {
-
-
         await _context.AddAsync(entity, token);
 
         await _context.SaveChangesAsync();
@@ -25,25 +23,29 @@ public class ThingRepository : IThingRepository
         return entity;
     }
 
-    public async Task<IEnumerable<ThingEntity>> GetAllAsync(CancellationToken token, int pageNumber, int pageSize, Guid? categoryId, Guid? typeId)
+    public async Task<PagedResult<ThingEntity>> GetAllAsync(QueryParameters queryParameters, CancellationToken token)
     {
         IQueryable<ThingEntity> query = _context.Things
-          .Include(t => t.Category.Id)
-          .Include(t => t.Type.Id)
-          .Include(t => t.Owner.Id);
+            .Include(t => t.Category)
+            .Include(t => t.Type)
+            .Include(t => t.Owner);
 
-        if (categoryId.HasValue)
+        if (queryParameters.CategoryId.HasValue)
         {
-            query = query.Where(t => t.Category.Id == categoryId.Value);
+            query = query.Where(t => t.Category.Id == queryParameters.CategoryId.Value);
         }
 
-        if (typeId.HasValue)
+        if (queryParameters.TypeId.HasValue)
         {
-            query = query.Where(t => t.Type.Id == typeId.Value);
+            query = query.Where(t => t.Type.Id == queryParameters.TypeId.Value);
         }
 
-        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        int totalItems = await query.CountAsync(token);
 
-        return await query.ToListAsync(token);
+        List<ThingEntity> items = await query.Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                                             .Take(queryParameters.PageSize)
+                                             .ToListAsync(token);
+
+        return new PagedResult<ThingEntity>(items, totalItems, queryParameters.PageNumber, queryParameters.PageSize);
     }
 }

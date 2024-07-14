@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShortSharing.DAL\ShortSharing.DAL.csproj" />
+    <ProjectReference Include="..\ShortSharing.Shared\ShortSharing.Shared.csproj" />	  
   </ItemGroup>
 
 </Project>

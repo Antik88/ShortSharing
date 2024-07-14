@@ -3,6 +3,7 @@ using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
+using ShortSharing.Shared;
 
 namespace ShortSharing.BLL.Services;
 
@@ -19,24 +20,32 @@ public class ThingsService : IThingsService
         _thingRepository = thingRepository;
     }
 
-    public async Task<ThingModel> CreateAsync(ThingModel thingModel, CancellationToken token)
+    public async Task<ThingModel> CreateAsync(ThingModel entity, CancellationToken token)
     {
-        var thingEntity = _mapper.Map<ThingEntity>(thingModel);
+        var thingEntity = _mapper.Map<ThingEntity>(entity);
 
         var thing = await _thingRepository.CreateAsync(thingEntity, token);
 
         return _mapper.Map<ThingModel>(thing);
     }
 
-    public async Task DeleteAsync(Guid id, CancellationToken token)
+    public Task DeleteAsync(Guid id, CancellationToken token)
     {
-        await _repository.DeleteAsync(id, token);
+        return _repository.DeleteAsync(id, token);
     }
 
-    public async Task<List<ThingModel>> GetAllAsync(CancellationToken token, int pageNumber, int pageSize, Guid? categoryId, Guid? typeId)
+    public async Task<PagedResult<ThingModel>> GetAllAsync(QueryParameters queryParameters, CancellationToken token)
     {
-        var things = await _thingRepository.GetAllAsync(token, pageNumber, pageSize, categoryId, typeId);
-        return _mapper.Map<List<ThingModel>>(things);
+        var result = await _thingRepository.GetAllAsync(queryParameters, token);
+
+        var items = _mapper.Map<List<ThingModel>>(result.Items);
+
+        return new PagedResult<ThingModel>(
+            items,
+            result.TotalCount,
+            result.CurrentPage,
+            result.PageSize
+        );
     }
 
     public async Task<ThingModel?> GetByIdAsync(Guid id, CancellationToken token)
@@ -46,9 +55,9 @@ public class ThingsService : IThingsService
         return _mapper.Map<ThingModel>(things);
     }
 
-    public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity thingModel, CancellationToken token)
+    public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity entity, CancellationToken token)
     {
-        var thing = await _repository.UpdateAsync(id, thingModel, token);
+        var thing = await _repository.UpdateAsync(id, entity, token);
 
         return _mapper.Map<ThingModel>(thing);
     }

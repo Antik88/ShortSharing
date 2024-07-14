@@ -4,6 +4,8 @@ using ShortSharing.API.Constants;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
+using ShortSharing.DAL.Entities;
+using ShortSharing.Shared;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 
@@ -31,16 +33,21 @@ public class ThingController : ControllerBase
     }
 
     [HttpGet(ApiConstants.All)]
-    [ProducesResponseType(Status200OK, Type = typeof(List<ThingDto>))]
-    public async Task<ActionResult<List<ThingDto>>> GetAllAsync(
+    [ProducesResponseType(Status200OK, Type = typeof(PagedResult<ThingDto>))]
+    public async Task<ActionResult<PagedResult<ThingDto>>> GetAllAsync(
         CancellationToken token,
-        [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 10,
-        [FromQuery] Guid? categoryId = null,
-        [FromQuery] Guid? typeId = null)
+        [FromQuery] QueryParameters query)
     {
-        var things = await _thingsService.GetAllAsync(token, pageNumber, pageSize, categoryId, typeId);
-        return _mapper.Map<List<ThingDto>>(things);
+        var result = await _thingsService.GetAllAsync(query, token);
+
+        var items = _mapper.Map<List<ThingDto>>(result.Items);
+
+        return new PagedResult<ThingDto>(
+            items,
+            result.TotalCount,
+            result.CurrentPage,
+            result.PageSize
+        );
     }
 
     [HttpPost]

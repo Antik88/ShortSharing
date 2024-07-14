@@ -13,7 +13,7 @@ public class ApiProfile : Profile
     public ApiProfile()
     {
         CreateMap<ThingModel, CreateThingDto>().ReverseMap();
-        CreateMap<ThingModel, ThingDto>().ReverseMap();
+        CreateMap<ThingDto, ThingModel>().ReverseMap();
         CreateMap<CategoryModel, CategoryDto>().ReverseMap();
         CreateMap<TypeModel, TypeDto>().ReverseMap();
         CreateMap<RentModel, RentDto>().ReverseMap();

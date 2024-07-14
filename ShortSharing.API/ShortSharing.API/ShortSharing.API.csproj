@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ShortSharing.BLL\ShortSharing.BLL.csproj" />
+    <ProjectReference Include="..\..\ShortSharing.Shared\ShortSharing.Shared.csproj" />
   </ItemGroup>
 
 </Project>
