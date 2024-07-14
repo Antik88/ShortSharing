@@ -8,6 +8,8 @@ using ShortSharing.BLL.Services;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
 using ShortSharing.BLL.Models;
+using Moq;
+using ShortSharing.Shared;
 
 namespace ShortSharing.Tests;
 
@@ -22,6 +24,7 @@ public class ThingServiceTests
     public ThingServiceTests()
     {
         _thingsRepository = Substitute.For<IGenericRepository<ThingEntity>>();
+        _thingRepository = Substitute.For<IThingRepository>();
 
         _mapper = Substitute.For<IMapper>();
 
@@ -89,21 +92,24 @@ public class ThingServiceTests
         result.ShouldBeOfType<ThingModel>();
     }
 
+    [Theory, AutoMoqData]
+    public async Task CreateAsync_ShouldReturnCreatedThingModel(ThingModel entity)
+    {
+        // Arrange
 
-    //[Theory, AutoMoqData]
-    //public async Task GetAll_ValidData_ReturnsListOfThingsModels(List<ThingEntity> thingsEntity)
-    //{
-    //    // Arrange
-    //    _thingsRepository
-    //        .GetAllAsync(default)
-    //        .Returns(thingsEntity);
+        // Act
+        var response = await _thingsService.CreateAsync(entity, default);
 
-    //    var models = _mapper.Map<List<ThingModel>>(thingsEntity);
+        // Assert
 
-    //    // Act
-    //    var result = await _thingsService.GetAllAsync(default);
+        response.ShouldBeNull();
+    }
 
-    //    // Assert
-    //    result.ShouldBeEquivalentTo(models);
-    //}
+    [Theory, AutoMoqData]
+    public async Task GetAllAsync_ShouldReturn_PageResult(QueryParameters query)
+    {
+        var result = await _thingsService.GetAllAsync(query, default);
+
+        result.ShouldNotBeNull();
+    }
 }
