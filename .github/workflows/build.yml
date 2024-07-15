@@ -10,9 +10,6 @@ jobs:
   build:
     name: Build .Net
     runs-on: ubuntu-latest
-    defaults:
-      run: 
-        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
     - uses: actions/checkout@v4
@@ -30,16 +27,10 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
-  
-    env:
-      WORKING_DIRECTORY: "ShortSharing"
 
   analyze:
     name: SonarCloud
     runs-on: ubuntu-latest
-    defaults:
-      run: 
-        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
     - uses: actions/checkout@v4
@@ -59,4 +50,3 @@ jobs:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs, **/Extensions/*, **/Exceptions/**, **/DI/*, **/Validators/*, **/Enums/**/*, **/MappingConfigurations/*, **/ViewModels/**, **/Controllers/*, **/Utilities/**, **/Models/**"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         EXCLUDE_FROM_SONAR: "**/ViewModels/**, **/Dockerfile"
-        WORKING_DIRECTORY: "ShortSharing"
