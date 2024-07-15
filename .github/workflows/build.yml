@@ -52,7 +52,7 @@ jobs:
           EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="coverage.xml" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./ShortSharing/ShortSharing.Tests/coverage.json" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"
           dotnet build --no-incremental
           dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage/
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
