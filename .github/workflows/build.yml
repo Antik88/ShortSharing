@@ -28,9 +28,6 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --results-directory $(pwd)/TestResults --collect:"XPlat Code Coverage" /p:CoverletOutput=$(pwd)/TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
 
-    - name: List All Files and Directories
-      run: ls -R
-
     - name: List Test Results Files
       run: find $(pwd) -type f -name "*.trx" -o -name "*.opencover.xml"
 
@@ -42,7 +39,7 @@ jobs:
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="$(pwd)/TestResults/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="$(pwd)/TestResults/*.trx" /d:sonar.coverage.exclusions=${{ env.EXCLUDE_FROM_COVERAGE }}"
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
