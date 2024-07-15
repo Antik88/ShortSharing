@@ -1,47 +1,43 @@
-name: .NET
+name: SonarCloud Scan
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-      
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
+      - uses: actions/checkout@v2
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.0.x'
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: List All Directories and Files
-      run: ls -R /home/runner/work/ShortSharing/
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
 
-    - name: List Test Results Directory
-      run: ls -R /home/runner/work/ShortSharing/ShortSharing/ShortSharing.Tests/TestResults/
+      - name: Test
+        run: dotnet test --configuration Release --no-build --logger trx --collect:"XPlat Code Coverage"
 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-
-    - name: Sonar Scan
-      uses: highbyte/sonarscan-dotnet@v2.3.0
-      with:
-        sonarProjectKey: Antik88_ShortSharing
-        sonarProjectName: ShortSharing
-        sonarOrganization: antik88
-        dotnetBuildArguments: --configuration Release
-        dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
-      env:
-        EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          organization: antik88  
+          projectKey: Antik88_ShortSharing
+          projectName: ShortSharing
+          extraProperties: |
+            sonar.exclusions=**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json
+            sonar.cs.vstest.reportsPaths=**/*.trx
+            sonar.coverage.exclusions=**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json
