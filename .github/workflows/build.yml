@@ -24,6 +24,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
+    - name: List All Directories and Files
+      run: ls -R /home/runner/work/ShortSharing/
+
+    - name: List Test Results Directory
+      run: ls -R /home/runner/work/ShortSharing/ShortSharing.Tests/TestResults/
+
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
 
