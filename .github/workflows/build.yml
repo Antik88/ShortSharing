@@ -27,9 +27,12 @@ jobs:
 
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
+    
+    - name: Find Test Results Directory
+      run: find $(pwd) -type d -name TestResults
 
-    - name: List Test Results Directory (before Sonar Scan)
-      run: if [ -d $(pwd)/TestResults ]; then ls -R $(pwd)/TestResults/; else echo "No TestResults directory found"; fi
+    - name: List Test Results Files
+      run: find $(pwd) -type f -name "*.trx" -o -name "*.opencover.xml"
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
