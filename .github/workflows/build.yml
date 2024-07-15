@@ -8,22 +8,36 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 7.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore --configuration Release
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-      
+
+    - name: Run Tests with Detailed Logs
+      run: dotnet test --no-build --blame --configuration Release --verbosity detailed
+      continue-on-error: true
+
+    - name: List Test Results Directory
+      run: ls -R /github/workspace/ShortSharing.Tests/TestResults/
+      continue-on-error: true
+
+    - name: Check for Test Results Files
+      run: |
+        echo "Listing all test result files..."
+        find /github/workspace -name "*.trx" -print
+        find /github/workspace -name "*.xml" -print
+      continue-on-error: true
+
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
@@ -32,7 +46,8 @@ jobs:
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
-    env: 
-        EXCLUDE_FROM_COVERAGE: "**/Program.cs, **/ViberContext.cs, **/Migrations/*, **/DI/*, **/Helpers/*, **/Validators/*, **/Middlewares/**/*, **/Constants/**/*, **/Repositories/*, *.json"
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
+    env:
+      EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      continue-on-error: true
