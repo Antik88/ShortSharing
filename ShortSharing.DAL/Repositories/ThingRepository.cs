@@ -18,7 +18,7 @@ public class ThingRepository : IThingRepository
     {
         await _context.AddAsync(entity, token);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(token);
 
         return entity;
     }

@@ -35,8 +35,8 @@ public class ThingController : ControllerBase
     [HttpGet(ApiConstants.All)]
     [ProducesResponseType(Status200OK, Type = typeof(PagedResult<ThingDto>))]
     public async Task<ActionResult<PagedResult<ThingDto>>> GetAllAsync(
-        CancellationToken token,
-        [FromQuery] QueryParameters query)
+        [FromQuery] QueryParameters query, 
+        CancellationToken token)
     {
         var result = await _thingsService.GetAllAsync(query, token);
 

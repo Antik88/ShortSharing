@@ -12,6 +12,7 @@ using ShortSharing.Shared;
 using ShortSharing.Tests.IntegrationsTests;
 using AutoFixture.Xunit2;
 using ShortSharing.API.Controllers;
+using Newtonsoft.Json.Linq;
 
 namespace ShortSharing.Tests;
 
@@ -109,13 +110,23 @@ public class ThingServiceTests
 
     [Theory, AutoMoqData]
     public async Task GetAllAsync_ShouldReturnPagedResult_WhenDataIsAvailable(
-        List<ThingModel> items)
+        List<ThingEntity> items)
     {
         var queryParameters = new QueryParameters();
 
-        var result = _thingsService.GetAllAsync(queryParameters, CancellationToken.None);
+        var pagedResult = new PagedResult<ThingEntity>
+        (
+            items,
+            items.Count,
+            queryParameters.PageNumber,
+            queryParameters.PageSize
+        );
+
+        _thingRepository.GetAllAsync(queryParameters, Arg.Any<CancellationToken>())
+            .Returns(pagedResult);
+
+        var result = await _thingsService.GetAllAsync(queryParameters, CancellationToken.None);
 
         Assert.Equal(3, items.Count);
-        Assert.True(result.IsCompleted);
     }
 }
