@@ -43,3 +43,6 @@ jobs:
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Display SonarQube Logs
+      run: cat ./.sonarqube/out/.sonar/report-task.txt || echo "No SonarQube report found"
