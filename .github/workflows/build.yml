@@ -30,12 +30,6 @@ jobs:
     - name: Run Tests
       run: dotnet test --no-build --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-    - name: Check for Test Results Files
-      run: |
-        echo "Listing all test result files..."
-        find /github/workspace -name "*.trx" -print
-        find /github/workspace -name "*.xml" -print
-
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
