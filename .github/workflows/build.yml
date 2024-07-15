@@ -25,22 +25,8 @@ jobs:
       run: dotnet build --no-restore --configuration Release   
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-    
-    - name: Check TestResults files
-      run: |
-        if [ ! -d "TestResults" ]; then
-          echo "TestResults directory does not exist."
-          exit 1
-        fi
-        if [ ! -f TestResults/*.trx ]; then
-          echo "TRX files not found in TestResults directory."
-          exit 1
-        fi
-        if [ ! -f TestResults/**/coverage.opencover.xml ]; then
-          echo "Coverage OpenCover files not found in TestResults directory."
-          exit 1
-        fi
+      run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --results-directory ./TestResults
+
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
@@ -50,7 +36,7 @@ jobs:
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="./TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="./TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
