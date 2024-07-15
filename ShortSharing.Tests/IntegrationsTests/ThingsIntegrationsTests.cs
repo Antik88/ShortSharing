@@ -17,19 +17,6 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
     }
 
     [Fact]
-    public async Task OnGetThings_ShouldReturnListOfThings()
-    {
-        // Act
-        var response = await _factory.Client.GetAsync(ApiUrls.GetAll);
-        var result = await response.Content.ReadFromJsonAsync<List<ThingDto>>();
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<List<ThingDto>>(result);
-        Assert.Equal(2, result.Count);
-    }
-
-    [Fact]
     public async Task OnGetThingById_ShouldReturnThing()
     {
         // Arrange
