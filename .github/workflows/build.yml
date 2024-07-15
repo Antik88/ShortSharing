@@ -46,7 +46,6 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
       - name: Sonar Scan
-        uses: highbyte/sonarscan-dotnet@v2.3.0
         env:
           WORKING_DIRECTORY: "ShortSharing"
         with:
