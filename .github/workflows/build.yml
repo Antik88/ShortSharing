@@ -26,10 +26,10 @@ jobs:
       run: dotnet build --no-restore --configuration Release   
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --results-directory $(pwd)/TestResults --collect:"XPlat Code Coverage" /p:CoverletOutput=$(pwd)/TestResults/coverage.cobertura.xml /p:CoverletOutputFormat=cobertura
+      run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --results-directory $(pwd)/TestResults --collect:"XPlat Code Coverage" /p:CoverletOutput=$(pwd)/TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
 
     - name: Find Test Results Files
-      run: find $(pwd)/TestResults -type f -name "*.trx" -o -name "*.cobertura.xml"
+      run: find $(pwd)/TestResults -type f -name "*.trx" -o -name "*.opencover.xml"
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
@@ -38,11 +38,8 @@ jobs:
         sonarProjectName: ShortSharing
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
-        dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
-        sonarBeginArguments: /d:sonar.cs.cobertura.reportsPaths="$(pwd)/TestResults/coverage.cobertura.xml" /d:sonar.cs.vstest.reportsPaths="$(pwd)/TestResults/*.trx" /d:sonar.coverage.exclusions="**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
+        dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        sonarBeginArguments: /d:sonar.verbose=true /d:sonar.cs.opencover.reportsPaths="$(pwd)/TestResults/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="$(pwd)/TestResults/*.trx" /d:sonar.coverage.exclusions="**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Display SonarQube Logs
-      run: cat ./.sonarqube/out/.sonar/report-task.txt || echo "No SonarQube report found"
