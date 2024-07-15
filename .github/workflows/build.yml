@@ -28,6 +28,9 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
 
+    - name: List Test Results Directory (before Sonar Scan)
+      run: if [ -d $(pwd)/TestResults ]; then ls -R $(pwd)/TestResults/; else echo "No TestResults directory found"; fi
+
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
