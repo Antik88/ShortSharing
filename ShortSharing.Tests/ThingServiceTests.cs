@@ -8,8 +8,10 @@ using ShortSharing.BLL.Services;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
 using ShortSharing.BLL.Models;
-using Moq;
 using ShortSharing.Shared;
+using ShortSharing.Tests.IntegrationsTests;
+using AutoFixture.Xunit2;
+using ShortSharing.API.Controllers;
 
 namespace ShortSharing.Tests;
 
@@ -106,10 +108,14 @@ public class ThingServiceTests
     }
 
     [Theory, AutoMoqData]
-    public async Task GetAllAsync_ShouldReturn_PageResult(QueryParameters query)
+    public async Task GetAllAsync_ShouldReturnPagedResult_WhenDataIsAvailable(
+        List<ThingModel> items)
     {
-        var result = await _thingsService.GetAllAsync(query, default);
+        var queryParameters = new QueryParameters();
 
-        result.ShouldNotBeNull();
+        var result = _thingsService.GetAllAsync(queryParameters, CancellationToken.None);
+
+        Assert.Equal(3, items.Count);
+        Assert.True(result.IsCompleted);
     }
 }
