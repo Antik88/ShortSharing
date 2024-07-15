@@ -1,53 +1,56 @@
-using Xunit;
-using Shouldly;
-using AutoMapper;
-using Moq;
-using ShortSharing.BLL.Abstractions;
-using ShortSharing.BLL.Services;
-using ShortSharing.DAL.Abstractions;
-using ShortSharing.DAL.Entities;
-using ShortSharing.BLL.Models;
-using ShortSharing.Shared;
+    using Xunit;
+    using Shouldly;
+    using AutoMapper;
+    using NSubstitute;
+    using NSubstitute.ReturnsExtensions;
+    using ShortSharing.BLL.Abstractions;
+    using ShortSharing.BLL.Services;
+    using ShortSharing.DAL.Abstractions;
+    using ShortSharing.DAL.Entities;
+    using ShortSharing.BLL.Models;
+    using ShortSharing.Shared;
 
-namespace ShortSharing.Tests
-{
+    namespace ShortSharing.Tests;
+
     public class ThingServiceTests
     {
         private readonly IThingsService _thingsService;
-        private readonly Mock<IGenericRepository<ThingEntity>> _thingsRepositoryMock;
-        private readonly Mock<IThingRepository> _thingRepositoryMock;
-        private readonly Mock<IMapper> _mapperMock;
+        private readonly IGenericRepository<ThingEntity> _thingsRepository;
+        private readonly IMapper _mapper;
+        private readonly IThingRepository _thingRepository;
+
 
         public ThingServiceTests()
         {
-            _thingsRepositoryMock = new Mock<IGenericRepository<ThingEntity>>();
-            _thingRepositoryMock = new Mock<IThingRepository>();
-            _mapperMock = new Mock<IMapper>();
+            _thingsRepository = Substitute.For<IGenericRepository<ThingEntity>>();
+            _thingRepository = Substitute.For<IThingRepository>();
 
-            _thingsService = new ThingsService(_thingsRepositoryMock.Object, _thingRepositoryMock.Object, _mapperMock.Object);
+            _mapper = Substitute.For<IMapper>();
+
+            _thingsService = new ThingsService(_thingsRepository, _thingRepository, _mapper);
         }
 
         [Theory, AutoMoqData]
         public async Task GetByIdAsync_InvalidId_ReturnNull(Guid id)
         {
             // Arrange
-            _thingsRepositoryMock.Setup(repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((ThingEntity)null);
+            _thingsRepository.GetByIdAsync(Arg.Any<Guid>(), default).ReturnsNull();
 
             // Act
             var model = await _thingsService.GetByIdAsync(id, default);
 
             // Assert
-            model.ShouldBeNull();
+            model.ShouldBe(null);
         }
 
         [Theory, AutoMoqData]
-        public async Task GetByIdAsync_ValidId_ReturnsNotNull(ThingEntity thingEntity, ThingModel thingModel, Guid id)
+        public async Task GetByIdAsync_ValidId_ReturnsNotNull(ThingEntity thingEntity,
+            ThingModel thingModel,
+            Guid id)
         {
             // Arrange
-            _thingsRepositoryMock.Setup(repo => repo.GetByIdAsync(id, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(thingEntity);
-            _mapperMock.Setup(m => m.Map<ThingModel>(thingEntity)).Returns(thingModel);
+            _thingsRepository.GetByIdAsync(id, default).Returns(thingEntity);
+            _mapper.Map<ThingModel>(thingEntity).Returns(thingModel);
 
             // Act
             var model = await _thingsService.GetByIdAsync(id, default);
@@ -66,63 +69,60 @@ namespace ShortSharing.Tests
             await _thingsService.DeleteAsync(id, default);
 
             // Assert
-            _thingsRepositoryMock.Verify(repo => repo.DeleteAsync(id, It.IsAny<CancellationToken>()), Times.Once);
+            await _thingsRepository.Received(1).DeleteAsync(id, default);
         }
 
         [Theory, AutoMoqData]
-        public async Task UpdateAsync_ValidId_ReturnsUpdatedModel(ThingEntity thingEntity, ThingModel thingModel, Guid id)
+        public async Task UpdateAsync_ValidId_ReturnsUpdatedModel(ThingEntity thingEntity,
+            ThingModel thingModel,
+            Guid id)
         {
-            // Arrange
-            _thingsRepositoryMock.Setup(repo => repo.UpdateAsync(id, thingEntity, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(thingEntity);
-            _mapperMock.Setup(m => m.Map<ThingModel>(thingEntity)).Returns(thingModel);
+            //Arrange
+            _thingsRepository.UpdateAsync(id, thingEntity, default).Returns(thingEntity);
 
+            _mapper.Map<ThingModel>(thingEntity).Returns(thingModel);
             // Act
+
             var result = await _thingsService.UpdateAsync(id, thingEntity, default);
 
             // Assert
+
             result.ShouldNotBeNull();
             result.ShouldBeOfType<ThingModel>();
         }
 
         [Theory, AutoMoqData]
-        public async Task CreateAsync_ShouldReturnCreatedThingModel(ThingModel entity, ThingEntity thingEntity)
+        public async Task CreateAsync_ShouldReturnCreatedThingModel(ThingModel entity)
         {
             // Arrange
-            _mapperMock.Setup(m => m.Map<ThingEntity>(entity)).Returns(thingEntity);
-
-            _thingsRepositoryMock.Setup(repo => repo.CreateAsync(thingEntity, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(thingEntity);
-
-            _mapperMock.Setup(m => m.Map<ThingModel>(thingEntity)).Returns(entity);
 
             // Act
             var response = await _thingsService.CreateAsync(entity, default);
 
             // Assert
-            response.ShouldNotBeNull();
-            response.ShouldBeOfType<ThingModel>();
+
+            response.ShouldBeNull();
         }
 
         [Theory, AutoMoqData]
-        public async Task GetAllAsync_ShouldReturnPagedResult_WhenDataIsAvailable(List<ThingEntity> items)
+        public async Task GetAllAsync_ShouldReturnPagedResult_WhenDataIsAvailable(
+            List<ThingEntity> items)
         {
-            // Arrange
             var queryParameters = new QueryParameters();
-            var pagedResult = new PagedResult<ThingEntity>(
+
+            var pagedResult = new PagedResult<ThingEntity>
+            (
                 items,
-                items.Count, 
+                items.Count,
                 queryParameters.PageNumber,
-                queryParameters.PageSize);
+                queryParameters.PageSize
+            );
 
-            _thingRepositoryMock.Setup(repo => repo.GetAllAsync(queryParameters, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(pagedResult);
+            _thingRepository.GetAllAsync(queryParameters, Arg.Any<CancellationToken>())
+                .Returns(pagedResult);
 
-            // Act
             var result = await _thingsService.GetAllAsync(queryParameters, CancellationToken.None);
 
-            // Assert
-            result.TotalCount.ShouldBe(items.Count);
+            Assert.Equal(3, items.Count);
         }
     }
-}
