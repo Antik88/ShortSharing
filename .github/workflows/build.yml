@@ -1,4 +1,4 @@
-name: Admin Panel Service
+name: SonarCloud 
 
 on:
   push:
@@ -59,4 +59,4 @@ jobs:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs, **/Extensions/*, **/Exceptions/**, **/DI/*, **/Validators/*, **/Enums/**/*, **/MappingConfigurations/*, **/ViewModels/**, **/Controllers/*, **/Utilities/**, **/Models/**"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         EXCLUDE_FROM_SONAR: "**/ViewModels/**, **/Dockerfile"
-        WORKING_DIRECTORY: "AdminPanelService"
+        WORKING_DIRECTORY: "ShortSharing"
