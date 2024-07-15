@@ -26,10 +26,10 @@ jobs:
       run: dotnet build --no-restore --configuration Release   
 
     - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-    
-    - name: Find Test Results Directory
-      run: find $(pwd) -type d -name TestResults
+      run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --results-directory $(pwd)/TestResults --collect:"XPlat Code Coverage" /p:CoverletOutput=$(pwd)/TestResults/coverage.opencover.xml /p:CoverletOutputFormat=opencover
+
+    - name: List All Files and Directories
+      run: ls -R
 
     - name: List Test Results Files
       run: find $(pwd) -type f -name "*.trx" -o -name "*.opencover.xml"
