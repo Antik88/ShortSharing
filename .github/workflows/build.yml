@@ -9,13 +9,17 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v4
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.0.x
+        dotnet-version: |
+          6.0.x
+          7.0.x
+          8.0.x
 
     - name: Restore dependencies
       run: dotnet restore
@@ -23,20 +27,17 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
-    - name: Run Tests with Detailed Logs
-      run: dotnet test --no-build --blame --configuration Release --verbosity detailed
-      continue-on-error: true
+    - name: Run Tests
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
     - name: List Test Results Directory
       run: ls -R /github/workspace/ShortSharing.Tests/TestResults/
-      continue-on-error: true
 
     - name: Check for Test Results Files
       run: |
         echo "Listing all test result files..."
         find /github/workspace -name "*.trx" -print
         find /github/workspace -name "*.xml" -print
-      continue-on-error: true
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
@@ -50,4 +51,3 @@ jobs:
     env:
       EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      continue-on-error: true
