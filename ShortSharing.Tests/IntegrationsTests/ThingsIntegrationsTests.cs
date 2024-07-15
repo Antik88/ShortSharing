@@ -14,7 +14,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
     public ThingsIntegrationsTests(IntegrationTestWebAppFactory factory)
     {
         _factory = factory;
-    }
+    }   
 
     [Fact]
     public async Task OnGetThingById_ShouldReturnThing()

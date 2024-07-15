@@ -20,7 +20,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity detailed --configuration Release
+      run: dotnet test --no-build --blame --verbosity detailed --configuration Release
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
