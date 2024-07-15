@@ -57,3 +57,4 @@ jobs:
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{env.EXCLUDE_FROM_COVERAGE}}" 
     env: 
         EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
