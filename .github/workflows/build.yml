@@ -30,9 +30,6 @@ jobs:
     - name: Run Tests
       run: dotnet test --no-build --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
-    - name: List Test Results Directory
-      run: ls -R /github/workspace/ShortSharing/ShortSharing/ShortSharing.Tests/TestResults/
-
     - name: Check for Test Results Files
       run: |
         echo "Listing all test result files..."
