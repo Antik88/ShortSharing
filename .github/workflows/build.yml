@@ -1,63 +1,62 @@
-name: SonarCloud
+name: Admin Panel Service
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ "main" ]
 
-jobs:
+jobs:    
   build:
-    name: Build and analyze
-    runs-on: windows-latest
+    name: Build .Net
+    runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: 'zulu'
+    - uses: actions/checkout@v4
 
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+    - name: Restore dependencies
+      run: dotnet restore
 
-      - name: Cache SonarCloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v3
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
 
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --configuration Release
+  
+    env:
+      WORKING_DIRECTORY: "ShortSharing"
 
-      - name: SonarScanner Begin
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="./coverage/coverage.xml" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"
+  analyze:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    defaults:
+      run: 
+        working-directory: ${{ env.WORKING_DIRECTORY }}
 
-      - name: Build and run tests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          dotnet build --no-incremental
-          dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=./coverage/
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
-      - name: SonarScanner End
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+    - name: Sonar Scan
+      uses: highbyte/sonarscan-dotnet@v2.3.0
+      with:
+        sonarProjectKey: Antik88_ShortSharing
+        sonarProjectName: ShortSharing
+        sonarOrganization: antik88
+        dotnetBuildArguments: ${{ env.WORKING_DIRECTORY }} --configuration Release
+        dotnetTestArguments: ${{ env.WORKING_DIRECTORY }} --no-build --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{env.EXCLUDE_FROM_COVERAGE}}" 
+    env: 
+        EXCLUDE_FROM_COVERAGE: "**/Program.cs, **/Extensions/*, **/Exceptions/**, **/DI/*, **/Validators/*, **/Enums/**/*, **/MappingConfigurations/*, **/ViewModels/**, **/Controllers/*, **/Utilities/**, **/Models/**"
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        EXCLUDE_FROM_SONAR: "**/ViewModels/**, **/Dockerfile"
+        WORKING_DIRECTORY: "AdminPanelService"
