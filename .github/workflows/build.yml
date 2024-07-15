@@ -28,7 +28,7 @@ jobs:
       run: ls -R /home/runner/work/ShortSharing/
 
     - name: List Test Results Directory
-      run: ls -R /home/runner/work/ShortSharing/ShortSharing.Tests/TestResults/
+      run: ls -R /home/runner/work/ShortSharing/ShortSharing/ShortSharing.Tests/TestResults/
 
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
