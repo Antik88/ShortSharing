@@ -1,11 +1,3 @@
-name: SonarCloud 
-
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:    
   build:
     name: Build and Test
@@ -55,6 +47,6 @@ jobs:
         dotnetBuildArguments: ${{ env.WORKING_DIRECTORY }} --configuration Release
         dotnetTestArguments: ${{ env.WORKING_DIRECTORY }} --no-build --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{env.EXCLUDE_FROM_COVERAGE}}" 
-    env: 
+      env:
         EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
