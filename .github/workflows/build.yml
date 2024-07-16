@@ -21,6 +21,9 @@ jobs:
     - name: Install Coverlet tool
       run: dotnet tool install --global coverlet.console
 
+    - name: Install SonarScanner tool
+      run: dotnet tool install --global dotnet-sonarscanner
+
     - name: Restore dependencies
       run: dotnet restore
 
