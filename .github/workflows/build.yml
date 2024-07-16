@@ -92,6 +92,6 @@ jobs:
             sonarProjectKey: Antik88_ShortSharing
             sonarProjectName: ShortSharing
             sonarOrganization: antik88
-            dotnetBuildArguments: --configuration Release
-            dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            dotnetBuildArguments: --configuration Debug
+            dotnetTestArguments: --configuration Debug --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
             sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
