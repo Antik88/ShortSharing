@@ -10,7 +10,8 @@ on:
 jobs:
   build:
     name: Build and analyze
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
 
     steps:
       - name: Set up JDK 17
@@ -47,15 +48,17 @@ jobs:
 
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration Release
-
-      - name: Build and analyze
+      
+      - name: Test
+        uses: highbyte/sonarscan-dotnet@v2.3.0
+        with:
+            sonarProjectKey: Antik88_ShortSharing
+            sonarProjectName: ShortSharing
+            sonarOrganization: antik88
+            dotnetBuildArguments: --configuration Release
+            dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
-        shell: powershell
-        run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}"
-          dotnet build --no-incremental
-          dotnet test --no-build --verbosity normal --configuration Release
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
