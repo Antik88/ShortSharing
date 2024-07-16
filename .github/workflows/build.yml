@@ -27,6 +27,12 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --results-directory ./TestResults
 
+    - name: List Coverage Files
+      id: coverage_files
+      run: echo "files=$(find . -type f -name "coverage.opencover.xml" | paste -sd ',')" >> $GITHUB_ENV
+
+    - name: Use Coverage Files
+      run: echo ${{ env.files }}
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
@@ -36,7 +42,7 @@ jobs:
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="./ShortSharing.Tests/TestResults/**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="./ShortSharing.Tests/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="${{ env.files }}" /d:sonar.cs.vstest.reportsPaths="./ShortSharing.Tests/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
