@@ -18,6 +18,9 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
+    - name: Install .NET runtime 7.0
+      run: sudo apt-get update && sudo apt-get install -y dotnet-runtime-7.0
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -32,7 +35,7 @@ jobs:
         sonarOrganization: antik88
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
-        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.vstest.reportsPaths="./ShortSharing.Tests/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
+        sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
       env:
         EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
