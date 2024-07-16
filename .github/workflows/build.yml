@@ -19,7 +19,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '7.0.x'
 
       - name: Restore dependencies
         run: dotnet restore
@@ -38,7 +38,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '7.0.x'
 
       - name: Restore dependencies
         run: dotnet restore 
@@ -60,7 +60,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '7.0.x'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
