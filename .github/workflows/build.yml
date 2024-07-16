@@ -83,25 +83,15 @@ jobs:
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
 
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        run: |
-          dotnet tool install --global dotnet-sonarscanner
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
       - name: Run SonarCloud analysis
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           EXCLUDE_FROM_COVERAGE: "**/Program.cs,**/Context.cs,**/Migrations/**,**/DI/**,**/Helpers/**,**/Validators/**,**/Middlewares/**,**/Constants/**,**/Repositories/**,*.json"
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            PR_NUMBER="${{ github.event.pull_request.number }}"
-            PR_BRANCH="${{ github.head_ref }}"
-            BASE_BRANCH="${{ github.base_ref }}"
-            dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.pullrequest.key="$PR_NUMBER" /d:sonar.pullrequest.branch="$PR_BRANCH" /d:sonar.pullrequest.base="$BASE_BRANCH" /d:sonar.coverage.exclusions="ServiceFinder.API/Program.cs"
-          else
-            dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
-          fi
-          dotnet restore 
-          dotnet build --no-restore --configuration Release
-          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        uses: highbyte/sonarscan-dotnet@v2.3.0
+        with:
+            sonarProjectKey: Antik88_ShortSharing
+            sonarProjectName: ShortSharing
+            sonarOrganization: antik88
+            dotnetBuildArguments: --configuration Release
+            dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+            sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE" 
