@@ -102,6 +102,6 @@ jobs:
           else
             dotnet-sonarscanner begin /k:"Antik88_ShortSharing" /o:"antik88" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.coverage.exclusions="$EXCLUDE_FROM_COVERAGE"
           fi
-          dotnet restore ./ShortSharing/ShortSharing.sln
-          dotnet build ./ShortSharing/ShortSharing.sln --no-restore --configuration Release
+          dotnet restore 
+          dotnet build --no-restore --configuration Release
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
