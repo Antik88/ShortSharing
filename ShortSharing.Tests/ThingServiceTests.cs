@@ -111,12 +111,12 @@
             var queryParameters = new QueryParameters();
 
             var pagedResult = new PagedResult<ThingEntity>
-            (
-                items,
-                items.Count,
-                queryParameters.PageNumber,
-                queryParameters.PageSize
-            );
+            {
+                Items = items,
+                TotalCount = items.Count,
+                CurrentPage = queryParameters.PageNumber,
+                PageSize = queryParameters.PageSize
+            };
 
             _thingRepository.GetAllAsync(queryParameters, Arg.Any<CancellationToken>())
                 .Returns(pagedResult);
