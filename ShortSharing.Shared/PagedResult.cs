@@ -13,12 +13,4 @@ public class PagedResult<T>
             return (int)Math.Ceiling((double)TotalCount / PageSize);
         }
     }
-
-    public PagedResult(List<T> items, int count, int pageNumber, int pageSize)
-    {
-        Items = items;
-        TotalCount = count;
-        CurrentPage = pageNumber;
-        PageSize = pageSize;
-    }
 }

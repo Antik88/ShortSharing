@@ -4,7 +4,6 @@ using ShortSharing.API.Constants;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
-using ShortSharing.DAL.Entities;
 using ShortSharing.Shared;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
@@ -42,12 +41,12 @@ public class ThingController : ControllerBase
 
         var items = _mapper.Map<List<ThingDto>>(result.Items);
 
-        return new PagedResult<ThingDto>(
-            items,
-            result.TotalCount,
-            result.CurrentPage,
-            result.PageSize
-        );
+        return new PagedResult<ThingDto> { 
+            Items = items,
+            TotalCount = result.TotalCount,
+            CurrentPage = result.CurrentPage,
+            PageSize = result.PageSize
+        };
     }
 
     [HttpPost]

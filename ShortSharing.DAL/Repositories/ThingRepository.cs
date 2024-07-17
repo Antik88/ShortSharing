@@ -46,6 +46,11 @@ public class ThingRepository : IThingRepository
                                              .Take(queryParameters.PageSize)
                                              .ToListAsync(token);
 
-        return new PagedResult<ThingEntity>(items, totalItems, queryParameters.PageNumber, queryParameters.PageSize);
+        return new PagedResult<ThingEntity> {
+            Items = items,
+            TotalCount = totalItems,
+            CurrentPage = queryParameters.PageNumber,
+            PageSize = queryParameters.PageSize
+        };
     }
 }

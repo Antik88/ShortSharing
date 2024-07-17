@@ -40,12 +40,12 @@ public class ThingsService : IThingsService
 
         var items = _mapper.Map<List<ThingModel>>(result.Items);
 
-        return new PagedResult<ThingModel>(
-            items,
-            result.TotalCount,
-            result.CurrentPage,
-            result.PageSize
-        );
+        return new PagedResult<ThingModel> {
+            Items = items,
+            TotalCount = result.TotalCount,
+            CurrentPage = result.CurrentPage,
+            PageSize = result.PageSize
+        };
     }
 
     public async Task<ThingModel?> GetByIdAsync(Guid id, CancellationToken token)
