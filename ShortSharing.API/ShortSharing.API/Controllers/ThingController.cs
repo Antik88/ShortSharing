@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ShortSharing.API.Constants;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
-using ShortSharing.BLL.Common.Exceptions;
 using ShortSharing.BLL.Models;
+using ShortSharing.Shared;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 
@@ -17,13 +16,10 @@ public class ThingController : ControllerBase
 {
     private readonly IThingsService _thingsService;
     private readonly IMapper _mapper;
-    private readonly IValidator<CreateThingDto> _validator;
 
-    public ThingController(IThingsService thingsService,
-        IValidator<CreateThingDto> validator, IMapper mapper)
+    public ThingController(IThingsService thingsService, IMapper mapper)
     {
         _thingsService = thingsService;
-        _validator = validator; 
         _mapper = mapper;
     }
 
@@ -36,12 +32,22 @@ public class ThingController : ControllerBase
     }
 
     [HttpGet(ApiConstants.All)]
-    [ProducesResponseType(Status200OK, Type = typeof(List<ThingDto>))]
-    public async Task<List<ThingDto>> GetAllAsync(CancellationToken token)
+    [ProducesResponseType(Status200OK, Type = typeof(PagedResult<ThingDto>))]
+    public async Task<ActionResult<PagedResult<ThingDto>>> GetAllAsync(
+        [FromQuery] QueryParameters query, 
+        CancellationToken token)
     {
-        var things = await _thingsService.GetAllAsync(token);
+        var result = await _thingsService.GetAllAsync(query, token);
 
-        return _mapper.Map<List<ThingDto>>(things);
+        var items = _mapper.Map<List<ThingDto>>(result.Items);
+
+        return new PagedResult<ThingDto> { 
+            Items = items,
+            TotalCount = result.TotalCount,
+            CurrentPage = result.CurrentPage,
+            PageSize = result.PageSize
+        };
+
     }
 
     [HttpPost]
@@ -50,8 +56,6 @@ public class ThingController : ControllerBase
         [FromBody] CreateThingDto thingDto,
         CancellationToken token)
     {
-        await _validator.ValidateAndThrowAsync(thingDto, CancellationToken.None);
-
         var thingModel = _mapper.Map<ThingModel>(thingDto);
         await _thingsService.CreateAsync(thingModel, token);
 

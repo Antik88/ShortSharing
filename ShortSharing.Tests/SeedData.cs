@@ -12,7 +12,8 @@ public static class SeedData
             Description = "valid description",
             Price = 100.0,
             CategoryId = Guid.NewGuid(),
-            TypeId = Guid.NewGuid()
+            TypeId = Guid.NewGuid(),
+            OwnerId = Guid.NewGuid(),
         };
     }
 
@@ -24,7 +25,8 @@ public static class SeedData
             Description = "valid description",
             Price = 100.0,
             CategoryId = Guid.NewGuid(),
-            TypeId = Guid.NewGuid()
+            TypeId = Guid.NewGuid(),
+            OwnerId = Guid.NewGuid(),
         };
     }
 
@@ -36,7 +38,8 @@ public static class SeedData
             Description = "valid description",
             Price = -10.0,
             CategoryId = Guid.NewGuid(),
-            TypeId = Guid.NewGuid()
+            TypeId = Guid.NewGuid(),
+            OwnerId = Guid.NewGuid(),
         };
     }
 
@@ -48,7 +51,8 @@ public static class SeedData
             Description = "",
             Price = 100.0,
             CategoryId = Guid.NewGuid(),
-            TypeId = Guid.NewGuid()
+            TypeId = Guid.NewGuid(),
+            OwnerId = Guid.NewGuid(),
         };
     }
     public static CreateThingDto GetInvalidCreateThingDto_InvalidTypeId()
@@ -59,7 +63,8 @@ public static class SeedData
             Description = "",
             Price = 100.0,
             CategoryId = Guid.NewGuid(),
-            TypeId = Guid.Empty
+            TypeId = Guid.Empty,
+            OwnerId = Guid.Empty,
         };
     }
     public static CreateThingDto GetInvalidCreateThingDto_InvalidCategoryId()
@@ -70,7 +75,8 @@ public static class SeedData
             Description = "",
             Price = 100.0,
             CategoryId = Guid.Empty,
-            TypeId = Guid.NewGuid()
+            TypeId = Guid.NewGuid(),
+            OwnerId = Guid.Empty,
         };
     }
 }

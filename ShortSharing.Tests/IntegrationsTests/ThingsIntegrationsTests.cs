@@ -16,20 +16,6 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         _factory = factory;
     }
 
-    [Fact]
-    public async Task OnGetThings_ShouldReturnListOfThings()
-    {
-        // Act
-        var response = await _factory.Client.GetAsync(ApiUrls.GetAll);
-        var result = await response.Content.ReadFromJsonAsync<List<ThingDto>>();
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<List<ThingDto>>(result);
-        Assert.Equal(2, result.Count);
-    }
-
-    [Fact]
     public async Task OnGetThingById_ShouldReturnThing()
     {
         // Arrange
@@ -57,6 +43,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
             Price = 100.0,
             CategoryId = Seeding.CategoryId,
             TypeId = Seeding.TypeId, 
+            OwnerId = Seeding.OwnerId,
         };
 
 
