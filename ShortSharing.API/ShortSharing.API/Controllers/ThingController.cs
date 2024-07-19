@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ShortSharing.API.Constants;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.BLL.Abstractions;
+using ShortSharing.BLL.Common.Exceptions;
 using ShortSharing.BLL.Models;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 
-namespace ShortSharing.API.Controllers.ThingsController;
+namespace ShortSharing.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -15,10 +17,13 @@ public class ThingController : ControllerBase
 {
     private readonly IThingsService _thingsService;
     private readonly IMapper _mapper;
+    private readonly IValidator<CreateThingDto> _validator;
 
-    public ThingController(IThingsService thingsService, IMapper mapper)
+    public ThingController(IThingsService thingsService,
+        IValidator<CreateThingDto> validator, IMapper mapper)
     {
         _thingsService = thingsService;
+        _validator = validator; 
         _mapper = mapper;
     }
 
@@ -45,6 +50,8 @@ public class ThingController : ControllerBase
         [FromBody] CreateThingDto thingDto,
         CancellationToken token)
     {
+        await _validator.ValidateAndThrowAsync(thingDto, CancellationToken.None);
+
         var thingModel = _mapper.Map<ThingModel>(thingDto);
         await _thingsService.CreateAsync(thingModel, token);
 
