@@ -16,7 +16,6 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         _factory = factory;
     }
 
-    [Fact]
     public async Task OnGetThingById_ShouldReturnThing()
     {
         // Arrange

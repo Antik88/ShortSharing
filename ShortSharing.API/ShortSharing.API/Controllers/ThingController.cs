@@ -47,6 +47,7 @@ public class ThingController : ControllerBase
             CurrentPage = result.CurrentPage,
             PageSize = result.PageSize
         };
+
     }
 
     [HttpPost]
