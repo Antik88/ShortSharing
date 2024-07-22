@@ -2,7 +2,7 @@
 
 namespace Rent.Service.Application.Rents.Commands.UpdateRent;
 
-public class UpdateRentCommand : IRequest<Guid>
+public class UpdateRentCommand : IRequest<int>
 {
     public Guid id { get; set; }
     public DateTime StartRentDate { get; set; }

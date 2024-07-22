@@ -7,9 +7,9 @@ namespace Rent.Service.Application.Rents.Commands.UpdateRent;
 
 public class UpdateRentCommandHandler(
     IRentRepository rentRepository,
-    IMapper mapper) : IRequestHandler<UpdateRentCommand, Guid>
+    IMapper mapper) : IRequestHandler<UpdateRentCommand, int>
 {
-    public async Task<Guid> Handle(UpdateRentCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(UpdateRentCommand request, CancellationToken cancellationToken)
     {
         var rentEntity = new RentEntity()
         {
