@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Rent.Service.BLL.Helpers;
 using Rent.Service.BLL.Services.Implementations;
 using Rent.Service.BLL.Services.Interfaces;
 using Rent.Service.DAL.DI;
@@ -13,6 +14,8 @@ public static class ServicesConfiguration
         services.AddDataAccessDependencies(configuration);
 
         services.AddHttpClient();
+
+        services.AddTransient<ServiceRequest>();
 
         services.AddScoped<IRentService, RentService>();
     }
