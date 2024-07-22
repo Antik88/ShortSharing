@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Rent.Service.Application.Rents.Queries.GetRents;
+using Rent.Service.Domain.Entity;
 using System.Reflection;
 
 namespace Rent.Service.Application.Common.Mappings;
@@ -7,7 +9,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        ApplyMappingFromAssembly(Assembly.GetExecutingAssembly()); 
+        ApplyMappingFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     private void ApplyMappingFromAssembly(Assembly assembly)
@@ -20,7 +22,7 @@ public class MappingProfile : Profile
 
         var types = assembly.GetExportedTypes().Where(t => t.GetInterfaces().Any(HasInterface)).ToList();
 
-        var argumentTypes = new Type[] { typeof(string) };
+        var argumentTypes = new Type[] { typeof(Profile) };
 
         foreach (var type in types)
         {

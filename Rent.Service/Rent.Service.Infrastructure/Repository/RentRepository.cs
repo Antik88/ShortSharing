@@ -23,9 +23,9 @@ public class RentRepository(RentDbContext context) : IRentRepository
            .ExecuteDeleteAsync();
     }
 
-    public async Task<List<RentEntity>> GetAllRentsAsync()
+    public Task<List<RentEntity>> GetAllRentsAsync()
     {
-        return await context.Rents.ToListAsync();
+        return  context.Rents.ToListAsync();
     }
 
     public async Task<RentEntity> GetByIdAsync(Guid id)

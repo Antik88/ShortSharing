@@ -12,10 +12,6 @@ public class GetRentQueryHandler(
     {
         var rents = await rentRepository.GetAllRentsAsync();
 
-        mapper.Map<List<RentModel>>(rents);
-
-        var rentList = mapper.Map<List<RentModel>>(rents);
-
-        return rentList;
+        return mapper.Map<List<RentModel>>(rents);
     }
 }
