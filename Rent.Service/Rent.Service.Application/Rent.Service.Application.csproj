@@ -10,7 +10,6 @@
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Rents\Commands\DeleteRent\" />
-    <Folder Include="Rents\Commands\UpdateRent\" />
   </ItemGroup>
 
   <ItemGroup>
