@@ -8,5 +8,5 @@ public interface IRentRepository
     Task<RentEntity> GetByIdAsync(Guid id);
     Task<RentEntity> CreateAsync(RentEntity rentEntity);
     Task<Guid> UpdateAsync(Guid id, RentEntity rentEntity);
-    Task<RentEntity> DeleteAsync(Guid id);
+    Task<Guid> DeleteAsync(Guid id);
 }
