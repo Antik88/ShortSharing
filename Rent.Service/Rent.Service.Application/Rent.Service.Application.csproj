@@ -9,11 +9,9 @@
   <ItemGroup>
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Common\Exceptions\" />
-    <Folder Include="Common\Mappings\" />
     <Folder Include="Rents\Commands\CreateRent\" />
     <Folder Include="Rents\Commands\DeleteRent\" />
     <Folder Include="Rents\Commands\UpdateRent\" />
-    <Folder Include="Rents\Queries\GetRents\" />
     <Folder Include="Rents\Queries\GetRentById\" />
   </ItemGroup>
 
