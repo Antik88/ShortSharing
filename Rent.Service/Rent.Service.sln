@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.BLL", "Rent.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.DAL", "Rent.Service.DAL\Rent.Service.DAL.csproj", "{45CD89EE-70D5-437B-B1B0-6CAE2B985671}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Shared", "Rent.Service.Shared\Rent.Service.Shared.csproj", "{096235CA-C553-43F0-8398-6F01C0CA0AB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{45CD89EE-70D5-437B-B1B0-6CAE2B985671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45CD89EE-70D5-437B-B1B0-6CAE2B985671}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45CD89EE-70D5-437B-B1B0-6CAE2B985671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096235CA-C553-43F0-8398-6F01C0CA0AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096235CA-C553-43F0-8398-6F01C0CA0AB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096235CA-C553-43F0-8398-6F01C0CA0AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096235CA-C553-43F0-8398-6F01C0CA0AB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

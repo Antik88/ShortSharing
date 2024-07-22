@@ -1,3 +1,5 @@
+using Rent.Service.BLL.DI;
+
 namespace Rent.Service.API;
 
 public class Program
@@ -5,10 +7,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        var configurations = builder.Configuration;
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddBLLDependencies(configurations);
 
         var app = builder.Build();
 
