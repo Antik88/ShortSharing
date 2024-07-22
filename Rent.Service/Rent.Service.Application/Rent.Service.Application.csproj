@@ -12,7 +12,6 @@
     <Folder Include="Rents\Commands\CreateRent\" />
     <Folder Include="Rents\Commands\DeleteRent\" />
     <Folder Include="Rents\Commands\UpdateRent\" />
-    <Folder Include="Rents\Queries\GetRentById\" />
   </ItemGroup>
 
   <ItemGroup>
