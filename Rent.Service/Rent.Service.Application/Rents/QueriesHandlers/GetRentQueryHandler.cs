@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Rent.Service.Application.Model;
+using Rent.Service.Application.Rents.Queries;
 using Rent.Service.Domain.Repository;
 
-namespace Rent.Service.Application.Rents.Queries.GetRents;
+namespace Rent.Service.Application.Rents.QueriesHandlers;
 
 public class GetRentQueryHandler(
     IRentRepository rentRepository,

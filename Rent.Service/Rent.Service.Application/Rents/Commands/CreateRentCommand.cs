@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Rent.Service.Application.Rents.Queries.GetRents;
+using Rent.Service.Application.Model;
 
 namespace Rent.Service.Application.Rents.Commands;
 

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Rent.Service.Application.Rents.Queries.GetRents;
-using Rent.Service.Domain.Entity;
 using System.Reflection;
 
 namespace Rent.Service.Application.Common.Mappings;

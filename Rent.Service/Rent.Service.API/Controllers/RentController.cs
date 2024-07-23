@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rent.Service.Application.Model;
 using Rent.Service.Application.Rents.Commands;
-using Rent.Service.Application.Rents.Queries.GetRentById;
-using Rent.Service.Application.Rents.Queries.GetRents;
+using Rent.Service.Application.Rents.Queries;
 
 namespace Rent.Service.API.Controllers;
 
@@ -19,7 +19,7 @@ public class RentController : ApiControllerBase
     [HttpGet("{id}")]
     public async Task<RentModel> GetByIdAsync(Guid id)
     {
-        var rent = await Mediator.Send(new GetRentById() { RentId =  id});
+        var rent = await Mediator.Send(new GetRentByIdQuery() { RentId =  id});
         return rent;
     }
 

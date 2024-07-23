@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Rent.Service.Application.Model;
 using Rent.Service.Application.Rents.Commands;
-using Rent.Service.Application.Rents.Queries.GetRents;
 using Rent.Service.Domain.Entity;
 using Rent.Service.Domain.Repository;
 

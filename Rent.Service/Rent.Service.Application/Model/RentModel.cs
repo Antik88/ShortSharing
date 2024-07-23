@@ -1,7 +1,7 @@
 ﻿using Rent.Service.Application.Common.Mappings;
 using Rent.Service.Domain.Entity;
 
-namespace Rent.Service.Application.Rents.Queries.GetRents;
+namespace Rent.Service.Application.Model;
 
 public class RentModel : IMapFrom<RentEntity>
 {
