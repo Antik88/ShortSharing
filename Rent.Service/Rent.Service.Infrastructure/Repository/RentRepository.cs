@@ -34,6 +34,12 @@ public class RentRepository(RentDbContext context) : IRentRepository
             .FirstOrDefaultAsync(model => model.Id == id);
     }
 
+    public async Task<List<RentEntity>> GetByUserId(Guid userId)
+    {
+        return await context.Rents.AsNoTracking()
+            .Where(model => model.UserId == userId).ToListAsync();
+    }
+
     public async Task<int> UpdateAsync(Guid id, RentEntity rentEntity)
     {
        return await context.Rents

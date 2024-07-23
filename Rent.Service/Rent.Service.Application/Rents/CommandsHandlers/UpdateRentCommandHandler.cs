@@ -17,7 +17,6 @@ public class UpdateRentCommandHandler(
             Id = request.id,
             StartRentDate = request.StartRentDate,
             EndRentDate = request.EndRentDate,
-            ThingId = request.ThingId,
             UserId = request.UserId
         };
 

@@ -16,6 +16,13 @@ public class RentController : ApiControllerBase
         return rents;
     }
 
+    [HttpGet("userId={userId}")]
+    public async Task<List<RentModel>> GetByUserIdAsync(Guid userId)
+    {
+        var rents = await Mediator.Send(new GetRentByUserIdQuery(userId));
+        return rents;
+    }
+
     [HttpGet("{id}")]
     public async Task<RentModel> GetByIdAsync(Guid id)
     {
