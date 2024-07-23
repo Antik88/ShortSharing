@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Rent.Service.Application.Common.Constants;
 using Rent.Service.Application.Rents.Commands;
 
 namespace Rent.Service.Application.Rents.Validators;
@@ -8,22 +9,22 @@ public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
     public CreateRentCommandValidator()
     {
         RuleFor(v => v.StartRentDate)
-            .NotEmpty().WithMessage("Start date is required")
-            .Must(BeAValidDate).WithMessage("Start date must be a valid date")
-            .Must(BeInFuture).WithMessage("Start date must be in the future");
+            .NotEmpty().WithMessage(ValidationMessages.StartDateRequired)
+            .Must(BeAValidDate).WithMessage(ValidationMessages.StartDateInvalid)
+            .Must(BeInFuture).WithMessage(ValidationMessages.StartDateInFuture);
 
         RuleFor(v => v.EndRentDate)
-            .NotEmpty().WithMessage("End date is required")
-            .Must(BeAValidDate).WithMessage("End date must be a valid date")
-            .GreaterThan(v => v.StartRentDate).WithMessage("End date must be after the start date");
+            .NotEmpty().WithMessage(ValidationMessages.EndDateRequired)
+            .Must(BeAValidDate).WithMessage(ValidationMessages.EndDateInvalid)
+            .GreaterThan(v => v.StartRentDate).WithMessage(ValidationMessages.EndDateAfterStartDate);
 
         RuleFor(v => v.ThingId)
-            .NotEmpty().WithMessage("Thing ID is required")
-            .Must(BeAValidGuid).WithMessage("Thing ID must be a valid GUID");
+            .NotEmpty().WithMessage(ValidationMessages.ThingIdRequired)
+            .Must(BeAValidGuid).WithMessage(ValidationMessages.ThingIdInvalid);
 
         RuleFor(v => v.UserId)
-            .NotEmpty().WithMessage("User ID is required")
-            .Must(BeAValidGuid).WithMessage("User ID must be a valid GUID");
+            .NotEmpty().WithMessage(ValidationMessages.UserIdRequired)
+            .Must(BeAValidGuid).WithMessage(ValidationMessages.UserIdInvalid);
     }
 
     private bool BeAValidDate(DateTime date)
