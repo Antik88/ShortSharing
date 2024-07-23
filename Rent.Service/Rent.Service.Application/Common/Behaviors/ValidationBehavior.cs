@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Rent.Service.Application.Common.Exceptions;
 
 namespace Rent.Service.Application.Common.Behaviors;
 
@@ -13,23 +14,25 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     }
 
     public async Task<TResponse> Handle(TRequest request,
-        RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (_validators.Any())
         {
             var context = new ValidationContext<TRequest>(request);
 
-            var validationResults = await Task.WhenAll(
-                _validators.Select(v => 
-                    v.ValidateAsync(context, cancellationToken)));
+            var validationTasks = _validators
+                .Select(v => v.ValidateAsync(context, cancellationToken));
+
+            var validationResults = await Task.WhenAll(validationTasks);
 
             var failures = validationResults
-                .Where(x => x.Errors.Any())
-                .SelectMany(r => r.Errors)
+                .SelectMany(result => result.Errors)
+                .Select(v => v.ErrorMessage)
+                .Where(v => v != null)
                 .ToList();
 
             if (failures.Any())
-                throw new ValidationException("validation error", failures);
+                throw new InvalidRequestException(failures);
         }
         return await next();
     }

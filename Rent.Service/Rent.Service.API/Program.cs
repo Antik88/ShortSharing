@@ -1,3 +1,4 @@
+using Rent.Service.API.Middleware;
 using Rent.Service.Application;
 using Rent.Service.Infrastructure;
 
@@ -23,6 +24,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.UseHttpsRedirection();
 
