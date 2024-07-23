@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rent.Service.Application.Rents.Commands.CreateRent;
-using Rent.Service.Application.Rents.Commands.DeleteRent;
-using Rent.Service.Application.Rents.Commands.UpdateRent;
+using Rent.Service.Application.Rents.Commands;
 using Rent.Service.Application.Rents.Queries.GetRentById;
 using Rent.Service.Application.Rents.Queries.GetRents;
 
@@ -26,7 +24,7 @@ public class RentController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<RentModel> CreateRent(CreateRent createRentCommand)
+    public async Task<RentModel> CreateRent(CreateRentCommand createRentCommand)
     {
         var createRent = await Mediator.Send(createRentCommand);
 

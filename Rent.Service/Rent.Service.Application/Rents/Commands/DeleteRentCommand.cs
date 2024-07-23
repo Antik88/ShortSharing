@@ -1,7 +1,7 @@
 ﻿
 using MediatR;
 
-namespace Rent.Service.Application.Rents.Commands.DeleteRent;
+namespace Rent.Service.Application.Rents.Commands;
 
 public class DeleteRentCommand : IRequest<int>
 {

@@ -1,10 +1,10 @@
 ﻿using MediatR;
+using Rent.Service.Application.Rents.Queries.GetRents;
 
-namespace Rent.Service.Application.Rents.Commands.UpdateRent;
+namespace Rent.Service.Application.Rents.Commands;
 
-public class UpdateRentCommand : IRequest<int>
+public class CreateRentCommand : IRequest<RentModel>
 {
-    public Guid id { get; set; }
     public DateTime StartRentDate { get; set; }
     public DateTime EndRentDate { get; set; }
     public Guid ThingId { get; set; }

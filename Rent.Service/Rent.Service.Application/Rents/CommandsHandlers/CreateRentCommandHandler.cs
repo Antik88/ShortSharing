@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using MediatR;
+using Rent.Service.Application.Rents.Commands;
 using Rent.Service.Application.Rents.Queries.GetRents;
 using Rent.Service.Domain.Entity;
 using Rent.Service.Domain.Repository;
 
-namespace Rent.Service.Application.Rents.Commands.CreateRent;
+namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class CreateRentCommandHandler(
     IRentRepository rentRepository,
-    IMapper mapper) : IRequestHandler<CreateRent, RentModel>
+    IMapper mapper) : IRequestHandler<CreateRentCommand, RentModel>
 {
-    public async Task<RentModel> Handle(CreateRent request, CancellationToken cancellationToken)
+    public async Task<RentModel> Handle(CreateRentCommand request, CancellationToken cancellationToken)
     {
         var rentEntity = new RentEntity()
         {

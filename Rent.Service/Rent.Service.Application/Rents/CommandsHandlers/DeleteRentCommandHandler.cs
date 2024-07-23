@@ -1,9 +1,10 @@
 ﻿
 using AutoMapper;
 using MediatR;
+using Rent.Service.Application.Rents.Commands;
 using Rent.Service.Domain.Repository;
 
-namespace Rent.Service.Application.Rents.Commands.DeleteRent;
+namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class DeleteRentCommandHandler(
     IRentRepository rentRepository,

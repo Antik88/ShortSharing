@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Application", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Infrastructure", "Rent.Service.Infrastructure\Rent.Service.Infrastructure.csproj", "{79F3C3C6-46D2-458E-8A24-BB91920E7688}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0D44E0BB-D64B-4A18-97F8-7F0019D28741}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
