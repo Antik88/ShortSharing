@@ -2,7 +2,7 @@
 using AutoMapper;
 using MediatR;
 using Rent.Service.Application.Rents.Commands;
-using Rent.Service.Domain.Repository;
+using Rent.Service.Application.Abstractions;
 
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 

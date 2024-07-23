@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Rent.Service.Domain.Repository;
+using Rent.Service.Application.Abstractions;
 using Rent.Service.Infrastructure.Consts;
 using Rent.Service.Infrastructure.Data;
 using Rent.Service.Infrastructure.Repository;

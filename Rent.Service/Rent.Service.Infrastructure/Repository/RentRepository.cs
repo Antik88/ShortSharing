@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rent.Service.Domain.Entity;
-using Rent.Service.Domain.Repository;
+using Rent.Service.Application.Abstractions;
 using Rent.Service.Infrastructure.Data;
 
 namespace Rent.Service.Infrastructure.Repository;

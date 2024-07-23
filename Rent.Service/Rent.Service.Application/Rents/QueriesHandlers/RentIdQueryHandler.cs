@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Rent.Service.Application.Abstractions;
 using Rent.Service.Application.Model;
 using Rent.Service.Application.Rents.Queries;
-using Rent.Service.Domain.Repository;
 
 namespace Rent.Service.Application.Rents.QueriesHandlers;
 

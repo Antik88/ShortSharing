@@ -1,8 +1,8 @@
 ﻿using Rent.Service.Domain.Entity;
 
-namespace Rent.Service.Domain.Repository;
+namespace Rent.Service.Application.Abstractions;
 
-public interface IRentRepository 
+public interface IRentRepository
 {
     Task<List<RentEntity>> GetAllRentsAsync();
     Task<RentEntity> GetByIdAsync(Guid id);

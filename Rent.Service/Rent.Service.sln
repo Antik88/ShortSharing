@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.API", "Rent.Service.API\Rent.Service.API.csproj", "{D5A39BA9-B8D9-4A08-910C-378C477FA5EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rent.Service.API", "Rent.Service.API\Rent.Service.API.csproj", "{D5A39BA9-B8D9-4A08-910C-378C477FA5EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Domain", "Rent.Service.Domain\Rent.Service.Domain.csproj", "{1CF459DE-87F8-4C07-AFE0-62DCF46D7810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rent.Service.Domain", "Rent.Service.Domain\Rent.Service.Domain.csproj", "{1CF459DE-87F8-4C07-AFE0-62DCF46D7810}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Application", "Rent.Service.Application\Rent.Service.Application.csproj", "{8D2C922A-5B0A-40A6-BFE0-28B3C736FD4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rent.Service.Application", "Rent.Service.Application\Rent.Service.Application.csproj", "{8D2C922A-5B0A-40A6-BFE0-28B3C736FD4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rent.Service.Infrastructure", "Rent.Service.Infrastructure\Rent.Service.Infrastructure.csproj", "{79F3C3C6-46D2-458E-8A24-BB91920E7688}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rent.Service.Infrastructure", "Rent.Service.Infrastructure\Rent.Service.Infrastructure.csproj", "{79F3C3C6-46D2-458E-8A24-BB91920E7688}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0D44E0BB-D64B-4A18-97F8-7F0019D28741}"
 EndProject
@@ -38,6 +38,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1CF459DE-87F8-4C07-AFE0-62DCF46D7810} = {0D44E0BB-D64B-4A18-97F8-7F0019D28741}
+		{8D2C922A-5B0A-40A6-BFE0-28B3C736FD4B} = {0D44E0BB-D64B-4A18-97F8-7F0019D28741}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8867AEF7-D3B1-4B36-BB2C-F76BB1F95BBD}

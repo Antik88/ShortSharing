@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Rent.Service.Application.Abstractions;
 using System.Reflection;
 
 namespace Rent.Service.Application;
