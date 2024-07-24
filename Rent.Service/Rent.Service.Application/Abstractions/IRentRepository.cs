@@ -13,4 +13,6 @@ public interface IRentRepository
     Task<int> DeleteAsync(Guid id);
     Task<IEnumerable<RentEntity>> GetRentsForThingAsync(Guid thingId);
     Task<bool> IsAvailableAsync(Guid thingId, DateTime startRentDate, DateTime endRentDate);
+    Task<RentEntity> ExtendRentAsync(Guid rentId, DateTime newEndRentDate);
+    Task<bool> IsAvailableForExtensionAsync(Guid rentId, DateTime newEndRentDate);
 }

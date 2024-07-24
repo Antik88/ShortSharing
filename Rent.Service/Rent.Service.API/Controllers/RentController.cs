@@ -44,6 +44,12 @@ public class RentController : ApiControllerBase
         return  Mediator.Send(updateRentCommand);
     }
 
+    [HttpPatch("extend/{id}")]
+    public Task<RentModel> ExtendRent(ExtendRentCommand extendRentCommand)
+    {
+        return Mediator.Send(extendRentCommand);
+    }
+
     [HttpDelete("{id}")]
     public async Task<int> DeleteByIdAsync(Guid id)
     {

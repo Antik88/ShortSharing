@@ -65,4 +65,31 @@ public class RentRepository(RentDbContext context) : IRentRepository
         return existingRents.All(rent =>
             rent.EndRentDate <= startRentDate || rent.StartRentDate >= endRentDate);
     }
+
+    public async Task<RentEntity> ExtendRentAsync(Guid rentId, DateTime newEndRentDate)
+    {
+        var rentEntity = await context.Rents.FindAsync(rentId);
+
+        if (rentEntity is null)
+            throw new KeyNotFoundException("Rent not found.");
+
+        rentEntity.EndRentDate = newEndRentDate;
+        context.Rents.Update(rentEntity);
+        await context.SaveChangesAsync();
+        return rentEntity;
+    }
+
+    public async Task<bool> IsAvailableForExtensionAsync(Guid rentId, DateTime newEndRentDate)
+    {
+        var rentEntity = await context.Rents.FindAsync(rentId);
+
+        var thingId = rentEntity.ThingId;
+
+        var overlappingRents = await context.Rents
+            .Where(r => r.ThingId == thingId && r.Id != rentId 
+                && r.StartRentDate < newEndRentDate && r.EndRentDate > rentEntity.EndRentDate)
+            .ToListAsync();
+
+        return !overlappingRents.Any();
+    }
 }
