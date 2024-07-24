@@ -1,6 +1,7 @@
 using Rent.Service.API.Middleware;
 using Rent.Service.Application;
 using Rent.Service.Infrastructure;
+using Serilog;
 
 namespace Rent.Service.API;
 
@@ -16,6 +17,9 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Host.UseSerilog((context, configuration) => 
+            configuration.WriteTo.Console().MinimumLevel.Information());
 
         var app = builder.Build();
 
