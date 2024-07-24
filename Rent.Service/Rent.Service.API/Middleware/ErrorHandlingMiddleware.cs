@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Rent.Service.API.Dtos;
+﻿using Rent.Service.API.Dtos;
 using Rent.Service.Application.Common.Exceptions;
 using System.Net;
-using System.Text.Json;
 
 namespace Rent.Service.API.Middleware;
 

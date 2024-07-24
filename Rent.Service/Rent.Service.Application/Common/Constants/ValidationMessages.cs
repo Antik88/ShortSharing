@@ -1,6 +1,6 @@
 ﻿namespace Rent.Service.Application.Common.Constants;
 
-public class ValidationMessages
+public static class ValidationMessages
 {
     public const string StartDateRequired = "Start date is required";
     public const string StartDateInvalid = "Start date must be a valid date";
@@ -12,4 +12,5 @@ public class ValidationMessages
     public const string ThingIdInvalid = "Thing ID must be a valid GUID";
     public const string UserIdRequired = "User ID is required";
     public const string UserIdInvalid = "User ID must be a valid GUID";
+    public const string NotAvailableToRent = "The thing is not available for rent in the specified dates";
 }

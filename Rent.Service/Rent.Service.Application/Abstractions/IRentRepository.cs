@@ -1,4 +1,5 @@
-﻿using Rent.Service.Domain.Entity;
+﻿using Rent.Service.Application.Model;
+using Rent.Service.Domain.Entity;
 
 namespace Rent.Service.Application.Abstractions;
 
@@ -10,4 +11,6 @@ public interface IRentRepository
     Task<RentEntity> CreateAsync(RentEntity rentEntity);
     Task<int> UpdateAsync(Guid id, RentEntity rentEntity);
     Task<int> DeleteAsync(Guid id);
+    Task<IEnumerable<RentEntity>> GetRentsForThingAsync(Guid thingId);
+    Task<bool> IsAvailableAsync(Guid thingId, DateTime startRentDate, DateTime endRentDate);
 }

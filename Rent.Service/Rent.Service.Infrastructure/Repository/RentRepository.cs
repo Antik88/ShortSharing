@@ -40,6 +40,14 @@ public class RentRepository(RentDbContext context) : IRentRepository
             .Where(model => model.UserId == userId).ToListAsync();
     }
 
+    public async Task<IEnumerable<RentEntity>> GetRentsForThingAsync(Guid thingId)
+    {
+        return await context.Rents
+            .AsNoTracking()
+            .Where(rent => rent.ThingId == thingId)
+            .ToListAsync();
+    }
+
     public async Task<int> UpdateAsync(Guid id, RentEntity rentEntity)
     {
        return await context.Rents
@@ -48,5 +56,13 @@ public class RentRepository(RentDbContext context) : IRentRepository
                 .SetProperty(m => m.StartRentDate, rentEntity.StartRentDate)
                 .SetProperty(m => m.EndRentDate, rentEntity.EndRentDate)
             );
+    }
+
+    public async Task<bool> IsAvailableAsync(Guid thingId, DateTime startRentDate, DateTime endRentDate)
+    {
+        var existingRents = await GetRentsForThingAsync(thingId);
+
+        return existingRents.All(rent =>
+            rent.EndRentDate <= startRentDate || rent.StartRentDate >= endRentDate);
     }
 }

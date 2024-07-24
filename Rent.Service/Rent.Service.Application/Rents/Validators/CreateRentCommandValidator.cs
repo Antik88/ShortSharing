@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Rent.Service.Application.Abstractions;
 using Rent.Service.Application.Common.Constants;
 using Rent.Service.Application.Rents.Commands;
 
@@ -6,7 +7,7 @@ namespace Rent.Service.Application.Rents.Validators;
 
 public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
 {
-    public CreateRentCommandValidator()
+    public CreateRentCommandValidator(IRentRepository rentRepository)
     {
         RuleFor(v => v.StartRentDate)
             .NotEmpty().WithMessage(ValidationMessages.StartDateRequired)
@@ -25,6 +26,11 @@ public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
         RuleFor(v => v.UserId)
             .NotEmpty().WithMessage(ValidationMessages.UserIdRequired)
             .Must(BeAValidGuid).WithMessage(ValidationMessages.UserIdInvalid);
+
+        RuleFor(x => x)
+           .MustAsync(async (command, cancellationToken) =>
+               await rentRepository.IsAvailableAsync(command.ThingId, command.StartRentDate, command.EndRentDate))
+           .WithMessage(ValidationMessages.NotAvailableToRent);
     }
 
     private bool BeAValidDate(DateTime date)
