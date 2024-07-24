@@ -18,7 +18,11 @@ public static class ConfigureServices
                 DatabaseConstants.DbConnection));
         });
 
-        services.AddTransient<IRentRepository, RentRepository>();
+        services.AddTransient<IRentAvailabilityRepository, RentRepository>();
+        services.AddTransient<IRentExtensionRepository, RentRepository>();
+        services.AddTransient<IRentManagementRepository, RentRepository>();
+        services.AddTransient<IRentQueryRepository, RentRepository>();
+
         return services; 
     }
 }

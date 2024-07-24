@@ -7,7 +7,7 @@ namespace Rent.Service.Application.Rents.Validators;
 
 public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
 {
-    public CreateRentCommandValidator(IRentRepository rentRepository)
+    public CreateRentCommandValidator(IRentAvailabilityRepository rentRepository)
     {
         RuleFor(v => v.StartRentDate)
             .NotEmpty().WithMessage(ValidationMessages.StartDateRequired)

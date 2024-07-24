@@ -7,7 +7,7 @@ using Rent.Service.Domain.Entity;
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class UpdateRentCommandHandler(
-    IRentRepository rentRepository,
+    IRentManagementRepository rentRepository,
     IMapper mapper) : IRequestHandler<UpdateRentCommand, int>
 {
     public async Task<int> Handle(UpdateRentCommand request, CancellationToken cancellationToken)

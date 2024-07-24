@@ -5,7 +5,10 @@ using Rent.Service.Infrastructure.Data;
 
 namespace Rent.Service.Infrastructure.Repository;
 
-public class RentRepository(RentDbContext context) : IRentRepository
+public class RentRepository(RentDbContext context) : IRentManagementRepository,
+    IRentQueryRepository, 
+    IRentAvailabilityRepository, 
+    IRentExtensionRepository
 {
     public async Task<RentEntity> CreateAsync(RentEntity rentEntity)
     {

@@ -8,7 +8,7 @@ using Rent.Service.Application.Abstractions;
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class CreateRentCommandHandler(
-    IRentRepository rentRepository,
+    IRentManagementRepository rentRepository,
     IMapper mapper) : IRequestHandler<CreateRentCommand, RentModel>
 {
     public async Task<RentModel> Handle(CreateRentCommand request, CancellationToken cancellationToken)

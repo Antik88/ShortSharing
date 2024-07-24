@@ -5,7 +5,7 @@ using Rent.Service.Application.Rents.Commands;
 
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 
-public class ExtendRentCommandHandler(IRentRepository rentRepository) 
+public class ExtendRentCommandHandler(IRentExtensionRepository rentRepository) 
     : IRequestHandler<ExtendRentCommand, RentModel>
 {
     public async Task<RentModel> Handle(ExtendRentCommand request, CancellationToken cancellationToken)

@@ -7,8 +7,8 @@ namespace Rent.Service.Application.Rents.Validators;
 
 public class ExtendRentCommandValidator : AbstractValidator<ExtendRentCommand>
 {
-    private readonly IRentRepository _rentRepository;
-    public ExtendRentCommandValidator(IRentRepository rentRepository)
+    private readonly IRentAvailabilityRepository _rentRepository;
+    public ExtendRentCommandValidator(IRentAvailabilityRepository rentRepository)
     {
         _rentRepository = rentRepository;
 

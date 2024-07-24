@@ -7,7 +7,7 @@ using Rent.Service.Application.Rents.Queries;
 namespace Rent.Service.Application.Rents.QueriesHandlers;
 
 public class GetRentByUserIdQueryHandler(
-    IRentRepository rentRepository,
+    IRentQueryRepository rentRepository,
     IMapper mapper) : IRequestHandler<GetRentByUserIdQuery, List<RentModel>>
 {
     public async Task<List<RentModel>> Handle(GetRentByUserIdQuery request, CancellationToken cancellationToken)

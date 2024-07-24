@@ -7,7 +7,7 @@ using Rent.Service.Application.Abstractions;
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class DeleteRentCommandHandler(
-    IRentRepository rentRepository,
+    IRentManagementRepository rentRepository,
     IMapper mapper) : IRequestHandler<DeleteRentCommand, int>
 {
     public async Task<int> Handle(DeleteRentCommand request, CancellationToken cancellationToken)
