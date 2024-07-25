@@ -8,10 +8,10 @@ namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class DeleteRentCommandHandler(
     IRentManagementRepository rentRepository,
-    IMapper mapper) : IRequestHandler<DeleteRentCommand, int>
+    IMapper mapper) : IRequestHandler<DeleteRentCommand>
 {
-    public async Task<int> Handle(DeleteRentCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRentCommand request, CancellationToken cancellationToken)
     {
-        return await rentRepository.DeleteAsync(request.Id);
+        await rentRepository.DeleteAsync(request.Id);
     }
 }

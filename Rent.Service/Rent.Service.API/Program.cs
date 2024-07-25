@@ -1,3 +1,4 @@
+using Rent.Service.API.Mapping;
 using Rent.Service.API.Middleware;
 using Rent.Service.Application;
 using Rent.Service.Infrastructure;
@@ -13,6 +14,8 @@ public class Program
 
         builder.Services.AddApplicationServices();
         builder.Services.AddInfrastructureServices(builder.Configuration);
+
+        builder.Services.AddAutoMapper(typeof(ApiProfile));
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

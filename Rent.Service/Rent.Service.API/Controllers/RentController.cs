@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Rent.Service.Application.Model;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Rent.Service.API.Constants;
+using Rent.Service.API.Dtos;
 using Rent.Service.Application.Rents.Commands;
 using Rent.Service.Application.Rents.Queries;
 
@@ -7,52 +9,59 @@ namespace Rent.Service.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RentController : ApiControllerBase 
+public class RentController(IMapper mapper) : ApiControllerBase 
 {
     [HttpGet]
-    public async Task<List<RentModel>> GetAllAsync()
+    public async Task<List<RentDto>> GetAllAsync()
     {
         var rents = await Mediator.Send(new GetRentQuery());
-        return rents;
+
+        return mapper.Map<List<RentDto>>(rents);
     }
 
-    [HttpGet("userId={userId}")]
-    public async Task<List<RentModel>> GetByUserIdAsync(Guid userId)
+    [HttpGet(Routes.GetUserById)]
+    public async Task<List<RentDto>> GetByUserIdAsync(Guid userId)
     {
         var rents = await Mediator.Send(new GetRentByUserIdQuery(userId));
-        return rents;
+
+        return mapper.Map<List<RentDto>>(rents);
     }
 
-    [HttpGet("{id}")]
-    public async Task<RentModel> GetByIdAsync(Guid id)
+    [HttpGet(Routes.ById)]
+    public async Task<RentDto> GetByIdAsync(Guid id)
     {
         var rent = await Mediator.Send(new GetRentByIdQuery() { RentId =  id});
-        return rent;
+
+        return mapper.Map<RentDto>(rent);
     }
 
     [HttpPost]
-    public async Task<RentModel> CreateRent(CreateRentCommand createRentCommand)
+    public async Task<RentDto> CreateRent(CreateRentCommand createRentCommand)
     {
         var createRent = await Mediator.Send(createRentCommand);
 
-        return createRent;
+        return mapper.Map<RentDto>(createRent);
     }
 
-    [HttpPut("{id}")]
-    public Task<int> UpdateRent(UpdateRentCommand updateRentCommand)
+    [HttpPut]
+    public async Task<RentDto> UpdateRent(UpdateRentCommand updateRentCommand)
     {
-        return  Mediator.Send(updateRentCommand);
+        var result = await Mediator.Send(updateRentCommand);
+
+        return mapper.Map<RentDto>(result);  
     }
 
-    [HttpPatch("extend/{id}")]
-    public Task<RentModel> ExtendRent(ExtendRentCommand extendRentCommand)
+    [HttpPatch(Routes.ExtendRentById)]
+    public async Task<RentDto> ExtendRent(ExtendRentCommand extendRentCommand)
     {
-        return Mediator.Send(extendRentCommand);
+        var result = await Mediator.Send(extendRentCommand);
+
+        return mapper.Map<RentDto>(result);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<int> DeleteByIdAsync(Guid id)
+    [HttpDelete(Routes.ById)]
+    public async Task DeleteByIdAsync(Guid id)
     {
-        return await Mediator.Send(new DeleteRentCommand() { Id = id });
+        await Mediator.Send(new DeleteRentCommand() { Id = id });
     }
 }

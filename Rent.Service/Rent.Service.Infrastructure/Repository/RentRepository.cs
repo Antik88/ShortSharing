@@ -19,9 +19,9 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         return rentEntity;
     }
 
-    public async Task<int> DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        return await context.Rents
+        await context.Rents
            .Where(model => model.Id == id)
            .ExecuteDeleteAsync();
     }
@@ -51,14 +51,20 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
             .ToListAsync();
     }
 
-    public async Task<int> UpdateAsync(Guid id, RentEntity rentEntity)
+    public async Task<RentEntity> UpdateAsync(Guid id, DateTime startRentDate, DateTime endRentDate)
     {
-       return await context.Rents
+        await context.Rents
             .Where(model => model.Id == id)
             .ExecuteUpdateAsync(setters => setters
-                .SetProperty(m => m.StartRentDate, rentEntity.StartRentDate)
-                .SetProperty(m => m.EndRentDate, rentEntity.EndRentDate)
+                .SetProperty(m => m.StartRentDate, startRentDate)
+                .SetProperty(m => m.EndRentDate, endRentDate)
             );
+
+        var updatedEntity = await context.Rents
+            .Where(model => model.Id == id)
+            .FirstOrDefaultAsync();
+
+        return updatedEntity;
     }
 
     public async Task<bool> IsAvailableAsync(Guid thingId, DateTime startRentDate, DateTime endRentDate)

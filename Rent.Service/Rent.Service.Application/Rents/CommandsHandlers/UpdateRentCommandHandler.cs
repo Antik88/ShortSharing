@@ -1,25 +1,20 @@
 ﻿using AutoMapper;
 using MediatR;
 using Rent.Service.Application.Abstractions;
+using Rent.Service.Application.Model;
 using Rent.Service.Application.Rents.Commands;
-using Rent.Service.Domain.Entity;
 
 namespace Rent.Service.Application.Rents.CommandsHandlers;
 
 public class UpdateRentCommandHandler(
     IRentManagementRepository rentRepository,
-    IMapper mapper) : IRequestHandler<UpdateRentCommand, int>
+    IMapper mapper) : IRequestHandler<UpdateRentCommand, RentModel>
 {
-    public async Task<int> Handle(UpdateRentCommand request, CancellationToken cancellationToken)
+    public async Task<RentModel> Handle(UpdateRentCommand request, CancellationToken cancellationToken)
     {
-        var rentEntity = new RentEntity()
-        {
-            Id = request.id,
-            StartRentDate = request.StartRentDate,
-            EndRentDate = request.EndRentDate,
-            UserId = request.UserId
-        };
+        var result = await rentRepository.UpdateAsync(
+            request.Id, request.StartRentDate, request.EndRentDate);
 
-        return await rentRepository.UpdateAsync(request.id, rentEntity);
+        return mapper.Map<RentModel>(result);
     }
 }

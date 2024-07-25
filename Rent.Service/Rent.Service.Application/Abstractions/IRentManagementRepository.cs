@@ -1,10 +1,11 @@
-﻿using Rent.Service.Domain.Entity;
+﻿using MediatR;
+using Rent.Service.Domain.Entity;
 
 namespace Rent.Service.Application.Abstractions;
 
 public interface IRentManagementRepository
 {
     Task<RentEntity> CreateAsync(RentEntity rentEntity);
-    Task<int> UpdateAsync(Guid id, RentEntity rentEntity);
-    Task<int> DeleteAsync(Guid id);
+    Task<RentEntity> UpdateAsync(Guid id, DateTime startRentDate, DateTime endRentDate);
+    Task DeleteAsync(Guid id);
 }
