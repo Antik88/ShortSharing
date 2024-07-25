@@ -19,7 +19,7 @@ public class RentController(IMapper mapper) : ApiControllerBase
         return mapper.Map<List<RentDto>>(rents);
     }
 
-    [HttpGet(Routes.GetUserById)]
+    [HttpGet(Routes.GetRentByUserId)]
     public async Task<List<RentDto>> GetByUserIdAsync(Guid userId)
     {
         var rents = await Mediator.Send(new GetRentByUserIdQuery(userId));
