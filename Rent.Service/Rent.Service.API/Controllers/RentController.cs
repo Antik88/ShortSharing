@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rent.Service.API.Constants;
 using Rent.Service.API.Dtos;
@@ -9,7 +10,7 @@ namespace Rent.Service.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RentController(IMapper mapper) : ApiControllerBase 
+public class RentController(ISender mediator, IMapper mapper) : ApiControllerBase(mediator)
 {
     [HttpGet]
     public async Task<List<RentDto>> GetAllAsync()
