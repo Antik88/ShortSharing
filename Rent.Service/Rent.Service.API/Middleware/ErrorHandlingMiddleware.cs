@@ -12,14 +12,26 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         {
             await next(context);
         }
-        catch(InvalidRequestException ex)
+        catch (InvalidRequestException ex)
         {
-            var problemDetails = GetBadRequestProblemDetails(ex); 
+            var problemDetails = GetBadRequestProblemDetails(ex);
 
             var response = context.Response;
             response.ContentType = "application/json";
             response.StatusCode = (int)HttpStatusCode.BadRequest;
             await response.WriteAsJsonAsync(problemDetails);
+        }
+        catch (NotFoundException ex)
+        {
+            await HandleExceptionAsync(context, ex, HttpStatusCode.NotFound, "Resource not found");
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            await HandleExceptionAsync(context, ex, HttpStatusCode.Unauthorized, "Unauthorized access");
+        }
+        catch (Exception ex)
+        {
+            await HandleExceptionAsync(context, ex, HttpStatusCode.InternalServerError, "An unexpected error occurred");
         }
     }
 
@@ -28,5 +40,20 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         string traceId = Guid.NewGuid().ToString();
 
         return new ErrorDto(ex, traceId);
+    }
+
+    private Task HandleExceptionAsync(HttpContext context, Exception exception, HttpStatusCode statusCode, string message)
+    {
+        var problemDetails = new
+        {
+            Status = (int)statusCode,
+            Title = message,
+            Detail = exception.Message
+        };
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = (int)statusCode;
+
+        return context.Response.WriteAsJsonAsync(problemDetails);
     }
 }
