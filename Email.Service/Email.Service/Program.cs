@@ -1,9 +1,7 @@
+using Email.Service.BLL.Consumers;
 using Email.Service.BLL.DI;
 using Email.Service.Helper;
-using Email.Service.Interfaces;
-using Email.Service.Service;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Email.Service;
 
@@ -22,7 +20,7 @@ public class Program
             conf.SetKebabCaseEndpointNameFormatter();
             conf.SetInMemorySagaRepositoryProvider();
 
-            var asb = typeof(Program).Assembly;
+            var asb = typeof(RentConsumer).Assembly;
 
             conf.AddConsumers(asb);
             conf.AddSagaStateMachines(asb);
