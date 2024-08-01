@@ -21,15 +21,15 @@ public class CreateRentCommandHandler(
     IRentManagementRepository rentRepository,
     IMapper mapper,
     IRentNotification rentNotificationPublisher,
-    IServiceConnection serviceConnection,
+    IExternalServiceRequests serviceRequest,
     IConfiguration configuration) : IRequestHandler<CreateRentCommand, RentModel>
 {
 
     private readonly string? _catalogUrl = configuration
-        .GetConnectionString("CatalogueConnection");
+        .GetConnectionString("CatalogueBaseUrl");
 
     private readonly string? _userServiceUrl = configuration
-        .GetConnectionString("UserServiceConnection");
+        .GetConnectionString("UserServiceBaseUrl");
 
     public async Task<RentModel> Handle(CreateRentCommand request, CancellationToken cancellationToken)
     {
@@ -44,13 +44,13 @@ public class CreateRentCommandHandler(
         if (_catalogUrl == null || _userServiceUrl == null)
             throw new Exception();
 
-        var thingModel = await serviceConnection.GetFromServiceById<ThingModel>
+        var thingModel = await serviceRequest.GetFromServiceById<ThingModel>
             (request.ThingId, _catalogUrl, cancellationToken);
 
-        var tenantModel = await serviceConnection.GetFromServiceById<UserModel>
+        var tenantModel = await serviceRequest.GetFromServiceById<UserModel>
             (request.UserId, _userServiceUrl, cancellationToken);
 
-        var ownerModel = await serviceConnection.GetFromServiceById<UserModel>
+        var ownerModel = await serviceRequest.GetFromServiceById<UserModel>
             (request.UserId, _userServiceUrl, cancellationToken);
         //thingModel.OwnerId
 

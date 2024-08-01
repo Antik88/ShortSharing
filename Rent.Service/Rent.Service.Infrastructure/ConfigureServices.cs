@@ -26,7 +26,7 @@ public static class ConfigureServices
         services.AddTransient<IRentQueryRepository, RentRepository>();
 
         services.AddScoped<IRentNotification, RentNotificationPublisher>();
-        services.AddScoped<IServiceConnection, ServiceConnection>();
+        services.AddScoped<IExternalServiceRequests, ExternalServiceRequests>();
 
         return services; 
     }

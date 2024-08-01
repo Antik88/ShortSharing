@@ -5,7 +5,7 @@ using Rent.Service.Application.Abstractions;
 
 namespace Rent.Service.Infrastructure.Service;
 
-public class ServiceConnection(IHttpClientFactory httpClientFactory) : IServiceConnection
+public class ExternalServiceRequests(IHttpClientFactory httpClientFactory) : IExternalServiceRequests 
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
 
