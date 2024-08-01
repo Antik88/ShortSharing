@@ -15,4 +15,5 @@ public static class ValidationMessages
     public const string UserIdInvalid = "User ID must be a valid GUID";
     public const string NotAvailableToRent = "The thing is not available for rent in the specified dates";
     public const string NotAvailableToExtend = "The rental period cannot be extended due to conflicts with existing rentals.";
+    public const string ThingNotFound = "Item not found in the catalog";
 }

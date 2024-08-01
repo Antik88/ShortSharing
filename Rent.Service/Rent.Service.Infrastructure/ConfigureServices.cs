@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Rent.Service.Application.Abstractions;
+using Rent.Service.Application.Abstractions.Notification;
 using Rent.Service.Infrastructure.Consts;
 using Rent.Service.Infrastructure.Data;
 using Rent.Service.Infrastructure.Repository;
+using Rent.Service.Infrastructure.Service;
 
 namespace Rent.Service.Infrastructure;
 
@@ -22,6 +24,9 @@ public static class ConfigureServices
         services.AddTransient<IRentExtensionRepository, RentRepository>();
         services.AddTransient<IRentManagementRepository, RentRepository>();
         services.AddTransient<IRentQueryRepository, RentRepository>();
+
+        services.AddScoped<IRentNotification, RentNotificationPublisher>();
+        services.AddScoped<IServiceConnection, ServiceConnection>();
 
         return services; 
     }

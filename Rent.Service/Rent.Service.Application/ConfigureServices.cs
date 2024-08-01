@@ -12,6 +12,9 @@ public static class ConfigureServices
     {
         service.AddAutoMapper(Assembly.GetExecutingAssembly());
         service.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        service.AddHttpClient();
+
         service.AddMediatR(config =>
         {
             config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
