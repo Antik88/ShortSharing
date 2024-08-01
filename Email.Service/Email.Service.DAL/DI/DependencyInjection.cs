@@ -8,6 +8,6 @@ public static class DependencyInjection
 {
     public static void AddDataAccessDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<MongoDbService>();
+        services.AddSingleton<DbContext>();
     }
 }

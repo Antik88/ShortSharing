@@ -11,9 +11,9 @@ public class RentService : IRentService
 {
     private readonly IMongoCollection<RentEntity> _rents;
 
-    public RentService(MongoDbService mongoDbService)
+    public RentService(DbContext dbContext)
     {
-        _rents = mongoDbService.Database.GetCollection<RentEntity>("rents");
+        _rents = dbContext.Database.GetCollection<RentEntity>("rents");
     }
 
     public Task CreateRent(ConsumeContext<RentRecord> context)

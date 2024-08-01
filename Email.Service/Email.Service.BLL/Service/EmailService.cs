@@ -18,10 +18,10 @@ public class EmailService : IEmailSender
     private readonly EmailSettings _emailSettings;
     private readonly IMongoCollection<Template> _templates;
 
-    public EmailService(IOptions<EmailSettings> options, MongoDbService mongoDbService)
+    public EmailService(IOptions<EmailSettings> options, DbContext dbContext)
     {
         _emailSettings = options.Value;
-        _templates = mongoDbService.Database.GetCollection<Template>("templates");
+        _templates = dbContext.Database.GetCollection<Template>("templates");
     }
 
     public async Task SendEmail(MailRequest mailrequest)

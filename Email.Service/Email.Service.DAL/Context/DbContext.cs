@@ -3,12 +3,12 @@ using MongoDB.Driver;
 
 namespace Email.Service.DAL.Context;
 
-public class MongoDbService
+public class DbContext 
 {
     private readonly IConfiguration _configuration; 
     private readonly IMongoDatabase _database;
 
-    public MongoDbService(IConfiguration configuration)
+    public DbContext(IConfiguration configuration)
     {
         _configuration = configuration;
 
