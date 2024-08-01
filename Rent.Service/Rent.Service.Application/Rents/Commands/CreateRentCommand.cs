@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Rent.Service.Application.Abstractions;
 using Rent.Service.Application.Abstractions.Notification;
+using Rent.Service.Application.Common.Constants;
+using Rent.Service.Application.Common.Exceptions;
 using Rent.Service.Application.Model;
 using Rent.Service.Domain.Entity;
 using SharingMessages;
@@ -42,7 +44,7 @@ public class CreateRentCommandHandler(
         };
 
         if (_catalogUrl == null || _userServiceUrl == null)
-            throw new Exception();
+            throw new InvalidRequestException(new List<string> { ValidationMessages.ServiceUrlNotFound });
 
         var thingModel = await serviceRequest.GetFromServiceById<ThingModel>
             (request.ThingId, _catalogUrl, cancellationToken);
@@ -51,8 +53,7 @@ public class CreateRentCommandHandler(
             (request.UserId, _userServiceUrl, cancellationToken);
 
         var ownerModel = await serviceRequest.GetFromServiceById<UserModel>
-            (request.UserId, _userServiceUrl, cancellationToken);
-        //thingModel.OwnerId
+            (thingModel.OwnerId, _userServiceUrl, cancellationToken);
 
         var result = await rentRepository.CreateAsync(rentEntity);
 
