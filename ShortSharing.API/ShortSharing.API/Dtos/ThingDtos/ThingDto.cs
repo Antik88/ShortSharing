@@ -7,4 +7,5 @@ public record ThingDto
     public string? Description { get; set; }
     public double Price { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public Guid OwnerId { get; set; }
 }

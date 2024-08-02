@@ -11,6 +11,6 @@ namespace ShortSharing.DAL.Entities
         public DateTime UpdatedAt { get; set; }
         public required CategoryEntity Category { get; set; }
         public required TypeEntity Type { get; set; }
-        public required UserEntity Owner { get; set; }
+        public required Guid OwnerId { get; set; }
     }
 }
