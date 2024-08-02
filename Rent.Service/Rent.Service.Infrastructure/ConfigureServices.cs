@@ -30,6 +30,12 @@ public static class ConfigureServices
             client.BaseAddress = new Uri(configuration.GetConnectionString("UserServiceBaseUrl"));
         });
 
+        services.AddHttpClient<IUserServiceHttpClient, UserServiceHttpClient>(client =>
+        {
+           //Read about Polly library and add it to HttpClient
+            client.BaseAddress = new Uri(configuration.GetConnectionString("UserServiceBaseUrl"));
+        });
+
         services.AddTransient<IRentAvailabilityRepository, RentRepository>();
         services.AddTransient<IRentExtensionRepository, RentRepository>();
         services.AddTransient<IRentManagementRepository, RentRepository>();
