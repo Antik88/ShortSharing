@@ -20,6 +20,16 @@ public static class ConfigureServices
                 DatabaseConstants.DbConnection));
         });
 
+        services.AddHttpClient("CatalogClient", client =>
+        {
+            client.BaseAddress = new Uri(configuration.GetConnectionString("CatalogueBaseUrl"));
+        });
+
+        services.AddHttpClient("UserClient", client =>
+        {
+            client.BaseAddress = new Uri(configuration.GetConnectionString("UserServiceBaseUrl"));
+        });
+
         services.AddTransient<IRentAvailabilityRepository, RentRepository>();
         services.AddTransient<IRentExtensionRepository, RentRepository>();
         services.AddTransient<IRentManagementRepository, RentRepository>();

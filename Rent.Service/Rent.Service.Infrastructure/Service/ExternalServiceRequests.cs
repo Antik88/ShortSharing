@@ -2,18 +2,16 @@
 using Rent.Service.Application.Common.Exceptions;
 using Rent.Service.Application.Common.Constants;
 using Rent.Service.Application.Abstractions;
+using System.Net.Http;
 
 namespace Rent.Service.Infrastructure.Service;
 
 public class ExternalServiceRequests(IHttpClientFactory httpClientFactory) : IExternalServiceRequests 
 {
-    private readonly HttpClient _httpClient = httpClientFactory.CreateClient();
-
-    public async Task<T> GetFromServiceById<T>(Guid id, string serviceUlr, CancellationToken cancellationToken)
+    public async Task<T> GetFromServiceById<T>(Guid id, string clientName, CancellationToken cancellationToken)
     {
-        var url = serviceUlr + id;
-
-        var response = await _httpClient.GetAsync(url, cancellationToken);
+        var httpClient = httpClientFactory.CreateClient(clientName);
+        var response = await httpClient.GetAsync(id.ToString(), cancellationToken);
 
         if (!response.IsSuccessStatusCode)
             throw new InvalidRequestException(new List<string> { ValidationMessages.ThingNotFound });

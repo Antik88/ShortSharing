@@ -23,16 +23,8 @@ public class CreateRentCommandHandler(
     IRentManagementRepository rentRepository,
     IMapper mapper,
     IRentNotification rentNotificationPublisher,
-    IExternalServiceRequests serviceRequest,
-    IConfiguration configuration) : IRequestHandler<CreateRentCommand, RentModel>
+    IExternalServiceRequests serviceRequest) : IRequestHandler<CreateRentCommand, RentModel>
 {
-
-    private readonly string? _catalogUrl = configuration
-        .GetConnectionString("CatalogueBaseUrl");
-
-    private readonly string? _userServiceUrl = configuration
-        .GetConnectionString("UserServiceBaseUrl");
-
     public async Task<RentModel> Handle(CreateRentCommand request, CancellationToken cancellationToken)
     {
         var rentEntity = new RentEntity()
@@ -43,17 +35,14 @@ public class CreateRentCommandHandler(
             UserId = request.UserId,
         };
 
-        if (_catalogUrl == null || _userServiceUrl == null)
-            throw new InvalidRequestException(new List<string> { ValidationMessages.ServiceUrlNotFound });
+        var thingModel = await serviceRequest.GetFromServiceById<ThingModel>(
+             request.ThingId, "CatalogClient", cancellationToken);
 
-        var thingModel = await serviceRequest.GetFromServiceById<ThingModel>
-            (request.ThingId, _catalogUrl, cancellationToken);
+        var tenantModel = await serviceRequest.GetFromServiceById<UserModel>(
+            request.UserId, "UserClient", cancellationToken);
 
-        var tenantModel = await serviceRequest.GetFromServiceById<UserModel>
-            (request.UserId, _userServiceUrl, cancellationToken);
-
-        var ownerModel = await serviceRequest.GetFromServiceById<UserModel>
-            (thingModel.OwnerId, _userServiceUrl, cancellationToken);
+        var ownerModel = await serviceRequest.GetFromServiceById<UserModel>(
+            thingModel.OwnerId, "UserClient", cancellationToken);
 
         var result = await rentRepository.CreateAsync(rentEntity);
 
