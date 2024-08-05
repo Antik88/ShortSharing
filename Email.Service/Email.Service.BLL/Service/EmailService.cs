@@ -1,5 +1,6 @@
 ﻿using Email.Service.BLL.Models;
 using Email.Service.DAL.Context;
+using Email.Service.DAL.Enums;
 using Email.Service.Helper;
 using Email.Service.Interfaces;
 using Email.Service.Shared;
@@ -45,23 +46,42 @@ public class EmailService : IEmailSender
         smtp.Disconnect(true);
     }
 
-    public async Task<string> GetEmailBody(ConsumeContext<RentRecord> context)
+    public async Task<string> GetEmailBody(ConsumeContext<RentRecord> context, RentTemplateType templateType)
     {
-        var filter = Builders<Template>.Filter.Eq(t => t.Name, "rental_confirmation");
-
-        var templateDoc = await _templates.Find(filter).FirstOrDefaultAsync();
+        var templateDoc = await FetchTemplateAsync(templateType);
 
         if (templateDoc == null || string.IsNullOrEmpty(templateDoc.Body))
         {
-            throw new Exception("Template 'rental_confirmation' not found or its body is null");
+            throw new Exception($"Template '{templateType}' not found or its body is null");
         }
 
-        var body = templateDoc.Body
-            .Replace("[UserName]", context.Message.Tenant.Name ?? "Guest")
-            .Replace("[ItemName]", context.Message.Thing.Name ?? "Unknown Item")
-            .Replace("[StartDate]", context.Message.StartDate.ToString("yyyy-MM-dd"))
-            .Replace("[EndDate]", context.Message.EndDate.ToString("yyyy-MM-dd"));
+        var templateData = CreateTemplateData(context);
+        var renderedBody = RenderTemplate(templateDoc.Body, templateData);
 
-        return body;
+        return renderedBody;
+    }
+
+    private async Task<Template> FetchTemplateAsync(RentTemplateType templateType)
+    {
+        var filter = Builders<Template>.Filter.Eq(t => t.Type, templateType);
+        return await _templates.Find(filter).FirstOrDefaultAsync();
+    }
+
+    private object CreateTemplateData(ConsumeContext<RentRecord> context)
+    {
+        return new
+        {
+            UserName = context.Message.Tenant.Name ?? "Guest",
+            OwnerName = context.Message.Owner.Name ?? "Owner",
+            ItemName = context.Message.Thing.Name ?? "Unknown Item",
+            StartDate = context.Message.StartDate.ToString("yyyy-MM-dd"),
+            EndDate = context.Message.EndDate.ToString("yyyy-MM-dd")
+        };
+    }
+
+    private string RenderTemplate(string templateBody, object templateData)
+    {
+        var template = Scriban.Template.Parse(templateBody);
+        return template.Render(templateData, member => member.Name);
     }
 }

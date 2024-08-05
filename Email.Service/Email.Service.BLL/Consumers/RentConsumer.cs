@@ -1,4 +1,5 @@
 ﻿using Email.Service.BLL.Interfaces;
+using Email.Service.DAL.Enums;
 using Email.Service.Interfaces;
 using Email.Service.Shared;
 using MassTransit;
@@ -19,17 +20,26 @@ public class RentConsumer : IConsumer<RentRecord>
 
     public async Task Consume(ConsumeContext<RentRecord> context)
     {
-        var emailBody = await _emailSender.GetEmailBody(context);
+        await SendEmailAsync(context, context.Message.Tenant.Email,
+             RentTemplateType.rental_confirmation_tenant);
+
+        await SendEmailAsync(context, context.Message.Owner.Email,
+            RentTemplateType.rental_confirmation_owner);
+
+        await _rentService.CreateRent(context);
+    }
+
+    private async Task SendEmailAsync(ConsumeContext<RentRecord> context,
+        string toEmail, RentTemplateType type)
+    {
+        var emailBody = await _emailSender.GetEmailBody(context, type);
 
         var mailRequest = new MailRequest
         {
-            ToEmail = context.Message.Tenant.Email,
-            Subject = "Rental request",
+            ToEmail = toEmail,
             Body = emailBody
         };
 
         await _emailSender.SendEmail(mailRequest);
-
-        await _rentService.CreateRent(context);
     }
 }
