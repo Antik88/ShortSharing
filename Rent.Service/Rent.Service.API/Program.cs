@@ -1,3 +1,4 @@
+using MassTransit;
 using Rent.Service.API.Mapping;
 using Rent.Service.API.Middleware;
 using Rent.Service.Application;
@@ -23,6 +24,18 @@ public class Program
 
         builder.Host.UseSerilog((context, configuration) => 
             configuration.WriteTo.Console().MinimumLevel.Information());
+
+        builder.Services.AddMassTransit(configure =>
+        {
+            configure.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host("localhost", "/", h =>
+                {
+                    h.Username("rmuser");
+                    h.Password("rmpassword");
+                });
+            });
+        });
 
         var app = builder.Build();
 
