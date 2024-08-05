@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
+using Polly.Retry;
 using Rent.Service.Application;
 using Rent.Service.Application.Abstractions;
 using Rent.Service.Application.Abstractions.Notification;
