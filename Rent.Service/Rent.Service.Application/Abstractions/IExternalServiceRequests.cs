@@ -1,6 +1,6 @@
 ﻿namespace Rent.Service.Application.Abstractions;
 
-public interface IExternalServiceRequests
+public interface IExternalServiceRequests<THttpClient>
 {
-    public Task<T> GetFromServiceById<T>(Guid id, string serviceUrl, CancellationToken cancellationToken);
+    public Task<T> GetFromServiceById<T>(Guid id, CancellationToken cancellationToken);
 }
