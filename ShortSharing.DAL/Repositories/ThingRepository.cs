@@ -27,8 +27,7 @@ public class ThingRepository : IThingRepository
     {
         IQueryable<ThingEntity> query = _context.Things
             .Include(t => t.Category)
-            .Include(t => t.Type)
-            .Include(t => t.Owner);
+            .Include(t => t.Type);
 
         if (queryParameters.CategoryId.HasValue)
         {

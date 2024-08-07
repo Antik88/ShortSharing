@@ -23,10 +23,7 @@ public class Seeding
         var types = GetTypes(categories);
         db.Types.AddRange(types);
 
-        var users = GetUsers();
-        db.Users.AddRange(users);
-
-        var things = GetThings(categories, types, users);
+        var things = GetThings(categories, types);
         db.Things.AddRange(things);
 
         db.SaveChanges();
@@ -74,26 +71,7 @@ public class Seeding
             };
     }
 
-    private static List<UserEntity> GetUsers()
-    {
-        return new List<UserEntity>
-            {
-                new UserEntity
-                {
-                    Id = OwnerId,
-                    Name = "john_doe",
-                    Email = "john_doe@example.com"
-                },
-                new UserEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "jane_doe",
-                    Email = "jane_doe@example.com"
-                }
-            };
-    }
-
-    private static List<ThingEntity> GetThings(List<CategoryEntity> categories, List<TypeEntity> types, List<UserEntity> users)
+    private static List<ThingEntity> GetThings(List<CategoryEntity> categories, List<TypeEntity> types)
     {
         return new List<ThingEntity>
             {
@@ -107,7 +85,7 @@ public class Seeding
                     UpdatedAt = DateTime.Now,
                     Category = categories[0],
                     Type = types[0],
-                    Owner = users[0]
+                    OwnerId = new Guid(),
                 },
                 new ThingEntity
                 {
@@ -119,7 +97,7 @@ public class Seeding
                     UpdatedAt = DateTime.Now,
                     Category = categories[0],
                     Type = types[1],
-                    Owner = users[1]
+                    OwnerId = new Guid()
                 }
             };
     }
