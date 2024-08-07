@@ -4,13 +4,13 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Email.Service.BLL.Models;
 
-public class Template
+public class TemplateModel
 {
 
     [BsonElement("_id")]
     public ObjectId Id { get; set; }
 
-    [BsonElement("name")]
+    [BsonElement("type")]
     public RentTemplateType Type { get; set; }
 
     [BsonElement("body")]

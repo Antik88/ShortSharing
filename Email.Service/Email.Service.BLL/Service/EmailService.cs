@@ -1,6 +1,7 @@
-﻿using Email.Service.BLL.Models;
-using Email.Service.DAL.Context;
+﻿using AutoMapper;
+using Email.Service.BLL.Models;
 using Email.Service.DAL.Enums;
+using Email.Service.DAL.Repository;
 using Email.Service.Helper;
 using Email.Service.Interfaces;
 using Email.Service.Shared;
@@ -9,7 +10,6 @@ using MailKit.Security;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using MongoDB.Driver;
 using SharingMessages;
 
 namespace Email.Service.Service;
@@ -17,12 +17,15 @@ namespace Email.Service.Service;
 public class EmailService : IEmailSender
 {
     private readonly EmailSettings _emailSettings;
-    private readonly IMongoCollection<Template> _templates;
+    private readonly ITemplateRepository _templates;
+    private readonly IMapper _mapper;
 
-    public EmailService(IOptions<EmailSettings> options, DbContext dbContext)
+    public EmailService(IOptions<EmailSettings> options,
+        ITemplateRepository templateRepository, IMapper mapper)
     {
         _emailSettings = options.Value;
-        _templates = dbContext.Database.GetCollection<Template>("templates");
+        _templates = templateRepository;
+        _mapper = mapper;
     }
 
     public async Task SendEmail(MailRequest mailrequest)
@@ -61,10 +64,11 @@ public class EmailService : IEmailSender
         return renderedBody;
     }
 
-    private async Task<Template> FetchTemplateAsync(RentTemplateType templateType)
+    private async Task<TemplateModel> FetchTemplateAsync(RentTemplateType templateType)
     {
-        var filter = Builders<Template>.Filter.Eq(t => t.Type, templateType);
-        return await _templates.Find(filter).FirstOrDefaultAsync();
+        var result = await _templates.FetchTemplateAsync(templateType);
+
+        return _mapper.Map<TemplateModel>(result);
     }
 
     private object CreateTemplateData(ConsumeContext<RentRecord> context)

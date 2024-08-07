@@ -1,4 +1,5 @@
 ﻿using Email.Service.BLL.Interfaces;
+using Email.Service.BLL.Mappers;
 using Email.Service.BLL.Service;
 using Email.Service.DAL.DI;
 using Email.Service.Interfaces;
@@ -12,8 +13,10 @@ public static class DependencyInjection
 {
     public static void AddBusinessLogicDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddTransient<IEmailSender, EmailService>();
-        services.AddTransient<IRentService, RentService>();
+        services.AddScoped<IEmailSender, EmailService>();
+        services.AddScoped<IRentService, RentService>();
+
+        services.AddAutoMapper(typeof(BLLProfile).Assembly);
 
         services.AddDataAccessDependencies(configuration);
     }
