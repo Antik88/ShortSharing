@@ -1,4 +1,4 @@
-﻿namespace Email.Service.Helper;
+﻿namespace Email.Service.BLL.Settings;
 
 public class EmailSettings
 {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Email.Service.BLL.Models;
+using Email.Service.BLL.Settings;
 using Email.Service.DAL.Enums;
 using Email.Service.DAL.Repository;
-using Email.Service.Helper;
 using Email.Service.Interfaces;
 using Email.Service.Shared;
 using MailKit.Net.Smtp;
