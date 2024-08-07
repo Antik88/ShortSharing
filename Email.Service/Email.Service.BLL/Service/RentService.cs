@@ -1,6 +1,7 @@
 ﻿using Email.Service.BLL.Interfaces;
 using Email.Service.DAL.Context;
 using Email.Service.DAL.Entities;
+using Email.Service.DAL.Enums;
 using MassTransit;
 using MongoDB.Driver;
 using SharingMessages;
@@ -30,5 +31,14 @@ public class RentService : IRentService
         };
 
         return _rents.InsertOneAsync(entity);
+    }
+
+    public async Task<List<RentEntity>> GetByRentStatus(RentStatus status)
+    {
+        var filter = Builders<RentEntity>.Filter.Eq(t => t.Status, status);
+
+        var result = await _rents.Find(filter).ToListAsync();
+
+        return result; 
     }
 }
