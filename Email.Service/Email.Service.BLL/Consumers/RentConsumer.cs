@@ -21,10 +21,10 @@ public class RentConsumer : IConsumer<RentRecord>
     public async Task Consume(ConsumeContext<RentRecord> context)
     {
         await SendEmailAsync(context, context.Message.Tenant.Email,
-             RentTemplateType.rental_confirmation_tenant);
+             RentTemplateType.RentalConfirmationTenant);
 
         await SendEmailAsync(context, context.Message.Owner.Email,
-            RentTemplateType.rental_confirmation_owner);
+            RentTemplateType.RentalConfirmationOwner);
 
         await _rentService.CreateRent(context);
     }

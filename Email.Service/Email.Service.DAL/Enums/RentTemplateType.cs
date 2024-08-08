@@ -2,6 +2,6 @@
 
 public enum RentTemplateType
 {
-    rental_confirmation_tenant = 0,
-    rental_confirmation_owner = 1,
+    RentalConfirmationTenant = 0,
+    RentalConfirmationOwner = 1,
 }
