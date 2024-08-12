@@ -9,7 +9,6 @@ public class UserApiProfile : Profile
     public UserApiProfile()
     {
         CreateMap<UserModel, UserDto> ().ReverseMap();
-        CreateMap<UserResponseDto, UserModel> ().ReverseMap();
         CreateMap<UserModel, CreateUserDto>().ReverseMap();
     }
 }

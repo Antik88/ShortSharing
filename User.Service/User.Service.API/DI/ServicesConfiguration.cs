@@ -1,8 +1,8 @@
-﻿using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using User.Service.API.Extensions;
 using User.Service.API.Mappers;
 using User.Service.BLL.DI;
+using Microsoft.IdentityModel.Tokens;
 
 namespace User.Service.API.DI;
 
@@ -33,6 +33,11 @@ public static class ServicesConfiguration
         {
             options.Authority = $"https://{configuration["Auth0:Domain"]}/";
             options.Audience = configuration["Auth0:Audience"];
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                RoleClaimType = "user/roles"
+            };
         });
     }
 }
