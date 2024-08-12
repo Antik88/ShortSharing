@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using User.Service.DLL.Context;
 using User.Service.DLL.Entities;
 using User.Service.DLL.Repositories.Interfaces;
@@ -12,8 +10,6 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     public async Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
-        userEntity.Password = BCrypt.Net.BCrypt.HashPassword(userEntity.Password);
-
         await context.AddAsync(userEntity, cancellationToken);
 
         await context.SaveChangesAsync();

@@ -26,7 +26,10 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        // Ensure authentication and authorization middleware are included in the pipeline
+        app.UseCors(builder =>
+              builder.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader().AllowAnyMethod());
+
         app.UseAuthentication();
         app.UseAuthorization();
 
