@@ -6,5 +6,5 @@ public class UserDto
     public string? AuthId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string UserPicture { get; set; } = string.Empty;
+    public string UserPictureUrl { get; set; } = string.Empty;
 };

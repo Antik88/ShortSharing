@@ -6,5 +6,5 @@ public class UserEntity
     public string AuthId { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
-    public string? UserPicture { get; set; }
+    public string? UserPictureUrl { get; set; }
 }
