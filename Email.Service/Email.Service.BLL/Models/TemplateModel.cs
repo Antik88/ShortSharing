@@ -6,7 +6,6 @@ namespace Email.Service.BLL.Models;
 
 public class TemplateModel
 {
-
     [BsonElement("_id")]
     public ObjectId Id { get; set; }
 

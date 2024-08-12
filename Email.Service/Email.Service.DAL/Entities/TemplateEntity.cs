@@ -6,7 +6,6 @@ namespace Email.Service.DAL.Entities;
 
 public class TemplateEntity
 {
-
     [BsonElement("_id")]
     public ObjectId Id { get; set; }
 

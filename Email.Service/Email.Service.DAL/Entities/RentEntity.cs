@@ -32,5 +32,5 @@ public class RentEntity
     public string TenantName { get; set; } = string.Empty;
 
     [BsonElement("status")]
-    public RentStatus Status { get; set; } = RentStatus.Pending;
+    public RentStatus Status { get; set; }
 }
