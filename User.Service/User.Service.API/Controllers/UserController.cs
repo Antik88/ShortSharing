@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using User.Service.API.Constants;
 using User.Service.API.Dtos;
 using User.Service.BLL.Models;
 using User.Service.BLL.Service.Interfaces;
@@ -28,7 +29,7 @@ public class UserController(
         return newUserDto;
     }
 
-    [Authorize (Roles = "Admin")]
+    [Authorize (Roles = Roles.Admin)]
     [HttpGet("/getRange")]
     public async Task<PageResult<UserDto>> GetRangeAsync(
       [FromQuery] Query query,
@@ -44,7 +45,7 @@ public class UserController(
         };
     }
 
-    [Authorize (Roles = "User")]
+    [Authorize (Roles = Roles.User)]
     [HttpGet("{id}")]
     public async Task<UserDto> GetById(
         [FromRoute] Guid id,
@@ -64,14 +65,14 @@ public class UserController(
 
     [Authorize]
     [HttpPatch("{id}")]
-    public async Task<CreateUserDto> PatchById(
+    public async Task<UpdateUserDto> PatchById(
         [FromRoute] Guid id,
-        [FromBody] CreateUserDto userDto,
+        [FromBody] UpdateUserDto userDto,
         CancellationToken cancellationToken)
     {
         var result = await userService.UpdateAsync(id,
             mapper.Map<UserModel>(userDto), cancellationToken);
 
-        return mapper.Map<CreateUserDto>(result);
+        return mapper.Map<UpdateUserDto>(result);
     }
 }
