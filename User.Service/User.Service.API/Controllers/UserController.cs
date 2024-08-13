@@ -11,11 +11,13 @@ namespace User.Service.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = Roles.User)]
 public class UserController(
     IMapper mapper,
     IUserService userService) : ControllerBase
 {
     [HttpPost]
+    [AllowAnonymous]
     public async Task<UserDto> CreateUserAsync(
         [FromBody] UserDto createUserDto,
         CancellationToken cancellationToken)
@@ -45,7 +47,6 @@ public class UserController(
         };
     }
 
-    [Authorize (Roles = Roles.User)]
     [HttpGet("{id}")]
     public async Task<UserDto> GetById(
         [FromRoute] Guid id,
@@ -56,14 +57,12 @@ public class UserController(
         return mapper.Map<UserDto>(user);
     }
 
-    [Authorize]
     [HttpDelete("{id}")]
     public Task DeleteById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         return userService.Delete(id, cancellationToken);
     }
 
-    [Authorize]
     [HttpPatch("{id}")]
     public async Task<UpdateUserDto> PatchById(
         [FromRoute] Guid id,
