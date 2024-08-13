@@ -32,7 +32,6 @@ public static class ConfigureServices
 
         service.ConfigureOptions<RentsBackgroundJobSetUp>();
 
-
         service.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 
         return service;
