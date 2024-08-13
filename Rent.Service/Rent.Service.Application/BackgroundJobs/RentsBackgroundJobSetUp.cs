@@ -15,6 +15,6 @@ public class RentsBackgroundJobSetUp : IConfigureOptions<QuartzOptions>
                 trigger
                     .ForJob(jobKey)
                     .WithSimpleSchedule(schedule =>
-                        schedule.WithIntervalInSeconds(5).RepeatForever()));
+                        schedule.WithIntervalInHours(5).RepeatForever()));
     }
 }

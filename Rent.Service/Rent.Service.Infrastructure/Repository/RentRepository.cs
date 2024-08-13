@@ -125,13 +125,16 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
     public async Task<bool> IsStatusChanged(RentEntity rent)
     {
         bool statusChanged = false;
+        var currentDate = DateTime.UtcNow.Date;
 
-        if (rent.StartRentDate.Date <= DateTime.UtcNow.Date)
+        if (rent.StartRentDate.Date <= currentDate 
+            && rent.EndRentDate.Date >= currentDate
+            && rent.Status != RentStatus.Active)
         {
             await ChangeStatus(rent.Id, RentStatus.Active);
             statusChanged = true;
         }
-        else if (rent.StartRentDate.Date < DateTime.UtcNow.Date)
+        else if (rent.EndRentDate.Date < currentDate)
         {
             await ChangeStatus(rent.Id, RentStatus.Expired);
             statusChanged = true;
@@ -139,6 +142,7 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
 
         return statusChanged;
     }
+
 
     private async Task<RentEntity> ChangeStatus(Guid id, RentStatus status)
     {
