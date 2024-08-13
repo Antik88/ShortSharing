@@ -12,6 +12,5 @@ public static class DependencyInjection
         services.AddSingleton<DbContext>();
 
         services.AddScoped<ITemplateRepository, TemplateRepository>();
-        services.AddScoped<IRentRepository, RentRepository>();
     }
 }

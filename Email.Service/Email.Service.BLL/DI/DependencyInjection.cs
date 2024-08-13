@@ -1,7 +1,7 @@
 ﻿using Email.Service.BLL.Consumers;
+using Email.Service.BLL.Handlers;
 using Email.Service.BLL.Interfaces;
 using Email.Service.BLL.Mappers;
-using Email.Service.BLL.Service;
 using Email.Service.BLL.Settings;
 using Email.Service.DAL.DI;
 using Email.Service.Interfaces;
@@ -19,7 +19,11 @@ public static class DependencyInjection
     public static void AddBusinessLogicDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IEmailSender, EmailService>();
-        services.AddScoped<IRentService, RentService>();
+
+        services.AddScoped<NewRentMessageHandler>();
+        services.AddScoped<StatusChangeMessageHandler>();
+
+        services.AddScoped<IMessageHandlerFactory, MessageHandlerFactory>();
 
         services.AddAutoMapper(typeof(BLLProfile).Assembly);
 

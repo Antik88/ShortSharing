@@ -3,7 +3,7 @@ using SharingMessages;
 
 namespace Email.Service.BLL.Interfaces;
 
-public interface IRentService
+public interface IMessageHandler
 {
-    Task CreateRent(ConsumeContext<RentRecord> context);
+    Task Handle(ConsumeContext<RentRecord> context);
 }
