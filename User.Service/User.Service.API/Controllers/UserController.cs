@@ -47,6 +47,7 @@ public class UserController(
         };
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<UserDto> GetById(
         [FromRoute] Guid id,
