@@ -2,16 +2,21 @@
 using Rent.Service.Domain.Entity;
 using Rent.Service.Application.Abstractions;
 using Rent.Service.Infrastructure.Data;
+using Rent.Service.Domain.Enums;
 
 namespace Rent.Service.Infrastructure.Repository;
 
 public class RentRepository(RentDbContext context) : IRentManagementRepository,
-    IRentQueryRepository, 
+    IRentQueryRepository,
     IRentAvailabilityRepository, 
-    IRentExtensionRepository
+    IRentExtensionRepository,
+    IRentStatusChanger
 {
     public async Task<RentEntity> CreateAsync(RentEntity rentEntity)
     {
+        if(rentEntity.StartRentDate.Date == DateTime.Now.Date)
+            rentEntity.Status = RentStatus.Active;
+
         await context.Rents.AddAsync(rentEntity);
 
         await context.SaveChangesAsync();
@@ -24,6 +29,8 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         await context.Rents
            .Where(model => model.Id == id)
            .ExecuteDeleteAsync();
+
+        await Task.CompletedTask;
     }
 
     public Task<List<RentEntity>> GetAllRentsAsync()
@@ -33,14 +40,18 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
 
     public async Task<RentEntity> GetByIdAsync(Guid id)
     {
-        return await context.Rents.AsNoTracking()
+        var result = await context.Rents.AsNoTracking()
             .FirstOrDefaultAsync(model => model.Id == id);
+
+        return result;
     }
 
     public async Task<List<RentEntity>> GetByUserId(Guid userId)
     {
-        return await context.Rents.AsNoTracking()
-            .Where(model => model.UserId == userId).ToListAsync();
+        var result = await context.Rents.AsNoTracking()
+            .Where(model => model.TenantId == userId).ToListAsync();
+
+        return result;
     }
 
     public async Task<IEnumerable<RentEntity>> GetRentsForThingAsync(Guid thingId)
@@ -100,5 +111,43 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
             .ToListAsync();
 
         return !overlappingRents.Any();
+    }
+
+    public async Task<List<RentEntity>> GetNotExpiredRents()
+    {
+        var rents = await context.Rents
+            .Where(rent => rent.Status == RentStatus.Pending || rent.Status == RentStatus.Active)
+            .ToListAsync();
+
+        return rents;
+    }
+
+    public async Task<bool> IsStatusChanged(RentEntity rent)
+    {
+        bool statusChanged = false;
+
+        if (rent.StartRentDate.Date <= DateTime.UtcNow.Date)
+        {
+            await ChangeStatus(rent.Id, RentStatus.Active);
+            statusChanged = true;
+        }
+        else if (rent.StartRentDate.Date < DateTime.UtcNow.Date)
+        {
+            await ChangeStatus(rent.Id, RentStatus.Expired);
+            statusChanged = true;
+        }
+
+        return statusChanged;
+    }
+
+    private async Task<RentEntity> ChangeStatus(Guid id, RentStatus status)
+    {
+        var rent = await context.Rents.FindAsync(id);
+
+        rent.Status = status;
+
+        await context.SaveChangesAsync();
+
+        return rent;
     }
 }

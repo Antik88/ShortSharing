@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Simpl;
+using Rent.Service.Application.BackgroundJobs;
 using Rent.Service.Application.Common.Behaviors;
 using System.Reflection;
 
@@ -19,6 +22,16 @@ public static class ConfigureServices
 
             config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
+
+        service.AddQuartz(options =>
+        {
+            options.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
+        });
+
+        service.AddQuartzHostedService();
+
+        service.ConfigureOptions<RentsBackgroundJobSetUp>();
+
 
         service.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 

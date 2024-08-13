@@ -14,7 +14,7 @@ public class CreateRentCommand : IRequest<RentModel>
     public DateTime StartRentDate { get; set; }
     public DateTime EndRentDate { get; set; }
     public Guid ThingId { get; set; }
-    public Guid UserId { get; set; }
+    public Guid TenantId { get; set; }
 }
 
 public class CreateRentCommandHandler(
@@ -32,27 +32,27 @@ public class CreateRentCommandHandler(
             StartRentDate = request.StartRentDate,
             EndRentDate = request.EndRentDate,
             ThingId = request.ThingId,
-            UserId = request.UserId,
+            TenantId = request.TenantId,
         };
 
         var thingModel = await catalogServiceRequests.GetFromServiceById<ThingModel>
             (request.ThingId, cancellationToken);
 
         var tenantModel = await userServiceRequests.GetFromServiceById<UserModel>
-            (request.UserId, cancellationToken);
+            (request.TenantId, cancellationToken);
 
         var ownerModel = await userServiceRequests.GetFromServiceById<UserModel>
             (thingModel.OwnerId, cancellationToken);
 
-        var result = await rentRepository.CreateAsync(rentEntity);
+        var rent = await rentRepository.CreateAsync(rentEntity);
 
         await rentNotificationPublisher.SendRentMessage(new RentRecord(
-            result.Id,
+            rent.Id,
             thingModel,
             ownerModel,
-            tenantModel, result.StartRentDate,
-            result.EndRentDate));
+            tenantModel, rent.StartRentDate,
+            rent.EndRentDate));
 
-        return mapper.Map<RentModel>(result);
+        return mapper.Map<RentModel>(rent);
     }
 }

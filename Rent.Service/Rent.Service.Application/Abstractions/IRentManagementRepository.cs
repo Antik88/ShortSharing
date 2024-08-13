@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Rent.Service.Domain.Entity;
+using Rent.Service.Domain.Enums;
 
 namespace Rent.Service.Application.Abstractions;
 
