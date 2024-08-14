@@ -46,6 +46,7 @@ public static class ConfigureServices
         services.AddScoped<IRentManagementRepository, RentRepository>();
         services.AddScoped<IRentQueryRepository, RentRepository>();
         services.AddScoped<IRentStatusChanger, RentRepository>();
+        services.AddScoped<ICancelRentRepository, RentRepository>();
 
         services.AddScoped<IRentNotification, RentNotificationPublisher>();
 

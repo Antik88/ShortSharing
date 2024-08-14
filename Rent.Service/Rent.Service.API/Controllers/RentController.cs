@@ -60,6 +60,14 @@ public class RentController(ISender mediator, IMapper mapper) : ApiControllerBas
         return mapper.Map<RentDto>(result);
     }
 
+    [HttpPatch(Routes.CancelRent)]
+    public async Task<RentDto> CancelRent(CancelRentCommand cancelCommand)
+    {
+        var result = await Mediator.Send(cancelCommand);
+
+        return mapper.Map<RentDto>(result);
+    }
+
     [HttpDelete(Routes.ById)]
     public async Task DeleteByIdAsync(Guid id)
     {

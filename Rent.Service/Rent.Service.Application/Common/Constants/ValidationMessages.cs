@@ -17,4 +17,5 @@ public static class ValidationMessages
     public const string NotAvailableToExtend = "The rental period cannot be extended due to conflicts with existing rentals.";
     public const string ThingNotFound = "Item not found in the catalog";
     public const string ServiceUrlNotFound  = "Service url not found";
+    public const string TenantIdNotEqual = "TenantId most be equal to tenant request id";
 }

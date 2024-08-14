@@ -3,18 +3,21 @@ using Rent.Service.Domain.Entity;
 using Rent.Service.Application.Abstractions;
 using Rent.Service.Infrastructure.Data;
 using Rent.Service.Domain.Enums;
+using Rent.Service.Application.Common.Exceptions;
+using Rent.Service.Application.Common.Constants;
 
 namespace Rent.Service.Infrastructure.Repository;
 
 public class RentRepository(RentDbContext context) : IRentManagementRepository,
     IRentQueryRepository,
-    IRentAvailabilityRepository, 
+    IRentAvailabilityRepository,
     IRentExtensionRepository,
-    IRentStatusChanger
+    IRentStatusChanger,
+    ICancelRentRepository
 {
     public async Task<RentEntity> CreateAsync(RentEntity rentEntity)
     {
-        if(rentEntity.StartRentDate.Date == DateTime.Now.Date)
+        if (rentEntity.StartRentDate.Date == DateTime.Now.Date)
             rentEntity.Status = RentStatus.Active;
 
         await context.Rents.AddAsync(rentEntity);
@@ -35,7 +38,7 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
 
     public Task<List<RentEntity>> GetAllRentsAsync()
     {
-        return  context.Rents.ToListAsync();
+        return context.Rents.ToListAsync();
     }
 
     public async Task<RentEntity> GetByIdAsync(Guid id)
@@ -82,8 +85,11 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
     {
         var existingRents = await GetRentsForThingAsync(thingId);
 
-        return existingRents.All(rent =>
-            rent.EndRentDate <= startRentDate || rent.StartRentDate >= endRentDate);
+        return existingRents
+            .Where(rent => rent.Status != RentStatus.Canceled)
+            .All(rent =>
+                rent.EndRentDate <= startRentDate ||
+                rent.StartRentDate >= endRentDate);
     }
 
     public async Task<RentEntity> ExtendRentAsync(Guid rentId, DateTime newEndRentDate)
@@ -106,7 +112,7 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         var thingId = rentEntity.ThingId;
 
         var overlappingRents = await context.Rents
-            .Where(r => r.ThingId == thingId && r.Id != rentId 
+            .Where(r => r.ThingId == thingId && r.Id != rentId
                 && r.StartRentDate < newEndRentDate && r.EndRentDate > rentEntity.EndRentDate)
             .ToListAsync();
 
@@ -127,7 +133,7 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         bool statusChanged = false;
         var currentDate = DateTime.UtcNow.Date;
 
-        if (rent.StartRentDate.Date <= currentDate 
+        if (rent.StartRentDate.Date <= currentDate
             && rent.EndRentDate.Date >= currentDate
             && rent.Status != RentStatus.Active)
         {
@@ -149,6 +155,21 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         var rent = await context.Rents.FindAsync(id);
 
         rent.Status = status;
+
+        await context.SaveChangesAsync();
+
+        return rent;
+    }
+
+    public async Task<RentEntity> CancelRent(Guid rentId, Guid tenantId)
+    {
+        var rent = await context.Rents.FindAsync(rentId)
+            ?? throw new InvalidRequestException([ValidationMessages.RentIdInvalid]);
+
+        if (rent.TenantId != tenantId)
+            throw new InvalidRequestException([ValidationMessages.TenantIdNotEqual]);
+
+        rent.Status = RentStatus.Canceled;
 
         await context.SaveChangesAsync();
 
