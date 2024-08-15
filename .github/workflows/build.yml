@@ -24,10 +24,11 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore --configuration Debug
+
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Debug
+      working-directory: ${{ env.WORKING_DIR }}
 
-      
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
@@ -37,7 +38,7 @@ jobs:
         dotnetBuildArguments: --configuration Release
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cpd.exclusions="${{ env.EXCLUDE_FROM_CPD }}"
-    env: 
+      env: 
         EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         EXCLUDE_FROM_CPD: ${{ vars.EXCLUDE_FROM_CPD }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
