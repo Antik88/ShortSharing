@@ -27,8 +27,8 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Debug
 
-    - name: Pwd
-      run: pwd  
+    - name: List directory contents
+      run: ls -R ${{ env.WORKING_DIR }}
 
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
@@ -36,7 +36,7 @@ jobs:
         sonarProjectKey: Antik88_ShortSharing
         sonarProjectName: ShortSharing
         sonarOrganization: antik88
-        dotnetBuildArguments: --configuration Release
+        dotnetBuildArguments: --configuration Release --source $(pwd)/${{ env.WORKING_DIR }}
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{ env.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cpd.exclusions="${{ env.EXCLUDE_FROM_CPD }}"
     env: 
