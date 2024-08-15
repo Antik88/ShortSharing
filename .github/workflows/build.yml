@@ -27,20 +27,17 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Debug
 
-    - name: List root directory contents
-      run: ls -R .
-
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
         sonarProjectKey: Antik88_ShortSharing
         sonarProjectName: ShortSharing
         sonarOrganization: antik88
-        dotnetBuildArguments: --configuration Release --source $(pwd)/Catalog.Service
+        dotnetBuildArguments: --configuration Release --source ${{ WORKING_DIR }}
         dotnetTestArguments: --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
         sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx" /d:sonar.coverage.exclusions="${{ vars.EXCLUDE_FROM_COVERAGE }}" /d:sonar.cpd.exclusions="${{ vars.EXCLUDE_FROM_CPD }}"
     env: 
         EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         EXCLUDE_FROM_CPD: ${{ vars.EXCLUDE_FROM_CPD }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        WORKING_DIR: "."
+        WORKING_DIR: "Catalog.Service"
