@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortSharing.API", "ShortSharing.API\ShortSharing.API\ShortSharing.API.csproj", "{2D8E1B56-C8E9-4B36-B4EC-AD012004892C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortSharing.API", "ShortSharing.API\ShortSharing.API.csproj", "{2D8E1B56-C8E9-4B36-B4EC-AD012004892C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShortSharing.BLL", "ShortSharing.BLL\ShortSharing.BLL.csproj", "{457A86BF-6F96-424D-95DB-CE0F5DCC972E}"
 EndProject
