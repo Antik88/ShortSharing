@@ -37,6 +37,7 @@ public class RentNotificationPublisher(
             tenantModel,
             rent.StartRentDate,
             rent.EndRentDate,
+            rent.Status.ToString(),
             type);
     }
 }
