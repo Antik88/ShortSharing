@@ -31,7 +31,7 @@ jobs:
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
-        working-directory: ${{ WORKING_DIR }} 
+        working-directory: ${{ env.WORKING_DIR }} 
         sonarProjectKey: Antik88_ShortSharing
         sonarProjectName: ShortSharing
         sonarOrganization: antik88
