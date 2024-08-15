@@ -27,11 +27,12 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Debug
 
-      
+    - name: Pwd
+      run: pwd  
+
     - name: Sonar Scan
       uses: highbyte/sonarscan-dotnet@v2.3.0
       with:
-        working-directory: ${{ env.WORKING_DIR }} 
         sonarProjectKey: Antik88_ShortSharing
         sonarProjectName: ShortSharing
         sonarOrganization: antik88
