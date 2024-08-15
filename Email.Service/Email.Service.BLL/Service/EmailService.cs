@@ -75,11 +75,12 @@ public class EmailService : IEmailSender
     {
         return new
         {
-            UserName = context.Message.Tenant.Name ?? "Guest",
-            OwnerName = context.Message.Owner.Name ?? "Owner",
-            ItemName = context.Message.Thing.Name ?? "Unknown Item",
+            UserName = context.Message.Tenant.Name ?? string.Empty,
+            OwnerName = context.Message.Owner.Name ?? string.Empty,
+            ItemName = context.Message.Thing.Name ?? string.Empty,
             StartDate = context.Message.StartDate.ToString("yyyy-MM-dd"),
-            EndDate = context.Message.EndDate.ToString("yyyy-MM-dd")
+            EndDate = context.Message.EndDate.ToString("yyyy-MM-dd"),
+            Status = context.Message.Status.ToLower() ?? string.Empty,
         };
     }
 
