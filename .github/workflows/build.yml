@@ -43,4 +43,4 @@ jobs:
         EXCLUDE_FROM_COVERAGE: ${{ vars.EXCLUDE_FROM_COVERAGE }}
         EXCLUDE_FROM_CPD: ${{ vars.EXCLUDE_FROM_CPD }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        WORKING_DIR: "Catalog.Service"
+        WORKING_DIR: "."
