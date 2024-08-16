@@ -1,4 +1,4 @@
-
+using User.Service.API.Constants;
 using User.Service.API.DI;
 
 namespace User.Service.API;
@@ -27,8 +27,10 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseCors(builder =>
-              builder.WithOrigins("http://localhost:5173")
-              .AllowAnyHeader().AllowAnyMethod());
+            builder.WithOrigins(app.Configuration
+                .GetSection(AppSettings.AllowedOrigins)
+                .Get<string[]>() ?? [])
+        );
 
         app.UseAuthentication();
         app.UseAuthorization();
