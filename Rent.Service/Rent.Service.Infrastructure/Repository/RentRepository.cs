@@ -27,13 +27,11 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
         return rentEntity;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public Task DeleteAsync(Guid id)
     {
-        await context.Rents
+        return context.Rents
            .Where(model => model.Id == id)
            .ExecuteDeleteAsync();
-
-        await Task.CompletedTask;
     }
 
     public Task<List<RentEntity>> GetAllRentsAsync()

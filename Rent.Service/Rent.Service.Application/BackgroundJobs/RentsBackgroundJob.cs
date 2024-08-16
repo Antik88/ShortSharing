@@ -18,16 +18,25 @@ public class RentsBackgroundJob(IRentQueryRepository rentQuery,
         await ProcessRentsAsync(notCompletedRents, context.CancellationToken);
     }
 
-    private async Task ProcessRentsAsync(List<RentEntity> rents, CancellationToken cancellationToken)
+    private Task ProcessRentsAsync(List<RentEntity> rents, CancellationToken cancellationToken)
     {
+        var tasks = new List<Task>();
+
         foreach (var rent in rents)
         {
-            bool statusChanged = await rentStatusChanger.IsStatusChanged(rent);
+            tasks.Add(ProcessSingleRentAsync(rent, cancellationToken));
+        }
 
-            if (!statusChanged)
-                continue;
+        return Task.WhenAll(tasks);
+    }
 
-            await rentNotificationPublisher.SendRentMessage(rent, 
+    private async Task ProcessSingleRentAsync(RentEntity rent, CancellationToken cancellationToken)
+    {
+        bool statusChanged = await rentStatusChanger.IsStatusChanged(rent);
+
+        if (statusChanged)
+        {
+            await rentNotificationPublisher.SendRentMessage(rent,
                 MessageType.RentStatusChange, cancellationToken);
         }
     }

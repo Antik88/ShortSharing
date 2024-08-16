@@ -11,29 +11,28 @@ namespace Rent.Service.Application;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection service)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
-        service.AddAutoMapper(Assembly.GetExecutingAssembly());
-        service.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        service.AddMediatR(config =>
+        services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
-
             config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
-        service.AddQuartz(options =>
+        services.AddQuartz(options =>
         {
             options.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
         });
 
-        service.AddQuartzHostedService();
+        services.AddQuartzHostedService();
 
-        service.ConfigureOptions<RentsBackgroundJobSetUp>();
+        services.ConfigureOptions<RentsBackgroundJobSetUp>();
 
-        service.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
 
-        return service;
+        return services;
     }
 }
