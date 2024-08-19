@@ -41,10 +41,11 @@ public static class ConfigureServices
         })
         .AddPolicyHandler(retryPolicy);
 
-        services.AddTransient<IRentAvailabilityRepository, RentRepository>();
-        services.AddTransient<IRentExtensionRepository, RentRepository>();
-        services.AddTransient<IRentManagementRepository, RentRepository>();
-        services.AddTransient<IRentQueryRepository, RentRepository>();
+        services.AddScoped<IRentAvailabilityRepository, RentRepository>();
+        services.AddScoped<IRentExtensionRepository, RentRepository>();
+        services.AddScoped<IRentManagementRepository, RentRepository>();
+        services.AddScoped<IRentQueryRepository, RentRepository>();
+        services.AddScoped<IRentStatusChanger, RentRepository>();
 
         services.AddScoped<IRentNotification, RentNotificationPublisher>();
 

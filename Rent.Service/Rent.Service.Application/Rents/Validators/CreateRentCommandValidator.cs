@@ -23,7 +23,7 @@ public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
             .NotEmpty().WithMessage(ValidationMessages.ThingIdRequired)
             .Must(BeAValidGuid).WithMessage(ValidationMessages.ThingIdInvalid);
 
-        RuleFor(v => v.UserId)
+        RuleFor(v => v.TenantId)
             .NotEmpty().WithMessage(ValidationMessages.UserIdRequired)
             .Must(BeAValidGuid).WithMessage(ValidationMessages.UserIdInvalid);
 

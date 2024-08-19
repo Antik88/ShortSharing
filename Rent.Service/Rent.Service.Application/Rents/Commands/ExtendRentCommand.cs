@@ -21,7 +21,7 @@ public class ExtendRentCommandHandler(IRentExtensionRepository rentRepository)
         {
             Id = updatedRent.Id,
             ThingId = updatedRent.ThingId,
-            UserId = updatedRent.UserId,
+            TenantId = updatedRent.TenantId,
             StartRentDate = updatedRent.StartRentDate,
             EndRentDate = updatedRent.EndRentDate
         };
