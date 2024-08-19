@@ -4,13 +4,11 @@ using SharingMessages;
 
 namespace Email.Service.BLL.Consumers;
 
-public class RentConsumer(IMessageHandlerFactory handlerFactory) : IConsumer<RentRecord>
+public class RentConsumer(IMessageHandlerStrategy messageHandlerStrategy) : IConsumer<RentRecord>
 {
     public Task Consume(ConsumeContext<RentRecord> context)
     {
-        var handler = handlerFactory.CreateHandler(context.Message.MessageType);
-
-        handler.Handle(context);
+        messageHandlerStrategy.SendMessage(context);
 
         return Task.CompletedTask;
     }

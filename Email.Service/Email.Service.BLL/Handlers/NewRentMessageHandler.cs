@@ -2,25 +2,26 @@
 using Email.Service.DAL.Enums;
 using Email.Service.Interfaces;
 using Email.Service.Shared;
-using MassTransit;
 using SharingMessages;
 
 namespace Email.Service.BLL.Handlers;
 
 public class NewRentMessageHandler(IEmailSender emailSender) : IMessageHandler
 {
-    public async Task Handle(ConsumeContext<RentRecord> context)
+    public MessageType MessageType => MessageType.NewRent;
+
+    public async Task SendMessage(RentRecord message)
     {
         await emailSender.SendEmail(new MailRequest
         {
-            ToEmail = context.Message.Tenant.Email,
-            Body = await emailSender.GetEmailBody(context, RentTemplateType.RentalConfirmationTenant)
+            ToEmail = message.Tenant.Email,
+            Body = await emailSender.GetEmailBody(message, RentTemplateType.RentalConfirmationTenant)
         });
 
         await emailSender.SendEmail(new MailRequest
         {
-            ToEmail = context.Message.Owner.Email,
-            Body = await emailSender.GetEmailBody(context, RentTemplateType.RentalConfirmationOwner)
+            ToEmail = message.Owner.Email,
+            Body = await emailSender.GetEmailBody(message, RentTemplateType.RentalConfirmationOwner)
         });
     }
 }

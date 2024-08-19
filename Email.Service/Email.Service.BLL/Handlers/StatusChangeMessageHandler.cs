@@ -9,12 +9,14 @@ namespace Email.Service.BLL.Handlers;
 
 public class StatusChangeMessageHandler(IEmailSender emailSender) : IMessageHandler
 {
-    public async Task Handle(ConsumeContext<RentRecord> context)
+    public MessageType MessageType => MessageType.RentStatusChange;
+
+    public async Task SendMessage(RentRecord message)
     {
         await emailSender.SendEmail(new MailRequest
         {
-            ToEmail = context.Message.Tenant.Email,
-            Body = await emailSender.GetEmailBody(context, RentTemplateType.RentalStatusChange)
+            ToEmail = message.Tenant.Email,
+            Body = await emailSender.GetEmailBody(message, RentTemplateType.RentalStatusChange)
         });
     }
 }

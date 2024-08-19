@@ -20,10 +20,10 @@ public static class DependencyInjection
     {
         services.AddScoped<IEmailSender, EmailService>();
 
-        services.AddScoped<NewRentMessageHandler>();
-        services.AddScoped<StatusChangeMessageHandler>();
+        services.AddScoped<IMessageHandlerStrategy, MessageHandlerStrategy>();
 
-        services.AddScoped<IMessageHandlerFactory, MessageHandlerFactory>();
+        services.AddScoped<IMessageHandler, NewRentMessageHandler>();
+        services.AddScoped<IMessageHandler, StatusChangeMessageHandler>();
 
         services.AddAutoMapper(typeof(BLLProfile).Assembly);
 

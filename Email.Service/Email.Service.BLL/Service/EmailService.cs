@@ -49,7 +49,7 @@ public class EmailService : IEmailSender
         smtp.Disconnect(true);
     }
 
-    public async Task<string> GetEmailBody(ConsumeContext<RentRecord> context, RentTemplateType templateType)
+    public async Task<string> GetEmailBody(RentRecord message, RentTemplateType templateType)
     {
         var templateDoc = await FetchTemplateAsync(templateType);
 
@@ -58,7 +58,7 @@ public class EmailService : IEmailSender
             throw new Exception($"Template '{templateType}' not found or its body is null");
         }
 
-        var templateData = CreateTemplateData(context);
+        var templateData = CreateTemplateData(message);
         var renderedBody = RenderTemplate(templateDoc.Body, templateData);
 
         return renderedBody;
@@ -71,16 +71,16 @@ public class EmailService : IEmailSender
         return _mapper.Map<TemplateModel>(result);
     }
 
-    private object CreateTemplateData(ConsumeContext<RentRecord> context)
+    private object CreateTemplateData(RentRecord message)
     {
         return new
         {
-            UserName = context.Message.Tenant.Name ?? string.Empty,
-            OwnerName = context.Message.Owner.Name ?? string.Empty,
-            ItemName = context.Message.Thing.Name ?? string.Empty,
-            StartDate = context.Message.StartDate.ToString("yyyy-MM-dd"),
-            EndDate = context.Message.EndDate.ToString("yyyy-MM-dd"),
-            Status = context.Message.Status.ToLower() ?? string.Empty,
+            UserName = message.Tenant.Name ?? string.Empty,
+            OwnerName = message.Owner.Name ?? string.Empty,
+            ItemName = message.Thing.Name ?? string.Empty,
+            StartDate = message.StartDate.ToString("yyyy-MM-dd"),
+            EndDate = message.EndDate.ToString("yyyy-MM-dd"),
+            Status = message.Status.ToLower() ?? string.Empty,
         };
     }
 

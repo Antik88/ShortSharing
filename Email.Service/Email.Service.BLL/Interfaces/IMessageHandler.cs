@@ -5,5 +5,7 @@ namespace Email.Service.BLL.Interfaces;
 
 public interface IMessageHandler
 {
-    Task Handle(ConsumeContext<RentRecord> context);
+    Task SendMessage(RentRecord message);
+
+    MessageType MessageType { get; }
 }
