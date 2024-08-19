@@ -12,8 +12,7 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
     IRentQueryRepository,
     IRentAvailabilityRepository,
     IRentExtensionRepository,
-    IRentStatusChanger,
-    ICancelRentRepository
+    IRentStatusChanger
 {
     public async Task<RentEntity> CreateAsync(RentEntity rentEntity)
     {

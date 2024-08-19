@@ -13,7 +13,7 @@ public class CancelRentCommand : IRequest<RentModel>
     public Guid TenantId { get; set; }
 }
 
-public class CancelRentCommandHandler(ICancelRentRepository rentRepository,
+public class CancelRentCommandHandler(IRentManagementRepository rentRepository,
     IRentNotification notificationPublisher,
     IMapper mapper)
     : IRequestHandler<CancelRentCommand, RentModel>
