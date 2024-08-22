@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace User.Service.API.Extensions;
 
@@ -6,15 +7,13 @@ public static class SwaggerConfiguration
 {
     public static void ConfigureSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen(s =>
+        services.AddSwaggerGen(options =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo
+            options.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "UserService API"
             });
-            s.AddSecurityDefinition(
-                "Bearer",
-                new OpenApiSecurityScheme
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
                     Description = "Jwt Token",
@@ -24,22 +23,7 @@ public static class SwaggerConfiguration
                     Scheme = "Bearer"
                 });
 
-            s.AddSecurityRequirement(
-                new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                }
-            );
+            options.OperationFilter<SecurityRequirementsOperationFilter>();
         });
     }
 }
