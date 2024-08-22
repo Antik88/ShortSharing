@@ -1,11 +1,5 @@
 using ShortSharing.API.Middlewares;
-using ShortSharing.API.Mappers;
-using ShortSharing.BLL.Abstractions;
-using ShortSharing.BLL.DI;
-using ShortSharing.BLL.Services;
-using FluentValidation;
-using ShortSharing.API.Dtos.ThingDtos;
-using ShortSharing.API.Dtos.Validators;
+using ShortSharing.API.DI;
 
 namespace ShortSharing.API;
 
@@ -20,12 +14,7 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddBusinessLogicDependencies(configurations);
-
-        builder.Services.AddAutoMapper(typeof(ApiProfile));
-
-        builder.Services.AddScoped<IThingsService, ThingsService>();
-        builder.Services.AddTransient<IValidator<CreateThingDto>, CreateThingDtoValidator>();
+        builder.Services.AddApiDependencies(configurations);
 
         var app = builder.Build();
 
