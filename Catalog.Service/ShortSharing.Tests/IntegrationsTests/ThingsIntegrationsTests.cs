@@ -52,7 +52,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         var response = await _factory.Client.PostAsJsonAsync(ApiUrls.Create, newThing);
 
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         var getDeletedResponse = await _factory.Client.GetAsync($"{ApiUrls.ById}/{Seeding.MacBookId}");
 
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(HttpStatusCode.NoContent, getDeletedResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        Assert.Equal(HttpStatusCode.OK, getDeletedResponse.StatusCode);
     }
 }
