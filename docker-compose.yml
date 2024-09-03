@@ -1,0 +1,149 @@
+version: '3.4'
+
+networks:
+  shortsharing:
+
+services:
+  rent.service.db:
+    container_name: rent_service_db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=password@123456
+    networks:
+      - shortsharing
+
+  rent.service:
+    container_name: rent_service_api
+    image: ${DOCKER_REGISTRY-}rentserviceapi
+    build:
+      context: ./Rent.Service
+      dockerfile: Dockerfile
+    ports:
+      - 8083:8083 
+    depends_on: 
+      - rent.service.db   
+      - rabbitmq
+    environment:
+      - ConnectionStrings__CatalogueBaseUrl=https://localhost:8005/api/Thing/
+      - ConnectionStrings__DefaultConnection=Data Source=rent.service.db;Initial Catalog=rent_service_api;User ID=sa;Password=password@123456;TrustServerCertificate=true;
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__VirtualHost=/
+      - RabbitMQ__Username=rmuser
+      - RabbitMQ__Password=rmpassword
+    networks:
+      - shortsharing
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 5673:5672
+      - 15673:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=rmuser
+      - RABBITMQ_DEFAULT_PASS=rmpassword
+    networks:
+      - shortsharing
+
+  email.service:
+    container_name: notification_service_api
+    image: ${DOCKER_REGISTRY-}emailservice
+    build:
+      context: ./Email.Service  
+      dockerfile: Dockerfile
+    ports:
+      - 8084:8084 
+    depends_on: 
+      - rabbitmq
+    # - mongodb 
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__VirtualHost=/
+      - RabbitMQ__Username=rmuser
+      - RabbitMQ__Password=rmpassword
+      - DbConnection=mongodb://user:pass@mongodb/ShortSharing
+    user: root
+    networks:
+      - shortsharing
+
+  catalog.service:
+    container_name: catalog_service_api
+    image: ${DOCKER_REGISTRY-}catalogserviceapi
+    build:
+      context: ./Catalog.Service 
+      dockerfile: Dockerfile
+    ports:
+      - 8085:8085 
+    depends_on:
+      - catalog.db 
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=catalog.db;Port=5432;Database=RentCatalogDb; IntegratedSecurity=true;Pooling=true;
+    user: root
+    networks:
+      - shortsharing
+
+  catalog.db:
+    image: postgres:latest
+    container_name: catalog_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=RentCatalogDb
+    ports:
+      - "5432:5432"
+    networks:
+      - shortsharing
+
+  user.service:
+    container_name: user_service_api
+    image: ${DOCKER_REGISTRY-}userserviceapi
+    build:
+      context: ./User.Service 
+      dockerfile: Dockerfile
+    depends_on:
+      - user.service.db
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=user.service.db;Initial Catalog=user_service_api;User ID=sa;Password=password@123456;TrustServerCertificate=true;
+    user: root
+    ports:
+      - 8086:8086 
+    networks:
+      - shortsharing
+
+  user.service.db:
+    container_name: user_service_db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 8088:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=password@123456
+    networks:
+      - shortsharing
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: password 
+      PGADMIN_LISTEN_PORT: 8001
+    ports:
+      - "8001:8001"
+    depends_on:
+      - user.service.db
+    networks:
+      - shortsharing
+
+  # mongodb:
+  #   image: mongodb/mongodb-community-server:6.0-ubi8
+  #   container_name: mongodb
+  #   ports:
+  #     - 27017:27017
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=user
+  #     - MONGO_INITDB_ROOT_PASSWORD=pass
+  #   networks:
+  #     - shortsharing

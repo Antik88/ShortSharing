@@ -20,11 +20,10 @@ public static class ConfigureServices
     {
         services.AddDbContext<RentDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString(
-                DatabaseConstants.DbConnection));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
 
-        var retryPolicy = HttpPolicyExtensions 
+        var retryPolicy = HttpPolicyExtensions
             .HandleTransientHttpError()
             .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
 

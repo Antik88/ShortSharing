@@ -13,7 +13,7 @@ namespace ShortSharing.DAL.Common
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../../ShortSharing.API/ShortSharing.API/"))
+                .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../ShortSharing.API/"))
                 .AddJsonFile("appsettings.json")
                 .Build();
 

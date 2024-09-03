@@ -12,8 +12,8 @@ using ShortSharing.DAL.Context;
 namespace ShortSharing.DAL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240802102844_remove-users-rents")]
-    partial class removeusersrents
+    [Migration("20240903075844_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
