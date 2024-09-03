@@ -1,0 +1,249 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7170"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/catalog",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Thing/all",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7191
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/catalog/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Thing/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7191
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/catalog",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/Thing/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7191
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/catalog",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Thing/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7191
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Rent/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Rent/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Rent/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/{userId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Rent/userId={userId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Rent/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/Rent/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/extend/{id}",
+      "UpstreamHttpMethod": [ "Patch" ],
+      "DownstreamPathTemplate": "/api/Rent/extend/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/cancel",
+      "UpstreamHttpMethod": [ "Patch" ],
+      "DownstreamPathTemplate": "/api/Rent/cancel",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7171
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/getRange",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7273
+        }
+      ],
+      "SwaggerKey": "userservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7273
+        }
+      ],
+      "SwaggerKey": "userservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/users/{id}",
+      "UpstreamHttpMethod": [ "Get", "Delete", "Patch" ],
+      "DownstreamPathTemplate": "/api/User/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7273
+        }
+      ],
+      "SwaggerKey": "userservice"
+    },
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "catalog",
+      "Config": [
+        {
+          "Name": "Catalog api",
+          "Version": "v1",
+          "Url": "https://localhost:7191/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "rentservice",
+      "Config": [
+        {
+          "Name": "Rent api",
+          "Version": "v1",
+          "Url": "https://localhost:7171/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "userservice",
+      "Config": [
+        {
+          "Name": "User api",
+          "Version": "v1",
+          "Url": "https://localhost:7273/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}
