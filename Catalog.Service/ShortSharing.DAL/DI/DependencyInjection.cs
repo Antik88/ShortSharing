@@ -14,9 +14,10 @@ namespace ShortSharing.DAL.DI
         public static void AddDataAccessDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<AuditableEntitiesInterceptor>();
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString(DataAccessConstants.DbConnection));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

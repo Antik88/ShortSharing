@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShortSharing.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,20 +21,6 @@ namespace ShortSharing.DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,6 +50,8 @@ namespace ShortSharing.DAL.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<double>(type: "double precision", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     TypeId = table.Column<Guid>(type: "uuid", nullable: false),
                     OwnerId = table.Column<Guid>(type: "uuid", nullable: false)
@@ -83,60 +71,12 @@ namespace ShortSharing.DAL.Migrations
                         principalTable: "Types",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Things_Users_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateTable(
-                name: "Rents",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    StartRentDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndRentDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    ThingId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RenterId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rents_Things_ThingId",
-                        column: x => x.ThingId,
-                        principalTable: "Things",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rents_Users_RenterId",
-                        column: x => x.RenterId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rents_RenterId",
-                table: "Rents",
-                column: "RenterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rents_ThingId",
-                table: "Rents",
-                column: "ThingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Things_CategoryId",
                 table: "Things",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Things_OwnerId",
-                table: "Things",
-                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Things_TypeId",
@@ -153,16 +93,10 @@ namespace ShortSharing.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Rents");
-
-            migrationBuilder.DropTable(
                 name: "Things");
 
             migrationBuilder.DropTable(
                 name: "Types");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Categories");
