@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using User.Service.API.Constants;
 using User.Service.API.Dtos;
 using User.Service.BLL.Models;
 using User.Service.BLL.Service.Interfaces;
@@ -9,26 +11,27 @@ namespace User.Service.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = Roles.User)]
 public class UserController(
     IMapper mapper,
-    IUserService userService,
-    HttpClient client) : ControllerBase
+    IUserService userService) : ControllerBase
 {
-
     [HttpPost]
-    public async Task<CreateUserDto> CreateUserAsync(
-        [FromBody] CreateUserDto createUserDto,
+    [AllowAnonymous]
+    public async Task<UserDto> CreateUserAsync(
+        [FromBody] UserDto createUserDto,
         CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(createUserDto);
 
         var newUserModel = await userService.AddAsync(userModel, cancellationToken);
 
-        var newUserDto = mapper.Map<CreateUserDto>(newUserModel);
+        var newUserDto = mapper.Map<UserDto>(newUserModel);
 
         return newUserDto;
     }
 
+    [Authorize (Roles = Roles.Admin)]
     [HttpGet("/getRange")]
     public async Task<PageResult<UserDto>> GetRangeAsync(
       [FromQuery] Query query,
@@ -44,6 +47,7 @@ public class UserController(
         };
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<UserDto> GetById(
         [FromRoute] Guid id,
@@ -61,14 +65,14 @@ public class UserController(
     }
 
     [HttpPatch("{id}")]
-    public async Task<CreateUserDto> DeleteById(
+    public async Task<UpdateUserDto> PatchById(
         [FromRoute] Guid id,
-        [FromBody] CreateUserDto userDto,
+        [FromBody] UpdateUserDto userDto,
         CancellationToken cancellationToken)
     {
         var result = await userService.UpdateAsync(id,
             mapper.Map<UserModel>(userDto), cancellationToken);
 
-        return mapper.Map<CreateUserDto>(result);
+        return mapper.Map<UpdateUserDto>(result);
     }
 }
