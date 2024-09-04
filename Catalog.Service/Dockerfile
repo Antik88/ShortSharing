@@ -4,13 +4,9 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="password"
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/root/.aspnet/https/Catalog.API.pfx"
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-
 COPY ["ShortSharing.API/ShortSharing.API.csproj", "ShortSharing.API/"]
 COPY ["ShortSharing.BLL/ShortSharing.BLL.csproj", "ShortSharing.BLL/"]
 COPY ["ShortSharing.DAL/ShortSharing.DAL.csproj", "ShortSharing.DAL/"]

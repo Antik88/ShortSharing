@@ -4,9 +4,6 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="password"
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path="/root/.aspnet/https/Notification.Service.pfx"
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
