@@ -7,24 +7,17 @@ using Xunit;
 
 namespace ShortSharing.Tests.IntegrationsTests;
 
-public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactory>
+public class ThingsIntegrationsTests(IntegrationTestWebAppFactory factory) : IClassFixture<IntegrationTestWebAppFactory>
 {
-    private readonly IntegrationTestWebAppFactory _factory;
-
-    public ThingsIntegrationsTests(IntegrationTestWebAppFactory factory)
-    {
-        _factory = factory;
-    }
-
     [Fact]
     public async Task OnGetThingById_ShouldReturnThing()
     {
         // Arrange
-        var testId = Seeding.iPhoneId; 
+        var testId = Seeding.iPhoneId;
         var url = $"{ApiUrls.ById}/{testId}";
 
         // Act
-        var response = await _factory.Client.GetAsync(url);
+        var response = await factory.Client.GetAsync(url);
         var result = await response.Content.ReadFromJsonAsync<ThingDto>();
 
         // Assert
@@ -43,13 +36,13 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
             Description = "This is a test thing",
             Price = 100.0,
             CategoryId = Seeding.CategoryId,
-            TypeId = Seeding.TypeId, 
+            TypeId = Seeding.TypeId,
             OwnerId = Seeding.OwnerId,
         };
 
 
         // Act
-        var response = await _factory.Client.PostAsJsonAsync(ApiUrls.Create, newThing);
+        var response = await factory.Client.PostAsJsonAsync(ApiUrls.Create, newThing);
 
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -61,9 +54,9 @@ public class ThingsIntegrationsTests : IClassFixture<IntegrationTestWebAppFactor
         // Arrange
 
         // Act
-        var response = await _factory.Client.DeleteAsync($"{ApiUrls.Delete}/{Seeding.MacBookId}");
+        var response = await factory.Client.DeleteAsync($"{ApiUrls.Delete}/{Seeding.MacBookId}");
 
-        var getDeletedResponse = await _factory.Client.GetAsync($"{ApiUrls.ById}/{Seeding.MacBookId}");
+        var getDeletedResponse = await factory.Client.GetAsync($"{ApiUrls.ById}/{Seeding.MacBookId}");
 
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

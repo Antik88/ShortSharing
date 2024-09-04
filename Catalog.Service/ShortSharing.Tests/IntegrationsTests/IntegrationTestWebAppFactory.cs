@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using ShortSharing.DAL.Context;
-using ShortSharing.API;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using ShortSharing.API;
+using ShortSharing.DAL.Context;
+using System.Net.Http.Headers;
 using Xunit;
 
 namespace ShortSharing.Tests.IntegrationsTests
@@ -11,7 +16,6 @@ namespace ShortSharing.Tests.IntegrationsTests
     public class IntegrationTestWebAppFactory : IAsyncLifetime
     {
         private const string _connectionString = "test";
-
         private WebApplicationFactory<Program> _factory;
         public HttpClient Client { get; private set; }
 
@@ -26,6 +30,14 @@ namespace ShortSharing.Tests.IntegrationsTests
                     {
                         options.UseInMemoryDatabase(_connectionString);
                     });
+
+                    services.AddMassTransitTestHarness();
+                    services.AddAuthentication(options =>
+                    {
+                        options.DefaultAuthenticateScheme = "TestScheme";
+                        options.DefaultChallengeScheme = "TestScheme";
+                    })
+                    .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("TestScheme", options => { });
                 });
             });
 
