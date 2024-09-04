@@ -1,4 +1,4 @@
-
+using User.Service.API.Constants;
 using User.Service.API.DI;
 
 namespace User.Service.API;
@@ -26,7 +26,12 @@ public class Program
 
         app.UseHttpsRedirection();
 
-        // Ensure authentication and authorization middleware are included in the pipeline
+        app.UseCors(builder =>
+            builder.WithOrigins(app.Configuration
+                .GetSection(AppSettings.AllowedOrigins)
+                .Get<string[]>() ?? [])
+        );
+
         app.UseAuthentication();
         app.UseAuthorization();
 

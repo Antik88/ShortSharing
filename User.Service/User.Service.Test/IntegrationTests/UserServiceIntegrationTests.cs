@@ -58,7 +58,6 @@ public class UserServiceIntegrationTests : IAsyncLifetime, IClassFixture<Integra
         {
             Name = "Diana Green",
             Email = "diana.green@example.com",
-            Password = "Password303"
         };
 
         // Act
