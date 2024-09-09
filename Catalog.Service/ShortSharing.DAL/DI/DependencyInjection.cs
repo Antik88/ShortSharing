@@ -22,6 +22,8 @@ namespace ShortSharing.DAL.DI
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IThingRepository), typeof(ThingRepository));
+            services.AddScoped(typeof(ITypeRepository), typeof(TypeRepository));
+            services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
         }
     }
 }

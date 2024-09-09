@@ -5,18 +5,18 @@ using ShortSharing.DAL.Entities;
 using ShortSharing.Shared;
 
 namespace ShortSharing.DAL.Repositories;
-public class ThingRepository : IThingRepository
-{
-    private readonly ApplicationDbContext _context;
 
-    public ThingRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+public class ThingRepository(ApplicationDbContext context) : IThingRepository
+{
+    private readonly ApplicationDbContext _context = context;
 
     public async Task<ThingEntity> CreateAsync(ThingEntity entity, CancellationToken token)
     {
-        await _context.AddAsync(entity, token);
+        entity.Category = _context.Categories.Find(entity.Category.Id); 
+
+        entity.Type = _context.Types.Find(entity.Type.Id); 
+
+        await _context.Things.AddAsync(entity, token);
 
         await _context.SaveChangesAsync(token);
 

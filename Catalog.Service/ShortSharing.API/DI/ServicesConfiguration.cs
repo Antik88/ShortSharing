@@ -22,7 +22,6 @@ public static class ServicesConfiguration
 
         services.AddAutoMapper(typeof(ApiProfile));
 
-        services.AddScoped<IThingsService, ThingsService>();
         services.AddTransient<IValidator<CreateThingDto>, CreateThingDtoValidator>();
 
         services.ConfigureSwagger();

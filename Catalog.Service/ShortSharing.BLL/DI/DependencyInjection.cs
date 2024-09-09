@@ -20,6 +20,8 @@ namespace ShortSharing.BLL.DI
             services.AddAutoMapper(typeof(MapperBllProfile).Assembly);
 
             services.AddScoped<IThingsService, ThingsService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ITypeService, TypeService>();
         }
     }
 }
