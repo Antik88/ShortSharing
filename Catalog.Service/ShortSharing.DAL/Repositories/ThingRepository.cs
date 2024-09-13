@@ -27,7 +27,8 @@ public class ThingRepository(ApplicationDbContext context) : IThingRepository
     {
         IQueryable<ThingEntity> query = _context.Things
             .Include(t => t.Category)
-            .Include(t => t.Type);
+            .Include(t => t.Type)
+            .Include(t => t.Images);
 
         if (queryParameters.CategoryId.HasValue)
         {

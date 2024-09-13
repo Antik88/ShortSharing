@@ -1,4 +1,5 @@
 ﻿using ShortSharing.BLL.Abstractions;
+using ShortSharing.DAL.Entities;
 
 namespace ShortSharing.BLL.Models;
 
@@ -13,4 +14,5 @@ public class ThingModel : BaseModel
     public required CategoryModel Category { get; set; }
     public required TypeModel Type { get; set; }
     public Guid OwnerId { get; set; }
+    public List<ImageModel> Images { get; set; }
 }

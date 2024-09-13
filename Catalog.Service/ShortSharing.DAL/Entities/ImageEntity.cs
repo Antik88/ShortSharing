@@ -5,6 +5,6 @@ namespace ShortSharing.DAL.Entities;
 public class ImageEntity : BaseEntity
 {
     public string Name { get; set; } = string.Empty;
-
-    public ThingEntity Thing { get; set; }
+    public Guid ThingId { get; set; }
+    public ThingEntity Thing { get; set; } 
 }

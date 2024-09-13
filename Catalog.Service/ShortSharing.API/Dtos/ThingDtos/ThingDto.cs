@@ -1,4 +1,6 @@
-﻿namespace ShortSharing.API.Dtos.ThingDtos; 
+﻿using ShortSharing.API.Dtos.ImageDtos;
+
+namespace ShortSharing.API.Dtos.ThingDtos; 
 
 public record ThingDto
 {
@@ -8,4 +10,5 @@ public record ThingDto
     public double Price { get; set; }
     public DateTime UpdatedAt { get; set; }
     public Guid OwnerId { get; set; }
+    public List<ImageDto> Images { get; set; } = [];
 }

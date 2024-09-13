@@ -41,7 +41,7 @@ public class ImageService(IImageRepository imageRepository,
 
     public async Task<ImageModel> PutImage(IFormFile formFile, Guid thingId)
     {
-        var objectName = $"{thingId}-{formFile.FileName}";
+        var objectName = $"{formFile.FileName}";
 
         using var stream = formFile.OpenReadStream();
         await minioClient.PutObjectAsync(new PutObjectArgs()
