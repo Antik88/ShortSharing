@@ -14,7 +14,7 @@ public class ImageRepository(ApplicationDbContext context) : IImageRepository
 
         return image;
     } 
-    public Task<(Stream, string, string)> GetImage(string imageName)
+    public async Task<(MemoryStream, string, string)> GetImage(string name)
     {
         throw new NotImplementedException();
     }
