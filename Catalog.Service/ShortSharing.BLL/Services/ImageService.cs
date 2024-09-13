@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.StaticFiles;
+using Minio;
+using Minio.DataModel.Args;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
@@ -8,7 +10,9 @@ using ShortSharing.DAL.Entities;
 
 namespace ShortSharing.BLL.Services;
 
-public class ImageService(IImageRepository imageRepository, IMapper mapper) : IImageService
+public class ImageService(IImageRepository imageRepository,
+    IMapper mapper,
+    MinioClient minioClient) : IImageService
 {
     const string BucketName = "sharing";
 
@@ -50,6 +54,7 @@ public class ImageService(IImageRepository imageRepository, IMapper mapper) : II
         var imageModel = new ImageModel
         {
             Name = formFile.FileName,
+            ThingId = thingId
         };
 
         await imageRepository.PutImage(mapper.Map<ImageEntity>(imageModel));

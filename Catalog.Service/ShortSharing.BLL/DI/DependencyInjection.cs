@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Minio;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Mappers;
 using ShortSharing.BLL.Services;
@@ -22,6 +23,16 @@ namespace ShortSharing.BLL.DI
             services.AddScoped<IThingsService, ThingsService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITypeService, TypeService>();
+
+            services.AddSingleton<MinioClient>(sp =>
+            {
+                return (MinioClient)new MinioClient()
+                    .WithEndpoint("localhost:9000")
+                    .WithCredentials("y2tLAOyzfDsPMmDacRNk", "UXAI8RZY19Ad0cb5b2xRFPRB89GCpQOWIp1b21RS")
+                    .Build();
+            });
+
+            services.AddScoped<IImageService, ImageService>();
         }
     }
 }
