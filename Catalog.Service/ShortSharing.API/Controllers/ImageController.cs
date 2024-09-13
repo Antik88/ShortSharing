@@ -1,14 +1,28 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShortSharing.API.Dtos.ImageDtos;
+using ShortSharing.BLL.Abstractions;
+using ShortSharing.BLL.Services;
 
 namespace ShortSharing.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ImageController : ControllerBase
+public class ImageController(IImageService imageService, IMapper mapper) : ControllerBase
 {
-    [HttpPut] 
-    public async Task<> GetImage(string name)
+    [HttpPut]
+    public async Task<PutImageDto> PutImage(IFormFile formFile, Guid thingId)
     {
-        
+        var result = await imageService.PutImage(formFile, thingId);
+
+        return mapper.Map<PutImageDto>(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetImage(string name)
+    {
+        var (memoryStream, contentType, fileName) = await imageService.GetImage(name);
+
+        return File(memoryStream, contentType, fileName);
     }
 }

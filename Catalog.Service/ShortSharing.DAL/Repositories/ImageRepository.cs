@@ -8,6 +8,9 @@ public class ImageRepository(ApplicationDbContext context) : IImageRepository
 {
     public async Task<ImageEntity> PutImage(ImageEntity image)
     {
+        image.Thing = context.Things
+            .First(thing => thing.Id == image.ThingId);
+
         context.Images.Add(image);
 
         await context.SaveChangesAsync();
