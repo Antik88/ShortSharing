@@ -13,6 +13,8 @@ namespace ShortSharing.BLL.Mappers
             CreateMap<CategoryEntity, CategoryModel>().ReverseMap();
 
             CreateMap<ThingEntity, ThingModel>().ReverseMap();
+           
+            CreateMap<ImageEntity, ImageModel>().ReverseMap();
         }
     }
 }

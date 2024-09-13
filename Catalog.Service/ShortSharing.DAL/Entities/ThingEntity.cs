@@ -12,5 +12,6 @@ namespace ShortSharing.DAL.Entities
         public required CategoryEntity Category { get; set; }
         public required TypeEntity Type { get; set; }
         public required Guid OwnerId { get; set; }
+        public List<ImageEntity> Images { get; set; } = [];
     }
 }
