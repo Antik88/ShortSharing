@@ -154,6 +154,21 @@ services:
     networks:
       - shortsharing
 
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio.sharing
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER} 
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD} 
+    volumes:
+      - ~/minio/data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - shortsharing
+
 volumes:
   rent_service_data:
   email_service_data:

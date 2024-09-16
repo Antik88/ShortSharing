@@ -7,15 +7,14 @@ using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
+using static ShortSharing.BLL.Constants.BLLConst;
 
 namespace ShortSharing.BLL.Services;
 
 public class ImageService(IImageRepository imageRepository,
     IMapper mapper,
-    MinioClient minioClient) : IImageService
+    IMinioClient minioClient) : IImageService
 {
-    const string BucketName = "sharing";
-
     public async Task<(MemoryStream, string, string)> GetImage(string name)
     {
         var memoryStream = new MemoryStream();

@@ -4,7 +4,6 @@ using Minio;
 using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Mappers;
 using ShortSharing.BLL.Services;
-using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.DI;
 using ShortSharing.DAL.Interceptors;
 
@@ -24,11 +23,11 @@ namespace ShortSharing.BLL.DI
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITypeService, TypeService>();
 
-            services.AddSingleton<MinioClient>(sp =>
+            services.AddSingleton<IMinioClient, MinioClient>(sp =>
             {
-                return (MinioClient)new MinioClient()
-                    .WithEndpoint("localhost:9000")
-                    .WithCredentials("y2tLAOyzfDsPMmDacRNk", "UXAI8RZY19Ad0cb5b2xRFPRB89GCpQOWIp1b21RS")
+                return (MinioClient) new MinioClient()
+                    .WithEndpoint("minio.sharing:9000")
+                    .WithCredentials("Wt8SaiB7P9RlygOQbysi", "Z53w2vYSIDBzEGdYAKVujVq1wmWngca6rSQc06lp")
                     .Build();
             });
 

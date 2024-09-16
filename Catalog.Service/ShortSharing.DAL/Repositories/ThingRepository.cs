@@ -53,4 +53,14 @@ public class ThingRepository(ApplicationDbContext context) : IThingRepository
             PageSize = queryParameters.PageSize
         };
     }
+
+    public async Task<ThingEntity> GetById(Guid id, CancellationToken token)
+    {
+        var result = await _context.Things
+            .Include(t => t.Category)
+            .Include(t => t.Type)
+            .Include(t => t.Images).FirstAsync(t => t.Id == id);
+
+        return result;
+    }
 }
