@@ -150,6 +150,9 @@
           "Port": 8005
         }
       ],
+      "FileCacheOptions": {
+        "TtlSeconds": 60 
+      },
       "SwaggerKey": "catalog"
     },
     {

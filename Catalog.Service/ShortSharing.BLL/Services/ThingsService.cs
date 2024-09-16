@@ -50,7 +50,7 @@ public class ThingsService : IThingsService
 
     public async Task<ThingModel?> GetByIdAsync(Guid id, CancellationToken token)
     {
-        var things = await _repository.GetByIdAsync(id, token);
+        var things = await _thingRepository.GetById(id, token);
 
         return _mapper.Map<ThingModel>(things);
     }
