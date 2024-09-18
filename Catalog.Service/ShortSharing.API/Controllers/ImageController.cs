@@ -19,10 +19,10 @@ public class ImageController(IImageService imageService, IMapper mapper) : Contr
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetImage(string name)
+    public async Task<File> GetImage(string name)
     {
-        var (memoryStream, contentType, fileName) = await imageService.GetImage(name);
+        var (stream, contentType, fileName) = await imageService.GetImage(name);
 
-        return File(memoryStream, contentType, fileName);
+        return File(stream, contentType, fileName);
     }
 }

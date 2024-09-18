@@ -6,5 +6,5 @@ namespace ShortSharing.BLL.Abstractions;
 public interface IImageService
 {
     Task<ImageModel> PutImage(IFormFile formFile, Guid thingId);
-    Task<(MemoryStream, string, string)> GetImage(string name);
+    Task<(Stream, string, string)> GetImage(string name);
 }
