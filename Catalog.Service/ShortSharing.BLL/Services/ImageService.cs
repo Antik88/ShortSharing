@@ -21,14 +21,16 @@ public class ImageService(IImageRepository imageRepository,
     {
         var memoryStream = new MemoryStream();
 
-        await minioClient.GetObjectAsync(new GetObjectArgs()
+        var args = new GetObjectArgs()
             .WithBucket(BucketName)
             .WithObject(name)
-            .WithCallbackStream((stream) =>
+            .WithCallbackStream(x =>
             {
-                stream.CopyToAsync(memoryStream);
-                stream.FlushAsync();
-            }));
+                x.CopyTo(memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
+            });
+
+        await minioClient.GetObjectAsync(args);
 
         memoryStream.Position = 0;
 
