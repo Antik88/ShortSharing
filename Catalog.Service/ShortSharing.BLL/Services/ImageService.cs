@@ -7,6 +7,8 @@ using ShortSharing.BLL.Abstractions;
 using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
+using System.Runtime.Intrinsics.X86;
+using System.Security.AccessControl;
 using static ShortSharing.BLL.Constants.BLLConst;
 
 namespace ShortSharing.BLL.Services;
@@ -15,7 +17,7 @@ public class ImageService(IImageRepository imageRepository,
     IMapper mapper,
     IMinioClient minioClient) : IImageService
 {
-    public async Task<(MemoryStream, string, string)> GetImage(string name)
+    public async Task<(Stream, string, string)> GetImage(string name)
     {
         var memoryStream = new MemoryStream();
 
@@ -25,6 +27,7 @@ public class ImageService(IImageRepository imageRepository,
             .WithCallbackStream((stream) =>
             {
                 stream.CopyToAsync(memoryStream);
+                stream.FlushAsync();
             }));
 
         memoryStream.Position = 0;
