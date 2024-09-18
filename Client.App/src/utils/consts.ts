@@ -1,0 +1,6 @@
+export const MAINPAGE_ROUTE = '/'
+export const CATALOG_ROUTE = '/catalog'
+export const ABOUT_ROUTE = '/about'
+export const OFFERS_ROUTE = '/offers'
+export const ADMIN_ROUTE = '/admin' 
+export const THING_ROUTE = '/thing' 
