@@ -23,7 +23,7 @@ namespace ShortSharing.BLL.DI
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITypeService, TypeService>();
 
-            services.AddSingleton<IMinioClient, MinioClient>(sp =>
+            services.AddTransient<IMinioClient, MinioClient>(sp =>
             {
                 return (MinioClient) new MinioClient()
                     .WithEndpoint("minio.sharing:9000")
