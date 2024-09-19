@@ -1,7 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search';
 import EastIcon from '@mui/icons-material/East';
 import { ABOUT_ROUTE } from "../utils/consts";
-import BackgroundImage from "../assets/bg.jpg";
+import { BACKGROUND_IMAGE_URL } from '../utils/imgConst';
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Fade, TextField, Typography } from "@mui/material";
 import HowToUse from '../components/HowToUse';
@@ -12,7 +12,7 @@ export default function MainPage() {
   return (
     <Box
       sx={{
-        backgroundImage: `url(${BackgroundImage})`,
+        backgroundImage: `url(${BACKGROUND_IMAGE_URL})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

@@ -5,11 +5,11 @@ import './styles/main.css'
 
 createRoot(document.getElementById('root')!).render(
   <Auth0Provider
-    domain="dev-xcm2jj7b47bzuyh8.us.auth0.com"
-    clientId="LVJeToW0iWHr7XmfbWtznZnES3m5UDrk"
+    domain={import.meta.env.VITE_DOMAIN}
+    clientId={import.meta.env.VITE_CLIENT_ID}
     authorizationParams={{
       redirect_uri: window.location.origin,
-      audience: "https://sharing.com"
+      audience: import.meta.env.VITE_AUDIENCE_URL
     }}
   >
     <App />

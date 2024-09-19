@@ -5,6 +5,7 @@ import { ABOUT_ROUTE, CATALOG_ROUTE, OFFERS_ROUTE } from '../utils/consts';
 import { useAuth0 } from "@auth0/auth0-react";
 import { getUserData } from '../http/userAPI';
 import MenuIcon from '@mui/icons-material/Menu';
+import MenuList from './MenuList';
 
 export default function NavBar() {
     const navigate = useNavigate();
@@ -48,51 +49,6 @@ export default function NavBar() {
         { text: 'About us', route: ABOUT_ROUTE },
     ];
 
-    const drawerContent = (
-        <Box sx={{ width: 250, backgroundColor: "#202020" }}>
-            <Box display='flex' flexDirection='column'>
-                {menuItems.map((item, index) => (
-                    <Button onClick={() => navigate(item.route)} key={index}>
-                        <Typography>
-                            {item.text}
-                        </Typography>
-                    </Button>
-                ))}
-                <Box>
-                    {!isAuthenticated && (
-                        <Button
-                            sx={{
-                                color: "primary.light",
-                                textTransform: 'none',
-                                width: '100%',
-                                textAlign: 'left'
-                            }}
-                            onClick={() => loginWithRedirect()}
-                        >
-                            Log In
-                        </Button>
-                    )}
-                    {isAuthenticated && (
-                        <Button
-                            sx={{
-                                color: "primary.light",
-                                textTransform: 'none',
-                                width: '100%',
-                                textAlign: 'left'
-                            }}
-                            onClick={() => logout({
-                                logoutParams: {
-                                    returnTo: window.location.origin
-                                }
-                            })}
-                        >
-                            Log Out
-                        </Button>
-                    )}
-                </Box>
-            </Box>
-        </Box>
-    );
 
     return (
         <AppBar position="static" sx={{ backgroundColor: '#000' }}>
@@ -151,7 +107,7 @@ export default function NavBar() {
                                     }
                                 }}
                             >
-                                {drawerContent}
+                                <MenuList />
                             </SwipeableDrawer>
                         </>
                     ) : (

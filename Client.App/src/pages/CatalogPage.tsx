@@ -9,9 +9,13 @@ export default function CatalogPage() {
     const [open, setOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        getCatalog({}).then(data => setCatalog(data));
-        getCategories().then(data => setCategories(data));
-    }, []);
+        if (!catalog) {
+            getCatalog({}).then(data => setCatalog(data));
+        }
+        if (categories.length === 0) {
+            getCategories().then(data => setCategories(data));
+        }
+    }, [catalog, categories]);
 
     return (
         <Container>
