@@ -13,7 +13,7 @@ export default function NavBar() {
     const [drawer, setDrawer] = useState<boolean>(false);
     const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
 
-    const isSmallScreen = useMediaQuery('(max-width:600px)');
+    const isSmallScreen = useMediaQuery('(max-width:37.5em)');
 
     const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
         if (
@@ -60,7 +60,7 @@ export default function NavBar() {
                             color='primary'
                             fontFamily='Fahkwang, sans-serif'
                             fontWeight='bold'
-                            marginRight='20px'
+                            marginRight={2}
                         >
                             SHORTSHARING
                         </Typography>
@@ -91,9 +91,11 @@ export default function NavBar() {
                 <Box display='flex' alignItems='center'>
                     {isSmallScreen ? (
                         <>
-                            <Button onClick={toggleDrawer(true)} sx={{ margin: 0, 
+                            <Button onClick={toggleDrawer(true)} sx={{
+                                margin: 0,
                                 minWidth: 0,
-                                color: "primary.light" }}>
+                                color: "primary.light"
+                            }}>
                                 <MenuIcon />
                             </Button>
                             <SwipeableDrawer
@@ -117,7 +119,7 @@ export default function NavBar() {
                                     sx={{
                                         color: "primary.light",
                                         textTransform: 'none',
-                                        ml: '20px'
+                                        ml: 2
                                     }}
                                     onClick={() => loginWithRedirect()}
                                 >
@@ -129,7 +131,7 @@ export default function NavBar() {
                                     sx={{
                                         color: 'primary.light',
                                         textTransform: 'none',
-                                        ml: '20px'
+                                        ml: 2
                                     }}
                                     onClick={() => logout({
                                         logoutParams: {

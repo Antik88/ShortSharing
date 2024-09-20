@@ -25,7 +25,7 @@ export default function HowToUse() {
       <Box sx={{
         typography: 'body1',
         mr: 3,
-        height: '300px',
+        height: '35vh',
         border: '0'
       }}>
         <TabContext value={value}>

@@ -53,7 +53,7 @@ export default function MainPage() {
         color: 'white',
         maxWidth: '50%',
         mt: '10%',
-        ml: '25px'
+        ml: 2 
       }}>
         <Fade in={true} timeout={1000}>
           <Typography
@@ -62,7 +62,7 @@ export default function MainPage() {
             sx={{
               fontWeight: '600',
               fontSize: '7vh',
-              maxWidth: '700px',
+              maxWidth: '45em',
               mb: 2
             }}
           >
