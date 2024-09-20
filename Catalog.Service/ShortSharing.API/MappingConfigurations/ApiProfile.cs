@@ -22,7 +22,6 @@ public class ApiProfile : Profile
 
         CreateMap<CategoryModel, CategoryDto>().ReverseMap();
         CreateMap<CreateCategoryDto, CategoryModel>().ReverseMap();
-
         CreateMap<PutImageDto, ImageModel>().ReverseMap();
         CreateMap<ImageDto, ImageModel>().ReverseMap();
 

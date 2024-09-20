@@ -127,6 +127,71 @@
       "SwaggerKey": "catalog"
     },
     {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Category/all/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/type/",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Type/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
       "UpstreamPathTemplate": "/gateway/image/",
       "UpstreamHttpMethod": [ "Put" ],
       "DownstreamPathTemplate": "/api/Image",
@@ -263,7 +328,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "rent.service",
-          "Port": 8003
+          "Port": 8003 
         }
       ],
       "SwaggerKey": "rentservice"
@@ -302,7 +367,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "user.service",
-          "Port": 8006
+          "Port": 8006 
         }
       ],
       "SwaggerKey": "userservice"

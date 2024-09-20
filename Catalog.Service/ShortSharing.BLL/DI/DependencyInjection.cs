@@ -22,7 +22,6 @@ namespace ShortSharing.BLL.DI
             services.AddScoped<IThingsService, ThingsService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITypeService, TypeService>();
-
             services.AddTransient<IMinioClient, MinioClient>(sp =>
             {
                 return (MinioClient) new MinioClient()
