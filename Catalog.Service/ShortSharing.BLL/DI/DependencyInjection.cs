@@ -25,9 +25,9 @@ namespace ShortSharing.BLL.DI
 
             services.AddTransient<IMinioClient, MinioClient>(sp =>
             {
-                return (MinioClient) new MinioClient()
+                return (MinioClient)new MinioClient()
                     .WithEndpoint("minio.sharing:9000")
-                    .WithCredentials("Wt8SaiB7P9RlygOQbysi", "Z53w2vYSIDBzEGdYAKVujVq1wmWngca6rSQc06lp")
+                    .WithCredentials(configuration["Minio:AccessKey"], configuration["Minio:SecretKey"])
                     .Build();
             });
 
