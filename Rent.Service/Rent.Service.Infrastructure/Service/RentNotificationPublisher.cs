@@ -18,8 +18,6 @@ public class RentNotificationPublisher(
     public async Task SendRentMessage(RentEntity rent, MessageType type, CancellationToken cancellationToken)
     {
         var rentRecord = await GetRentRecord(rent, type, cancellationToken);
-
-        await publisher.Publish(rentRecord, cancellationToken);
     }
 
     private async Task<RentRecord> GetRentRecord(RentEntity rent, MessageType type, CancellationToken cancellationToken)

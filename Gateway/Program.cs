@@ -18,7 +18,20 @@ public class Program
         builder.Services.AddAuth0Authentication(builder.Configuration);
         builder.Services.AddOcelotConfiguration(builder.Configuration);
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("ClientPolicy", policy =>
+            {
+                policy.WithOrigins("http://localhost:5173")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
+            });
+        });
+
         var app = builder.Build();
+
+        app.UseCors("ClientPolicy");
 
         app.UseSwagger();
         app.UseSwaggerForOcelotUI();

@@ -53,7 +53,10 @@ public static class DependencyInjection
                     h.Password(rabbitMQSettings.Password);
                 });
 
-                cfg.ConfigureEndpoints(ctx);
+                cfg.ReceiveEndpoint("rent_queue", e =>
+                {
+                    e.ConfigureConsumer<RentConsumer>(ctx);
+                });
             });
         });
 

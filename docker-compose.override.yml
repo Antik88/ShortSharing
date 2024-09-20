@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  rent.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8003
+    ports:
+      - "8003:8003"
+
+  email.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8004
+    ports:
+      - "8004:8004"
+
+  catalog.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8005
+    ports:
+      - "8005:8005"
+
+  user.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8006 
+    ports:
+      - "8006:8006"
+
+  gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8007
+    ports:
+      - "8007:8007"

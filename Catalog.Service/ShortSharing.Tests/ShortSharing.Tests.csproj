@@ -47,7 +47,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShortSharing.API\ShortSharing.API.csproj" />
-    <ProjectReference Include="..\ShortSharing.API\ShortSharing.API\ShortSharing.API.csproj" />
+    <ProjectReference Include="..\ShortSharing.API\ShortSharing.API.csproj" />
     <ProjectReference Include="..\ShortSharing.BLL\ShortSharing.BLL.csproj" />
     <ProjectReference Include="..\ShortSharing.DAL\ShortSharing.DAL.csproj" />
     <ProjectReference Include="..\ShortSharing.Shared\ShortSharing.Shared.csproj" />

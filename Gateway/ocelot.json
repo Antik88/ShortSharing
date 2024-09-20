@@ -1,17 +1,17 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7170"
+    "BaseUrl": "http://localhost:7170"
   },
   "Routes": [
     {
       "UpstreamPathTemplate": "/gateway/catalog",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Thing/all",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7191
+          "Host": "catalog.service",
+          "Port": 8005
         }
       ],
       "FileCacheOptions": {
@@ -23,11 +23,11 @@
       "UpstreamPathTemplate": "/gateway/catalog/{id}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Thing/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7191
+          "Host": "catalog.service",
+          "Port": 8005
         }
       ],
       "FileCacheOptions": {
@@ -39,11 +39,11 @@
       "UpstreamPathTemplate": "/gateway/catalog",
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamPathTemplate": "/api/Thing/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7191
+          "Host": "catalog.service",
+          "Port": 8005
         }
       ],
       "SwaggerKey": "catalog"
@@ -52,11 +52,76 @@
       "UpstreamPathTemplate": "/gateway/catalog",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamPathTemplate": "/api/Thing/",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7191
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Category/all/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/categories/",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Category/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/type/",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DownstreamPathTemplate": "/api/Type/",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
         }
       ],
       "SwaggerKey": "catalog"
@@ -65,11 +130,11 @@
       "UpstreamPathTemplate": "/gateway/rent",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Rent/",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003
         }
       ],
       "FileCacheOptions": {
@@ -81,11 +146,11 @@
       "UpstreamPathTemplate": "/gateway/rent",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamPathTemplate": "/api/Rent/",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003
         }
       ],
       "SwaggerKey": "rentservice"
@@ -94,11 +159,11 @@
       "UpstreamPathTemplate": "/gateway/rent",
       "UpstreamHttpMethod": [ "Put" ],
       "DownstreamPathTemplate": "/api/Rent/",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003
         }
       ],
       "SwaggerKey": "rentservice"
@@ -107,11 +172,11 @@
       "UpstreamPathTemplate": "/gateway/rent/{userId}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Rent/userId={userId}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003 
         }
       ],
       "FileCacheOptions": {
@@ -123,11 +188,11 @@
       "UpstreamPathTemplate": "/gateway/rent/{id}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Rent/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003 
         }
       ],
       "FileCacheOptions": {
@@ -139,11 +204,11 @@
       "UpstreamPathTemplate": "/gateway/rent/{id}",
       "UpstreamHttpMethod": [ "Delete" ],
       "DownstreamPathTemplate": "/api/Rent/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003
         }
       ],
       "SwaggerKey": "rentservice"
@@ -152,11 +217,11 @@
       "UpstreamPathTemplate": "/gateway/rent/extend/{id}",
       "UpstreamHttpMethod": [ "Patch" ],
       "DownstreamPathTemplate": "/api/Rent/extend/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003
         }
       ],
       "SwaggerKey": "rentservice"
@@ -165,11 +230,11 @@
       "UpstreamPathTemplate": "/gateway/rent/cancel",
       "UpstreamHttpMethod": [ "Patch" ],
       "DownstreamPathTemplate": "/api/Rent/cancel",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7171
+          "Host": "rent.service",
+          "Port": 8003 
         }
       ],
       "SwaggerKey": "rentservice"
@@ -178,11 +243,11 @@
       "UpstreamPathTemplate": "/gateway/users",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/getRange",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7273
+          "Host": "user.service",
+          "Port": 8006 
         }
       ],
       "SwaggerKey": "userservice"
@@ -191,11 +256,11 @@
       "UpstreamPathTemplate": "/gateway/users",
       "UpstreamHttpMethod": [ "Post" ],
       "DownstreamPathTemplate": "/api/User",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7273
+          "Host": "user.service",
+          "Port": 8006
         }
       ],
       "SwaggerKey": "userservice"
@@ -204,15 +269,15 @@
       "UpstreamPathTemplate": "/gateway/users/{id}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Patch" ],
       "DownstreamPathTemplate": "/api/User/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7273
+          "Host": "user.service",
+          "Port": 8006 
         }
       ],
       "SwaggerKey": "userservice"
-    },
+    }
   ],
   "SwaggerEndPoints": [
     {
@@ -221,7 +286,7 @@
         {
           "Name": "Catalog api",
           "Version": "v1",
-          "Url": "https://localhost:7191/swagger/v1/swagger.json"
+          "Url": "http://catalog.service:8005/swagger/v1/swagger.json"
         }
       ]
     },
@@ -231,7 +296,7 @@
         {
           "Name": "Rent api",
           "Version": "v1",
-          "Url": "https://localhost:7171/swagger/v1/swagger.json"
+          "Url": "http://rent.service:8003/swagger/v1/swagger.json"
         }
       ]
     },
@@ -241,7 +306,7 @@
         {
           "Name": "User api",
           "Version": "v1",
-          "Url": "https://localhost:7273/swagger/v1/swagger.json"
+          "Url": "http://user.service:8006/swagger/v1/swagger.json"
         }
       ]
     }

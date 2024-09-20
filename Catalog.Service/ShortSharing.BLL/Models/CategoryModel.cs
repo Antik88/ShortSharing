@@ -8,6 +8,5 @@ public class CategoryModel : BaseModel
 {
     public required string Name { get; set; }
 
-    [JsonIgnore]
-    public List<TypeEntity>? Types { get; set; }
+    public List<TypeModel>? Types { get; set; }
 }

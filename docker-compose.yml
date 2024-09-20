@@ -1,0 +1,165 @@
+version: '3.4'
+
+networks:
+  shortsharing:
+    driver: bridge
+
+services:
+  rent.service.db:
+    container_name: rent.service.db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    networks:
+      - shortsharing
+    volumes:
+      - rent_service_db_data:/var/opt/mssql
+
+  rent.service:
+    container_name: rent.service
+    image: ${DOCKER_REGISTRY}rentserviceapi
+    build:
+      context: ./Rent.Service
+      dockerfile: Dockerfile
+    depends_on: 
+      - rent.service.db   
+      - rabbitmq
+    environment:
+      - ConnectionStrings__CatalogueBaseUrl=http://catalog.service:8005/api/Thing/
+      - ConnectionStrings__UserBaseUrl=http://user.service:8006/api/User/
+      - ConnectionStrings__DefaultConnection=Data Source=rent.service.db;Initial Catalog=rent_service_api;User ID=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=true;
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__VirtualHost=/
+      - RabbitMQ__Username=${RABBITMQ_DEFAULT_USER}
+      - RabbitMQ__Password=${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - shortsharing
+    volumes:
+      - rent_service_data:/app/data
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - 5673:5672
+      - 15673:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - shortsharing
+
+  email.service:
+    container_name: email.service
+    image: ${DOCKER_REGISTRY}emailservice
+    build:
+      context: ./Email.Service  
+      dockerfile: Dockerfile
+    depends_on: 
+      - rabbitmq
+      - email.service.db 
+    environment:
+      - RabbitMQ__Host=rabbitmq
+      - RabbitMQ__VirtualHost=/
+      - RabbitMQ__Username=${RABBITMQ_DEFAULT_USER}
+      - RabbitMQ__Password=${RABBITMQ_DEFAULT_PASS}
+      - DbConnection=email.service.db://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb/ShortSharing
+    networks:
+      - shortsharing
+    volumes:
+      - email_service_data:/app/data
+
+  email.service.db:
+    container_name: email.service.db
+    image: mongo:latest
+    restart: unless-stopped 
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    volumes:
+      - email_service_db_data:/data/db
+    
+  catalog.service:
+    container_name: catalog.service
+    image: ${DOCKER_REGISTRY}catalogserviceapi
+    build:
+      context: ./Catalog.Service 
+      dockerfile: Dockerfile
+    depends_on:
+      - catalog.db 
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Server=catalog.db;Port=5432;Database=${POSTGRES_DB}; IntegratedSecurity=true;Pooling=true;
+    networks:
+      - shortsharing
+    volumes:
+      - catalog_service_data:/app/data
+
+  catalog.db:
+    image: postgres:latest
+    container_name: catalog.db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - shortsharing
+    volumes:
+      - catalog_db_data:/var/lib/postgresql/data
+
+  user.service:
+    container_name: user.service
+    image: ${DOCKER_REGISTRY}userserviceapi
+    build:
+      context: ./User.Service 
+      dockerfile: Dockerfile
+    depends_on:
+      - user.service.db
+    environment:
+      - ConnectionStrings__DefaultConnection=Data Source=user.service.db;Initial Catalog=user_service_api;User ID=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=true;
+    networks:
+      - shortsharing
+    volumes:
+      - user_service_data:/app/data
+
+  user.service.db:
+    container_name: user.service.db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 8088:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+    networks:
+      - shortsharing
+    volumes:
+      - user_service_db_data:/var/opt/mssql
+
+  gateway:
+    container_name: gateway 
+    image: ${DOCKER_REGISTRY}gateway
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
+    depends_on:
+      - rent.service
+      - catalog.service
+      - user.service
+    networks:
+      - shortsharing
+
+volumes:
+  rent_service_data:
+  email_service_data:
+  catalog_service_data:
+  user_service_data:
+  catalog_db_data:
+  user_service_db_data:
+  rent_service_db_data:
+  email_service_db_data:
