@@ -42,7 +42,7 @@ export interface Category {
     types: CategoryType[];
 }
 
-export interface RentRespone{
+export interface RentRespone {
     id: Guid;
     startDate: Date;
     endDate: Date;
@@ -51,7 +51,7 @@ export interface RentRespone{
     status: number;
 }
 
-export interface RentData{
+export interface RentData {
     thingName: string;
     startRentDate: Date;
     endRentDate: Date;

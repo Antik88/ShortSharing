@@ -2,11 +2,11 @@ import { Guid } from "guid-typescript";
 import { $host } from ".";
 import { CatalogItem, CatalogResponse, Category } from "../types/types";
 
-interface CatalogParams {
-    name?: string;
-    categoryId?: Guid;
-    typeId?: Guid;
-    currentPage?: number;
+export interface CatalogParams {
+    categoryId?: Guid | null;
+    typeId?: Guid | null;
+    pageNumber?: number | 1;
+    pageSize?: number | 10;
 }
 
 export const getCatalog = async (params: CatalogParams): Promise<CatalogResponse> => {
