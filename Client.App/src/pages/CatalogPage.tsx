@@ -25,13 +25,16 @@ export default function CatalogPage() {
     const { applied, clearFilters, selectedCategory, selectedType } = useFilters();
 
     useEffect(() => {
-        getCatalog({
-            categoryId: selectedCategory,
-            typeId: selectedType,
-            pageNumber: currentPage
-        }).then(data => setCatalog(data));
-
-        getCategories().then(data => setCategories(data));
+        if (!catalog) {
+            getCatalog({
+                categoryId: selectedCategory,
+                typeId: selectedType,
+                pageNumber: currentPage
+            }).then(data => setCatalog(data));
+        }
+        if (categories.length === 0) {
+            getCategories().then(data => setCategories(data));
+        }
     }, [selectedCategory, selectedType, currentPage]);
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -115,7 +118,7 @@ export default function CatalogPage() {
                                 borderRadius: '0',
                                 ml: 2
                             }}
-                        onClick={() => navigate(POSTTHING_ROUTE)}
+                            onClick={() => navigate(POSTTHING_ROUTE)}
                         >
                             <AddIcon />
                         </Button>
@@ -134,7 +137,7 @@ export default function CatalogPage() {
                         ) : (
                             catalog.items.map((item) => (
                                 <Grid key={item.id.toString()}>
-                                    <ItemCard item={item}/>
+                                    <ItemCard item={item} />
                                 </Grid>
                             ))
                         )}
