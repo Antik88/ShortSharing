@@ -32,7 +32,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
         }
     }, [open, selectedCategory, selectedType]);
 
-    const handleClick = (categoryId: Guid) => {
+    const handleOpenCategory = (categoryId: Guid) => {
         setOpenCategory((prevState) => ({
             ...prevState,
             [categoryId.toString()]: !prevState[categoryId.toString()],
@@ -99,7 +99,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                     {categories.map((item) => (
                         <Box key={item.id.toString()}>
                             <ListItemButton
-                                onClick={() => handleClick(item.id)}
+                                onClick={() => handleOpenCategory(item.id)}
                                 sx={{
                                     padding: 0,
                                     margin: 0,
