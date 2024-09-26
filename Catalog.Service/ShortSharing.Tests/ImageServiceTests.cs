@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Minio;
 using System.Text;
 using Minio.DataModel.Args;
+using ShortSharing.Tests.Constants;
 
 namespace ShortSharing.Tests;
 
@@ -36,9 +37,9 @@ public class ImageServiceTests
         // Arrange
         var thingId = Guid.NewGuid();
         var formFile = Substitute.For<IFormFile>();
-        var fileName = "new-image.png";
-        var contentType = "image/png";
-        var fileContent = "Fake Image Content";
+        var fileName = ImageConstant.FileName;
+        var contentType = ImageConstant.ContentType;
+        var fileContent = ImageConstant.FileContent;
         var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(fileContent));
 
         formFile.FileName.Returns(fileName);
@@ -72,11 +73,11 @@ public class ImageServiceTests
     }
 
     [Fact]
-    public async Task GetImage_ReturnsCorrectStream_ContentType_AndFileName()
+    public async Task GetImage_ValidRequest_ReturnsExpectedStreamAndContentType()
     {
         // Arrange
-        var fileName = "new-image.png";
-        var expectedContentType = "image/png";
+        var fileName = ImageConstant.FileName; 
+        var expectedContentType = ImageConstant.ExpectedContentType;
         var expectedData = Encoding.UTF8.GetBytes("fake image data");
         var memoryStream = new MemoryStream(expectedData);
 
