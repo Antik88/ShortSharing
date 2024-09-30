@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ShortSharing.API.Dtos.CategoryDtos;
+using ShortSharing.API.Dtos.ImageDtos;
 using ShortSharing.API.Dtos.ThingDtos;
 using ShortSharing.API.Dtos.TypeDtos;
 using ShortSharing.BLL.Models;
@@ -21,5 +22,11 @@ public class ApiProfile : Profile
 
         CreateMap<CategoryModel, CategoryDto>().ReverseMap();
         CreateMap<CreateCategoryDto, CategoryModel>().ReverseMap();
+
+        CreateMap<PutImageDto, ImageModel>().ReverseMap();
+        CreateMap<ImageDto, ImageModel>().ReverseMap();
+
+        CreateMap<ShortTypeDto, TypeModel>().ReverseMap();
+        CreateMap<ShortCategoryDto, CategoryModel>().ReverseMap();
     }
 }

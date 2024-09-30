@@ -127,6 +127,35 @@
       "SwaggerKey": "catalog"
     },
     {
+      "UpstreamPathTemplate": "/gateway/image/",
+      "UpstreamHttpMethod": [ "Put" ],
+      "DownstreamPathTemplate": "/api/Image",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/image/",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Image",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 60 
+      },
+      "SwaggerKey": "catalog"
+    },
+    {
       "UpstreamPathTemplate": "/gateway/rent",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Rent/",
@@ -176,7 +205,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "rent.service",
-          "Port": 8003 
+          "Port": 8003
         }
       ],
       "FileCacheOptions": {
@@ -192,7 +221,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "rent.service",
-          "Port": 8003 
+          "Port": 8003
         }
       ],
       "FileCacheOptions": {
@@ -234,7 +263,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "rent.service",
-          "Port": 8003 
+          "Port": 8003
         }
       ],
       "SwaggerKey": "rentservice"
@@ -247,7 +276,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "user.service",
-          "Port": 8006 
+          "Port": 8006
         }
       ],
       "SwaggerKey": "userservice"
@@ -273,7 +302,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "user.service",
-          "Port": 8006 
+          "Port": 8006
         }
       ],
       "SwaggerKey": "userservice"
