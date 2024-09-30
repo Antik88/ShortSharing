@@ -60,6 +60,6 @@ public class ThingsIntegrationsTests(IntegrationTestWebAppFactory factory) : ICl
 
         //Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(HttpStatusCode.OK, getDeletedResponse.StatusCode);
+        Assert.Equal(HttpStatusCode.NoContent, getDeletedResponse.StatusCode);
     }
 }

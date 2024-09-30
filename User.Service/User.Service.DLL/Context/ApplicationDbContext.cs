@@ -5,7 +5,13 @@ namespace User.Service.DLL.Context;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+        if (Database.IsSqlServer())
+        {
+            Database.Migrate();
+        }
+    }
 
     public DbSet<UserEntity> Users { get; set; }
 }

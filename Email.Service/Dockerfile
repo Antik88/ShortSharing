@@ -8,7 +8,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["nuget.config", "."]
 COPY ["Email.Service/Email.Service.csproj", "Email.Service/"]
 COPY ["Email.Service.BLL/Email.Service.BLL.csproj", "Email.Service.BLL/"]
 COPY ["Email.Service.DAL/Email.Service.DAL.csproj", "Email.Service.DAL/"]

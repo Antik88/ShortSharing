@@ -40,13 +40,13 @@ public class ThingController(IThingsService thingsService, IMapper mapper) : Con
 
     [HttpPost]
     [Authorize]
-    [ProducesResponseType(Status200OK, Type = typeof(CreateThingDto))]
-    public async Task<CreateThingDto> CreateThingAsync([FromBody] CreateThingDto thingDto, CancellationToken token)
+    [ProducesResponseType(Status200OK, Type = typeof(ThingDto))]
+    public async Task<ThingDto> CreateThingAsync([FromBody] CreateThingDto createThingDto, CancellationToken token)
     {
-        var thingModel = mapper.Map<ThingModel>(thingDto);
-        await thingsService.CreateAsync(thingModel, token);
+        var thingModel = mapper.Map<ThingModel>(createThingDto);
+        var result = await thingsService.CreateAsync(thingModel, token);
 
-        return thingDto;
+        return mapper.Map<ThingDto>(result);
     }
 
     [Authorize]

@@ -56,7 +56,8 @@
             var model = await _thingsService.GetByIdAsync(id, default);
 
             // Assert
-            model.ShouldBeNull();
+            model.ShouldNotBeNull();
+            model.ShouldBeOfType<ThingModel>();
         }
 
         [Theory, AutoMoqData]
