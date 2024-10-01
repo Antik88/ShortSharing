@@ -19,6 +19,7 @@ public class ThingServiceTests
     private readonly IThingsService _thingsService;
     private readonly IGenericRepository<ThingEntity> _thingsRepository;
     private readonly IMapper _mapper;
+    private readonly IMapper _Mapper;
     private readonly IThingRepository _thingRepository;
 
     public ThingServiceTests()
@@ -131,35 +132,53 @@ public class ThingServiceTests
     {
         // Arrange
         var ownerId = Guid.NewGuid();
-        var thingRepository = Substitute.For<IThingRepository>();
-        var category = new CategoryEntity { Id = Guid.NewGuid(), Name = "Test Category" };
+        var categoryEntity = new CategoryEntity { Id = Guid.NewGuid(), Name = "Test Category" };
 
         var things = new List<ThingEntity>
-    {
-        new ThingEntity
         {
-            Id = Guid.NewGuid(),
-            Name = "Test Thing",
-            Description = "Test Description",
-            Price = 100.0,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
-            Category = category,
-            Type = new TypeEntity { Id = Guid.NewGuid(), Name = "Test Type", Category = category },
-            OwnerId = ownerId,
-            Images = new List<ImageEntity>()
-        }
-    };
+            new ThingEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Thing",
+                Description = "Test Description",
+                Price = 100.0,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Category = categoryEntity,
+                Type = new TypeEntity { Id = Guid.NewGuid(), Name = "Test Type", Category = categoryEntity },
+                OwnerId = ownerId,
+                Images = new List<ImageEntity>()
+            }
+        };
 
-        thingRepository.GetByOwnerId(ownerId, CancellationToken.None)
-            .Returns(things);
+        var thingModels = new List<ThingModel>
+        {
+            new ThingModel
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Thing",
+                Description = "Test Description",
+                Price = 100.0,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Category = new CategoryModel { Id = Guid.NewGuid(), Name = "Test Category" },
+                Type = new TypeModel { Id = Guid.NewGuid(), Name = "Test Type", Category = new CategoryModel { Id = Guid.NewGuid(), Name = "Test Category" } },
+                OwnerId = ownerId,
+                Images = new List<ImageModel>()
+            }
+        };
+
+        _thingRepository.GetByOwnerId(ownerId, CancellationToken.None)
+            .Returns(Task.FromResult(things));
+
+        _mapper.Map<List<ThingModel>>(things).Returns(thingModels);
 
         // Act
-        var result = await thingRepository.GetByOwnerId(ownerId, CancellationToken.None);
+        var result = await _thingsService.GetByOwnerId(ownerId, CancellationToken.None);
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldBe(things);
+        result.ShouldBe(thingModels);
         Assert.All(result, thing => Assert.Equal(ownerId, thing.OwnerId));
     }
 }
