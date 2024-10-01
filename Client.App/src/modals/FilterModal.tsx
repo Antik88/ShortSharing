@@ -60,11 +60,12 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    width: 400,
+                    width: '25rem',
                     bgcolor: '#2d2d2d',
                     border: '0',
                     boxShadow: 24,
-                    p: 2, display: 'flex',
+                    p: 2,
+                    display: 'flex',
                     flexDirection: 'column',
                     maxHeight: '80vh',
                     overflowY: 'auto',
@@ -75,7 +76,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                         variant="h2"
                         fontFamily="Fahkwang, sans-serif"
                         textTransform="uppercase"
-                        sx={{ color: 'primary.main', fontWeight: '600', fontSize: '20px' }}
+                        sx={{ color: 'primary.main', fontWeight: '600', fontSize: '1.25rem' }}
                     >
                         Filter & Sort
                     </Typography>
@@ -83,7 +84,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                         <CloseIcon />
                     </IconButton>
                 </Box>
-                <Typography variant="h6" textTransform="uppercase" fontSize="14px" color="primary.light" sx={{ mt: 2 }}>
+                <Typography variant="h6" textTransform="uppercase" fontSize="0.875rem" color="primary.light" sx={{ mt: 2 }}>
                     Applied filters
                 </Typography>
                 <Divider sx={{ my: 2, borderColor: 'primary.light' }} />
@@ -91,7 +92,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                     variant="h2"
                     fontFamily="Fahkwang, sans-serif"
                     textTransform="uppercase"
-                    sx={{ mt: 3, color: 'primary.main', fontWeight: '600', fontSize: '20px' }}
+                    sx={{ mt: 3, color: 'primary.main', fontWeight: '600', fontSize: '1.25rem' }}
                 >
                     Filter by
                 </Typography>
@@ -114,7 +115,7 @@ export default function FilterModal({ open, handleClose, categories }: FilterMod
                                         fontFamily: 'Fahkwang, sans-serif',
                                         textTransform: 'uppercase',
                                         fontWeight: '600',
-                                        fontSize: '20px',
+                                        fontSize: '1.25rem',
                                     }}
                                 />
                                 {openCategory[item.id.toString()] ? <ExpandLess /> : <ExpandMore />}

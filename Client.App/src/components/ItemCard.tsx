@@ -32,8 +32,8 @@ export default function ItemCard({ item }: { item: CatalogItem }) {
         <Card
             sx={{
                 borderRadius: '0',
-                width: '264px',
-                height: '360px',
+                width: '16.5rem',
+                height: '22.5rem',
                 backgroundColor: '#1c1c1c',
                 color: 'primary.contrastText'
             }}
@@ -42,19 +42,21 @@ export default function ItemCard({ item }: { item: CatalogItem }) {
                 component="img"
                 image={imageUrl}
                 alt={item.name}
-                width='255px'
-                height='237px'
+                style={{
+                    width: '100%',
+                    height: '14.8rem',
+                }}
             />
             <CardContent>
                 <Typography
                     color="primary"
-                    fontSize='14px'
+                    fontSize='0.875rem'
                 >
                     {item.name}
                 </Typography>
                 <Typography
                     color="primary.light"
-                    fontSize='13px'
+                    fontSize='0.8125rem'
                     minHeight='3.2em'
                 >
                     {item.description.length > 60 ? item.description.slice(0, 60) + '...' : item.description}
@@ -69,8 +71,8 @@ export default function ItemCard({ item }: { item: CatalogItem }) {
                     </Typography>
                     <Button
                         sx={{
-                            marginTop: '2px',
-                            ml: 5,
+                            marginTop: '0.125rem',
+                            ml: '3rem',
                             color: 'primary',
                             textTransform: 'none',
                             fontWeight: 'bold',

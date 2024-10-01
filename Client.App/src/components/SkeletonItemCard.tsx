@@ -1,12 +1,12 @@
 import { Card, CardContent, Typography, Button, Box } from '@mui/material';
 
 export default function SkeletonItemCard() {
-    return(
+    return (
         <Card
             sx={{
                 borderRadius: '0',
-                width: '264px',
-                height: '360px',
+                width: '16.5rem',
+                height: '22.5rem',
                 backgroundColor: '#1c1c1c',
             }}
         >
@@ -18,13 +18,13 @@ export default function SkeletonItemCard() {
                     </Typography>
                     <Button
                         sx={{
-                            marginTop: '2px',
-                            ml: 5,
+                            marginTop: '0.125rem',
+                            ml: '3rem',
                         }}
                     >
                     </Button>
                 </Box>
             </CardContent>
         </Card>
-    )
+    );
 }
