@@ -10,8 +10,15 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     public async Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
-        await context.AddAsync(userEntity, cancellationToken);
+        var user = await context
+            .Users.FirstAsync(u => u.AuthId == userEntity.AuthId);
 
+        if (user != null)
+        {
+            return user;
+        }
+
+        await context.AddAsync(userEntity, cancellationToken);
         await context.SaveChangesAsync();
 
         return userEntity;
@@ -29,6 +36,13 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         await context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<UserEntity> GetByAuth0Id(string id, CancellationToken cancellationToken)
+    {
+        var user = await context.Users.FirstAsync(u => u.AuthId == id, cancellationToken);
+
+        return user;
+    }
+
     public async Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var user = await context.Users.FirstAsync(u => u.Id == id, cancellationToken);
@@ -43,7 +57,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         List<UserEntity> items = await contextQuery.Skip((query.Page - 1) * query.PageSize)
                                              .Take(query.PageSize)
                                              .ToListAsync(cancellationToken);
-        
+
         return new PageResult<UserEntity>
         {
             Items = items,

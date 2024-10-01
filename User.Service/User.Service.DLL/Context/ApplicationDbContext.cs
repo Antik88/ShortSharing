@@ -14,4 +14,11 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<UserEntity> Users { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserEntity>()
+            .HasIndex(u => u.AuthId)
+            .IsUnique(true);
+    }
 }

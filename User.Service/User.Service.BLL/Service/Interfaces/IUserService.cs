@@ -8,6 +8,7 @@ public interface IUserService
     Task<PageResult<UserModel>> GetRangeAsync(Query query, CancellationToken cancellationToken);
 
     Task<UserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<UserModel> GetByAuth0Id(string id, CancellationToken cancellationToken);
 
     Task<UserModel> AddAsync(UserModel userModel, CancellationToken cancellationToken);
 

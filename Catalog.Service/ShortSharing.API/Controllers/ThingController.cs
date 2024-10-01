@@ -56,4 +56,14 @@ public class ThingController(IThingsService thingsService, IMapper mapper) : Con
     {
         return thingsService.DeleteAsync(id, token);
     }
+
+    [Authorize]
+    [HttpGet(ApiConstants.OwnerId)]
+    [ProducesResponseType(Status200OK)]
+    public async Task<List<ThingDto>> GetByOwnerId(Guid id, CancellationToken token)
+    {
+        var result = await thingsService.GetByOwnerId(id, token);
+
+        return mapper.Map<List<ThingDto>>(result);
+    }
 }

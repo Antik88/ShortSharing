@@ -62,6 +62,19 @@
       "SwaggerKey": "catalog"
     },
     {
+      "UpstreamPathTemplate": "/gateway/catalog/owner/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Thing/owner/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
       "UpstreamPathTemplate": "/gateway/categories/",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Category/all/",
@@ -151,7 +164,7 @@
         }
       ],
       "FileCacheOptions": {
-        "TtlSeconds": 60 
+        "TtlSeconds": 60
       },
       "SwaggerKey": "catalog"
     },
@@ -295,7 +308,20 @@
       "SwaggerKey": "userservice"
     },
     {
-      "UpstreamPathTemplate": "/gateway/users/{id}",
+      "UpstreamPathTemplate": "/gateway/user/auth0/{authId}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/auth0/{authId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user.service",
+          "Port": 8006
+        }
+      ],
+      "SwaggerKey": "userservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/user/{id}",
       "UpstreamHttpMethod": [ "Get", "Delete", "Patch" ],
       "DownstreamPathTemplate": "/api/User/{id}",
       "DownstreamScheme": "http",

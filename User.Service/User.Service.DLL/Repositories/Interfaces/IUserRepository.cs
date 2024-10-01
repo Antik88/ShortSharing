@@ -8,6 +8,7 @@ public interface IUserRepository
     Task<PageResult<UserEntity>> GetRangeAsync(Query query, CancellationToken cancellationToken);
 
     Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<UserEntity> GetByAuth0Id(string id, CancellationToken cancellationToken);
 
     Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken);
 

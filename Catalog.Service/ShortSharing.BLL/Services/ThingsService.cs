@@ -54,6 +54,12 @@ public class ThingsService : IThingsService
 
         return _mapper.Map<ThingModel>(things);
     }
+    public async Task<List<ThingModel>?> GetByOwnerId(Guid ownerId, CancellationToken token)
+    {
+        var things = await _thingRepository.GetByOwnerId(ownerId, token);
+
+        return _mapper.Map<List<ThingModel>>(things);
+    }
 
     public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity entity, CancellationToken token)
     {
