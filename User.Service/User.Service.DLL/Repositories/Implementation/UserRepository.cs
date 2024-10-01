@@ -11,7 +11,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
         var user = await context
-            .Users.FirstAsync(u => u.AuthId == userEntity.AuthId);
+           .Users.FirstAsync(u => u.AuthId == userEntity.AuthId, cancellationToken);
 
         if (user != null)
         {
@@ -19,18 +19,15 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         }
 
         await context.AddAsync(userEntity, cancellationToken);
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
 
         return userEntity;
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await GetByIdAsync(id, cancellationToken);
-        if (entity == null)
-        {
-            throw new ArgumentException($"Entity with id {id} not found.");
-        }
+        var entity = await GetByIdAsync(id, cancellationToken) 
+            ?? throw new ArgumentException($"Entity with id {id} not found.");
 
         context.Remove(entity);
         await context.SaveChangesAsync(cancellationToken);

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using ShortSharing.BLL.Abstractions;
+using ShortSharing.BLL.Constants;
 using ShortSharing.BLL.Mappers;
 using ShortSharing.BLL.Services;
 using ShortSharing.DAL.DI;
@@ -25,9 +26,9 @@ namespace ShortSharing.BLL.DI
 
             services.AddTransient<IMinioClient, MinioClient>(sp =>
             {
-                return (MinioClient) new MinioClient()
-                    .WithEndpoint("minio.sharing:9000")
-                    .WithCredentials("Wt8SaiB7P9RlygOQbysi", "Z53w2vYSIDBzEGdYAKVujVq1wmWngca6rSQc06lp")
+                return (MinioClient)new MinioClient()
+                    .WithEndpoint(BLLConst.MinioUrl)
+                    .WithCredentials(configuration[BLLConst.MinioAccessKey], configuration[BLLConst.SecretKey])
                     .Build();
             });
 
