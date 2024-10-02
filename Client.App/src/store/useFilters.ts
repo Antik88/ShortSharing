@@ -10,28 +10,53 @@ interface FilterState {
   clearFilters: () => void;
 }
 
-const useFilters = create<FilterState>((set) => ({
-  selectedCategory: null,
-  selectedType: null,
-  applied: false,
+const saveToSessionStorage = (key: string, value: any) => {
+  sessionStorage.setItem(key, JSON.stringify(value));
+};
 
-  selectCategoryType: (categoryId: Guid, typeId: Guid) =>
-    set({
-      selectedCategory: categoryId,
-      selectedType: typeId,
-    }),
+const loadFromSessionStorage = (key: string) => {
+  const storedValue = sessionStorage.getItem(key);
+  return storedValue ? JSON.parse(storedValue) : null;
+};
 
-  applyFilters: () =>
-    set((state) => ({
-      applied: !!state.selectedCategory && !!state.selectedType,
-    })),
+const useFilters = create<FilterState>((set) => {
+  const initialState = loadFromSessionStorage('filters') || {
+    selectedCategory: null,
+    selectedType: null,
+    applied: false,
+  };
 
-  clearFilters: () =>
-    set({
-      selectedCategory: null,
-      selectedType: null,
-      applied: false,
-    }),
-}));
+  return {
+    ...initialState,
+
+    selectCategoryType: (categoryId: Guid, typeId: Guid) => {
+      const newState = {
+        selectedCategory: categoryId,
+        selectedType: typeId,
+      };
+      saveToSessionStorage('filters', newState);
+      set(newState);
+    },
+
+    applyFilters: () =>
+      set((state) => {
+        const newState = {
+          applied: !!state.selectedCategory && !!state.selectedType,
+        };
+        saveToSessionStorage('filters', { ...state, ...newState });
+        return newState;
+      }),
+
+    clearFilters: () => {
+      const newState = {
+        selectedCategory: null,
+        selectedType: null,
+        applied: false,
+      };
+      sessionStorage.removeItem('filters');
+      set(newState);
+    },
+  };
+});
 
 export default useFilters;

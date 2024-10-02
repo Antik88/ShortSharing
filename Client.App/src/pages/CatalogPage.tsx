@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Badge, Box, Button, Container, Pagination, Typography } from "@mui/material";
+import { Badge, Box, Container, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { getCatalog, getCategories } from "../http/catalogAPI";
 import { CatalogResponse, Category } from "../types/types";
@@ -14,6 +14,9 @@ import AddIcon from '@mui/icons-material/Add';
 import FilterModal from "../modals/FilterModal";
 import NotFound from "../components/NotFound";
 import { POSTTHING_ROUTE } from "../utils/consts";
+import { StyledButton } from "../styled/StyledButton";
+import { StyledButtonText } from "../styled/StyledButtonText";
+import { StyledPagination } from "../styled/StyledPagination";
 
 export default function CatalogPage() {
     const [catalog, setCatalog] = useState<CatalogResponse | null>(null);
@@ -25,16 +28,13 @@ export default function CatalogPage() {
     const { applied, clearFilters, selectedCategory, selectedType } = useFilters();
 
     useEffect(() => {
-        if (!catalog) {
-            getCatalog({
-                categoryId: selectedCategory,
-                typeId: selectedType,
-                pageNumber: currentPage
-            }).then(data => setCatalog(data));
-        }
-        if (categories.length === 0) {
-            getCategories().then(data => setCategories(data));
-        }
+        getCatalog({
+            categoryId: selectedCategory,
+            typeId: selectedType,
+            pageNumber: currentPage
+        }).then(data => setCatalog(data));
+
+        getCategories().then(data => setCategories(data));
     }, [selectedCategory, selectedType, currentPage]);
 
     const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
@@ -60,26 +60,12 @@ export default function CatalogPage() {
                     </Box>
                     <Box>
                         {applied && (
-                            <Button
-                                color="primary"
-                                onClick={clearFilters}
-                                variant="outlined"
-                                sx={{
-                                    border: '3px solid',
-                                    borderRadius: '0',
-                                    mr: 2
-                                }}
-                            >
-                                <Typography
-                                    sx={{
-                                        fontSize: '14px',
-                                        textTransform: 'none',
-                                    }}
-                                >
+                            <StyledButton sx={{ mr: 2 }} onClick={clearFilters}>
+                                <StyledButtonText>
                                     Clear
-                                </Typography>
+                                </StyledButtonText>
                                 <ClearIcon />
-                            </Button>
+                            </StyledButton>
                         )}
                         <Badge
                             color="secondary"
@@ -91,37 +77,16 @@ export default function CatalogPage() {
                                 horizontal: 'right',
                             }}
                         >
-                            <Button
-                                variant="outlined"
-                                sx={{
-                                    border: '3px solid',
-                                    borderRadius: '0',
-                                    position: 'relative',
-                                }}
-                                onClick={filterModal.open}
-                            >
-                                <Typography
-                                    sx={{
-                                        fontSize: '14px',
-                                        textTransform: 'none',
-                                    }}
-                                >
+                            <StyledButton onClick={filterModal.open} >
+                                <StyledButtonText>
                                     Filter & Sort
-                                </Typography>
+                                </StyledButtonText>
                                 <TuneIcon sx={{ ml: 1 }} />
-                            </Button>
+                            </StyledButton>
                         </Badge>
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                border: '3px solid',
-                                borderRadius: '0',
-                                ml: 2
-                            }}
-                            onClick={() => navigate(POSTTHING_ROUTE)}
-                        >
+                        <StyledButton sx={{ ml: 2 }} onClick={() => navigate(POSTTHING_ROUTE)} >
                             <AddIcon />
-                        </Button>
+                        </StyledButton>
                     </Box>
                 </Box>
                 {catalog?.items.length === 0 ? (
@@ -148,17 +113,8 @@ export default function CatalogPage() {
                 <></>
             ) : (
                 <Box display='flex' justifyContent='center' mt={2}>
-                    <Pagination
+                    <StyledPagination
                         count={catalog?.totalPages}
-                        sx={{
-                            '& .MuiPaginationItem-root': {
-                                color: 'primary.main',
-                            },
-                            '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: 'primary.main',
-                                color: 'black',
-                            }
-                        }}
                         page={currentPage}
                         onChange={handlePageChange}
                     />

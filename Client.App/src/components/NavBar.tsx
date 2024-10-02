@@ -15,12 +15,9 @@ export default function NavBar() {
 
     const isSmallScreen = useMediaQuery('(max-width:37.5em)');
 
-    const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    const toggleDrawer = (open: boolean) => (event: React.MouseEvent) => {
         if (
-            event &&
-            event.type === 'keydown' &&
-            ((event as React.KeyboardEvent).key === 'Tab' ||
-                (event as React.KeyboardEvent).key === 'Shift')
+            event && event.type === 'keydown'
         ) {
             return;
         }
@@ -48,7 +45,6 @@ export default function NavBar() {
         { text: 'Offers', route: OFFERS_ROUTE },
         { text: 'About us', route: ABOUT_ROUTE },
     ];
-
 
     return (
         <AppBar position="static" sx={{ backgroundColor: '#000' }}>

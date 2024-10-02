@@ -1,32 +1,12 @@
-import { useEffect, useState } from 'react';
 import { Card, CardMedia, CardContent, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../utils/consts';
 import { CatalogItem } from '../types/types';
-import { getImageUrl } from '../http/catalogAPI';
 import noImage from '../assets/no-image.jpeg';
+import { $host } from '../http';
 
 export default function ItemCard({ item }: { item: CatalogItem }) {
-    const [imageUrl, setImageUrl] = useState<string>(noImage);
-
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchImageUrl = async () => {
-            if (item.images.length > 0) {
-                try {
-                    const url = await getImageUrl(item.images[0].name);
-                    setImageUrl(url);
-                } catch (error) {
-                    setImageUrl(noImage);
-                }
-            } else {
-                setImageUrl(noImage);
-            }
-        };
-
-        fetchImageUrl();
-    }, [item.images]);
 
     return (
         <Card
@@ -40,7 +20,9 @@ export default function ItemCard({ item }: { item: CatalogItem }) {
         >
             <CardMedia
                 component="img"
-                image={imageUrl}
+                image={item.images[0] ?
+                    $host.defaults.baseURL + 'image?name=' + item.images[0].name :
+                    noImage}
                 alt={item.name}
                 style={{
                     width: '100%',

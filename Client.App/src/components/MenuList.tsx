@@ -2,6 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { ABOUT_ROUTE, CATALOG_ROUTE, OFFERS_ROUTE } from "../utils/consts";
+import { MenuButton } from "../styled/MenuButton";
 
 const menuItems = [
     { text: 'Catalog', route: CATALOG_ROUTE },
@@ -26,26 +27,12 @@ export default function MenuList() {
                 ))}
                 <Box>
                     {!isAuthenticated && (
-                        <Button
-                            sx={{
-                                color: "primary.light",
-                                textTransform: 'none',
-                                width: '100%',
-                                textAlign: 'left'
-                            }}
-                            onClick={() => loginWithRedirect()}
-                        >
+                        <MenuButton onClick={() => loginWithRedirect()} >
                             Log In
-                        </Button>
+                        </MenuButton>
                     )}
                     {isAuthenticated && (
-                        <Button
-                            sx={{
-                                color: "primary.light",
-                                textTransform: 'none',
-                                width: '100%',
-                                textAlign: 'left'
-                            }}
+                        <MenuButton
                             onClick={() => logout({
                                 logoutParams: {
                                     returnTo: window.location.origin
@@ -53,7 +40,7 @@ export default function MenuList() {
                             })}
                         >
                             Log Out
-                        </Button>
+                        </MenuButton>
                     )}
                 </Box>
             </Box>
