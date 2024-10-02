@@ -211,7 +211,7 @@
       "SwaggerKey": "rentservice"
     },
     {
-      "UpstreamPathTemplate": "/gateway/rent/{userId}",
+      "UpstreamPathTemplate": "/gateway/rent/user/{userId}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Rent/userId={userId}",
       "DownstreamScheme": "http",
@@ -272,6 +272,19 @@
       "UpstreamPathTemplate": "/gateway/rent/cancel",
       "UpstreamHttpMethod": [ "Patch" ],
       "DownstreamPathTemplate": "/api/Rent/cancel",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "rent.service",
+          "Port": 8003
+        }
+      ],
+      "SwaggerKey": "rentservice"
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/rent/thing/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Rent/thing/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
