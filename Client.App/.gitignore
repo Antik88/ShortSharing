@@ -1,5 +1,5 @@
 .env
-.vite
+.vite/*
 # Logs
 package-lock.json
 logs
