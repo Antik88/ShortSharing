@@ -19,7 +19,6 @@ public class ThingServiceTests
     private readonly IThingsService _thingsService;
     private readonly IGenericRepository<ThingEntity> _thingsRepository;
     private readonly IMapper _mapper;
-    private readonly IMapper _Mapper;
     private readonly IThingRepository _thingRepository;
 
     public ThingServiceTests()

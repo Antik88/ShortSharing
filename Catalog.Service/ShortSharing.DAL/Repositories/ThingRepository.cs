@@ -69,7 +69,7 @@ public class ThingRepository(ApplicationDbContext context) : IThingRepository
             .AsNoTracking()
             .Where(t => t.OwnerId == ownerId)
             .Include(t => t.Images)
-            .ToListAsync();
+            .ToListAsync(token);
 
         return result;
     }
