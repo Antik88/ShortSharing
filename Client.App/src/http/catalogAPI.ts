@@ -26,6 +26,6 @@ export const getThing = async (id: string): Promise<CatalogItem> => {
     return data;
 };
 
-export const getImageUrl = async (name: string): Promise<string> => {
+export const buildImageUrl = (name: string): string => {
     return `${$host.defaults.baseURL}image?name=${encodeURIComponent(name)}`;
 };

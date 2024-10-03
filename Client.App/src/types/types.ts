@@ -27,7 +27,6 @@ export interface CatalogItem {
 }
 
 export interface Image {
-    url: string | undefined;
     name: string;
 }
 
