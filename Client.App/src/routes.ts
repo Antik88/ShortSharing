@@ -7,10 +7,16 @@ import {
     MAINPAGE_ROUTE,
     CATALOG_ROUTE,
     ABOUT_ROUTE,
+    POSTTHING_ROUTE,
 } from './utils/consts.ts';
+import PostThing from './pages/PostThing.tsx';
 
 
 export const authRoutes: RouteConfig[] = [
+    {
+        path: POSTTHING_ROUTE,
+        Component: PostThing
+    },
 ]
 
 export const publicRoutes: RouteConfig[] = [
