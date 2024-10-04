@@ -3,15 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Box, SwipeableDrawer, useMediaQuery } from '@mui/material';
 import { ABOUT_ROUTE, CATALOG_ROUTE, OFFERS_ROUTE } from '../utils/consts';
 import { useAuth0 } from "@auth0/auth0-react";
-import { getUserData } from '../http/userAPI';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuList from './MenuList';
+import { Guid } from 'guid-typescript';
+import { getUser, postUser } from '../http/userAPI';
+import useUserStore from '../store/useUserStore';
 
 export default function NavBar() {
     const navigate = useNavigate();
-
+    const userStore = useUserStore();
     const [drawer, setDrawer] = useState<boolean>(false);
-    const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently, user } = useAuth0();
 
     const isSmallScreen = useMediaQuery('(max-width:37.5em)');
 
@@ -30,12 +32,26 @@ export default function NavBar() {
             const token = await getAccessTokenSilently();
             localStorage.setItem('token', token);
 
-            if (token) {
-                getUserData();
+            if (user) {
+                await postUser({
+                    id: Guid.EMPTY,
+                    authId: user.sub,
+                    name: user.name,
+                    email: user.email,
+                    userPictureUrl: user.picture
+                })
+
+                const userData = await getUser(user.sub)
+
+                userStore.setUser(userData)
+
+                if (userData.id !== undefined) {
+                    localStorage.setItem('userId', userData.id)
+                }
             }
         };
 
-        if (isAuthenticated) {
+        if (isAuthenticated && user?.sub) {
             getToken();
         }
     }, [isAuthenticated, getAccessTokenSilently]);

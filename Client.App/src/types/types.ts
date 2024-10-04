@@ -43,8 +43,8 @@ export interface Category {
 
 export interface RentRespone {
     id: Guid;
-    startDate: Date;
-    endDate: Date;
+    startRentDate: Date;
+    endRentDate: Date;
     thingId: Guid;
     tenantId: Guid;
     status: number;
@@ -55,6 +55,6 @@ export interface RentData {
     startRentDate: Date;
     endRentDate: Date;
     thingId: Guid;
-    tenantId: Guid;
+    tenantId: string | null;
     price: number;
 }

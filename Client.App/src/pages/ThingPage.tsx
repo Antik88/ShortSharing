@@ -2,30 +2,30 @@ import { Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getThing } from "../http/catalogAPI";
-import { CatalogItem } from "../types/types";
+import { CatalogItem, RentRespone } from "../types/types";
 import Grid from '@mui/material/Grid2';
 import ImageGallery from "../components/ImageGallery";
 import RentModal from "../modals/RentModal";
-import { Guid } from "guid-typescript";
 import '../styles/dateRange.css';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Loading from "../shared/Loading";
-import { addDays } from "date-fns";
 import useModal from "../hooks/useModal";
 import NotFound from "../shared/NotFound";
 import ThingInfo from "../components/ThingInfo";
 import RentalPeriod from "../components/RentalPeriod";
+import { getRentsByThingId } from "../http/rentAPI";
 
 export default function ThingPage() {
     const { id } = useParams();
     const [thing, setThing] = useState<CatalogItem | null>(null);
+    const [rents, setRents] = useState<RentRespone[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const rentModal = useModal();
 
     const [selectedDates, setSelectedDates] = useState<any>({
-        startDate: addDays(new Date(), 1),
-        endDate: addDays(new Date(), 1),
+        startDate: new Date(),
+        endDate: new Date(),
         key: 'selection',
     });
 
@@ -33,19 +33,21 @@ export default function ThingPage() {
         const fetchThingData = async () => {
             if (id) {
                 const data = await getThing(id);
-                setThing(data)
+                setThing(data);
 
-                setLoading(false)
+                const rents = await getRentsByThingId(id);
+                setRents(rents);
+                setLoading(false);
             }
-        }
+        };
 
         fetchThingData();
-    }, [id])
+    }, [id]);
 
     if (loading) {
         return (
             <Loading />
-        )
+        );
     }
 
     if (!thing) {
@@ -53,7 +55,7 @@ export default function ThingPage() {
             <Container>
                 <NotFound />
             </Container>
-        )
+        );
     }
 
     return (
@@ -71,11 +73,12 @@ export default function ThingPage() {
                 </Grid>
                 <Grid size={5}>
                     <ThingInfo
-                        name={thing.name} 
-                        description={thing.description} 
-                        price={thing.price} 
+                        name={thing.name}
+                        description={thing.description}
+                        price={thing.price}
                     />
                     <RentalPeriod
+                        disabledDatesValues={rents}
                         selectedDates={selectedDates}
                         setSelectedDates={setSelectedDates}
                         openRentModal={rentModal.open}
@@ -88,7 +91,7 @@ export default function ThingPage() {
                 rentData={{
                     thingId: thing.id,
                     thingName: thing.name,
-                    tenantId: Guid.create(),
+                    tenantId: localStorage.getItem('userId'),
                     price: thing.price,
                     startRentDate: selectedDates.startDate,
                     endRentDate: selectedDates.endDate
