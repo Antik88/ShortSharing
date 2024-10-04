@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { StyledButton } from "../styled/StyledButton";
 import InfoRow from "../components/InfoRow";
 import { rentThing } from "../http/rentAPI";
+import { differenceInCalendarDays } from "date-fns";
 
 interface RentModalProps {
     open: boolean;
@@ -25,8 +26,7 @@ export default function RentModal({ open, handleClose, rentData }: RentModalProp
         setSnackbarOpen(false);
     };
 
-    const dateDiff: number = Math.round((rentData.endRentDate.getTime()
-        - rentData.startRentDate.getTime()) / (24 * 60 * 60 * 1000) + 1);
+    const dateDiff: number = differenceInCalendarDays(rentData.endRentDate, rentData.startRentDate) + 1
 
     return (
         <>
