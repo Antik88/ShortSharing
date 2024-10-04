@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["nuget.config", "."]
 COPY ["Rent.Service.API/Rent.Service.API.csproj", "Rent.Service.API/"]
 COPY ["Rent.Service.Application/Rent.Service.Application.csproj", "Rent.Service.Application/"]
 COPY ["Rent.Service.Domain/Rent.Service.Domain.csproj", "Rent.Service.Domain/"]

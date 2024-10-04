@@ -36,7 +36,8 @@ public class LoggingMiddleware
         var statusCode = context.Response.StatusCode;
 
         _logger.LogInformation(
-            $"HTTP {method} {path} responded with {statusCode} in {duration.TotalMilliseconds}ms"
+            "HTTP {@Method} {@Path} responded with {@StatusCode} in {@TotalMilliseconds}ms",
+            method, path, statusCode, duration.TotalMilliseconds
         );
     }
 }

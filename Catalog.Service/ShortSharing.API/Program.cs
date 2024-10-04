@@ -1,5 +1,6 @@
 using ShortSharing.API.Middlewares;
 using ShortSharing.API.DI;
+using Prometheus;
 
 namespace ShortSharing.API;
 
@@ -14,12 +15,17 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.UseHttpClientMetrics();
+
         builder.Services.AddApiDependencies(configurations);
 
         var app = builder.Build();
 
         app.UseMiddleware<LoggingMiddleware>();
         app.UseMiddleware<ExceptionMiddleware>();
+
+        app.UseMetricServer();
+        app.UseHttpMetrics();
 
         if (app.Environment.IsDevelopment())
         {

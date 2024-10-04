@@ -5,6 +5,7 @@ using Rent.Service.Infrastructure.Data;
 using Rent.Service.Domain.Enums;
 using Rent.Service.Application.Common.Exceptions;
 using Rent.Service.Application.Common.Constants;
+using Rent.Service.Application.Model;
 
 namespace Rent.Service.Infrastructure.Repository;
 
@@ -42,6 +43,16 @@ public class RentRepository(RentDbContext context) : IRentManagementRepository,
     {
         var result = await context.Rents.AsNoTracking()
             .FirstOrDefaultAsync(model => model.Id == id);
+
+        return result;
+    }
+
+    public async Task<List<RentEntity>> GetByThingId(Guid id)
+    {
+        var result = await context.Rents
+            .AsNoTracking()
+            .Where(rent => rent.ThingId == id)
+            .ToListAsync();
 
         return result;
     }

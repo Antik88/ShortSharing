@@ -10,7 +10,6 @@ namespace User.Service.BLL.Service.Implementation;
 
 public class UserService(IUserRepository userRepository, IMapper mapper) : IUserService
 {
-
     public async Task<UserModel> AddAsync(UserModel userModel, CancellationToken cancellationToken)
     {
         var userEntity = mapper.Map<UserEntity>(userModel);
@@ -23,6 +22,13 @@ public class UserService(IUserRepository userRepository, IMapper mapper) : IUser
     public Task Delete(Guid id, CancellationToken cancellationToken)
     {
         return userRepository.DeleteAsync(id, cancellationToken);
+    }
+
+    public async Task<UserModel> GetByAuth0Id(string id, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.GetByAuth0Id(id, cancellationToken);
+
+        return mapper.Map<UserModel>(user);
     }
 
     public async Task<UserModel> GetByIdAsync(Guid id, CancellationToken cancellationToken)
