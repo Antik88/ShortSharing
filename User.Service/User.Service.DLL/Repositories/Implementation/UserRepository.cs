@@ -11,7 +11,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public async Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
         var user = await context
-           .Users.FirstAsync(u => u.AuthId == userEntity.AuthId, cancellationToken);
+           .Users.FirstOrDefaultAsync(u => u.AuthId == userEntity.AuthId, cancellationToken);
 
         if (user != null)
         {
