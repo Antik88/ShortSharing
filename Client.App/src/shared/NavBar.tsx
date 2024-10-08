@@ -27,10 +27,11 @@ export default function NavBar() {
         setDrawer(open);
     };
 
+    const isUserAuthenticated = userStore.user.authId !== '';
+
     useEffect(() => {
         const getToken = async () => {
             const token = await getAccessTokenSilently();
-            localStorage.setItem('token', token);
 
             if (user) {
                 await postUser({
@@ -39,15 +40,10 @@ export default function NavBar() {
                     name: user.name,
                     email: user.email,
                     userPictureUrl: user.picture
-                })
+                });
 
-                const userData = await getUser(user.sub)
-
-                userStore.setUser(userData)
-
-                if (userData.id !== undefined) {
-                    localStorage.setItem('userId', userData.id)
-                }
+                const userData = await getUser(user.sub);
+                userStore.setUser({ ...userData, token });
             }
         };
 
@@ -126,7 +122,7 @@ export default function NavBar() {
                         </>
                     ) : (
                         <>
-                            {!isAuthenticated && (
+                            {!isUserAuthenticated && (
                                 <Button
                                     sx={{
                                         color: "primary.light",
@@ -138,18 +134,21 @@ export default function NavBar() {
                                     Log In
                                 </Button>
                             )}
-                            {isAuthenticated && (
+                            {isUserAuthenticated && (
                                 <Button
                                     sx={{
                                         color: 'primary.light',
                                         textTransform: 'none',
                                         ml: 2
                                     }}
-                                    onClick={() => logout({
-                                        logoutParams: {
-                                            returnTo: window.location.origin
-                                        }
-                                    })}
+                                    onClick={() => {
+                                        userStore.removeUser();
+                                        logout({
+                                            logoutParams: {
+                                                returnTo: window.location.origin
+                                            }
+                                        });
+                                    }}
                                 >
                                     Log Out
                                 </Button>

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import User from './Interface/UserStore';
 
 interface UserStoreState {
@@ -13,12 +14,20 @@ const initialState: User = {
     name: '',
     email: '',
     userPictureUrl: '',
+    token: '',
 };
 
-const useUserStore = create<UserStoreState>((set) => ({
-    user: initialState,
-    setUser: (payload: User) => set((state) => ({ ...state, user: payload })),
-    removeUser: () => set({ user: initialState }),
-}));
+const useUserStore = create<UserStoreState>()(
+    persist(
+        (set) => ({
+            user: initialState,
+            setUser: (payload: User) => set((state) => ({ ...state, user: payload })),
+            removeUser: () => set({ user: initialState }),
+        }),
+        {
+            name: 'user-storage'
+        }
+    )
+);
 
 export default useUserStore;

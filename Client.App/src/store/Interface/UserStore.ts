@@ -4,4 +4,5 @@ export default interface User {
     name: string | undefined;
     email: string | undefined;
     userPictureUrl: string | undefined;
+    token: string | undefined;
 }

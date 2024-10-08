@@ -15,12 +15,14 @@ import NotFound from "../shared/NotFound";
 import ThingInfo from "../components/ThingInfo";
 import RentalPeriod from "../components/RentalPeriod";
 import { getRentsByThingId } from "../http/rentAPI";
+import useUserStore from "../store/useUserStore";
 
 export default function ThingPage() {
     const { id } = useParams();
     const [thing, setThing] = useState<CatalogItem | null>(null);
     const [rents, setRents] = useState<RentRespone[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const userStore = useUserStore();
     const rentModal = useModal();
 
     const [selectedDates, setSelectedDates] = useState<any>({
@@ -91,7 +93,7 @@ export default function ThingPage() {
                 rentData={{
                     thingId: thing.id,
                     thingName: thing.name,
-                    tenantId: localStorage.getItem('userId'),
+                    tenantId: userStore.user.id,
                     price: thing.price,
                     startRentDate: selectedDates.startDate,
                     endRentDate: selectedDates.endDate

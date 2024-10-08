@@ -55,6 +55,6 @@ export interface RentData {
     startRentDate: Date;
     endRentDate: Date;
     thingId: Guid;
-    tenantId: string | null;
+    tenantId: string | undefined;
     price: number;
 }
