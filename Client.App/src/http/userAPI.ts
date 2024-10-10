@@ -1,4 +1,4 @@
-import { $authService } from ".";
+import { $host } from ".";
 
 export interface User {
     nickname: string;
@@ -8,12 +8,23 @@ export interface User {
 }
 
 export interface UserService {
-    authId: string;
-    name: string;
-    email: string;
+    id: string | undefined;
+    authId: string | undefined;
+    name: string | undefined;
+    email: string | undefined;
+    userPictureUrl: string | undefined;
 }
 
-export const getUserData = async (): Promise<User> => {
-    const { data } = await $authService.get<User>("userinfo");
+export const postUser = async (userData: UserService): Promise<User | null> => {
+    try {
+        const { data } = await $host.post<User>(`users`, userData);
+        return data;
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getUser = async (authId: string | undefined): Promise<UserService> => {
+    const { data } = await $host.get<UserService>(`user/auth0/${authId}`);
     return data;
 };

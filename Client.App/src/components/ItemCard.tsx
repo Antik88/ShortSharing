@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../utils/consts';
 import { CatalogItem } from '../types/types';
 import noImage from '../assets/no-image.jpeg';
-import { $host } from '../http';
+import { buildImageUrl } from '../http/catalogAPI';
 
 export default function ItemCard({ item }: { item: CatalogItem }) {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function ItemCard({ item }: { item: CatalogItem }) {
             <CardMedia
                 component="img"
                 image={item.images[0] ?
-                    $host.defaults.baseURL + 'image?name=' + item.images[0].name :
+                    buildImageUrl(item.images[0].name) :
                     noImage}
                 alt={item.name}
                 style={{
