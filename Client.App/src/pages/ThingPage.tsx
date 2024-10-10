@@ -54,9 +54,7 @@ export default function ThingPage() {
 
     if (!thing) {
         return (
-            <Container>
-                <NotFound />
-            </Container>
+            <NotFound />
         );
     }
 
