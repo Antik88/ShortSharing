@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Antik.NuGet.SharingMessages" Version="1.0.6" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
     <PackageReference Include="MailKit" Version="4.7.1.1" />
@@ -18,7 +19,6 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="MimeKit" Version="4.7.1" />
     <PackageReference Include="Scriban" Version="5.10.0" />
-    <PackageReference Include="SharingMessages" Version="1.0.6" />
   </ItemGroup>
 
   <ItemGroup>

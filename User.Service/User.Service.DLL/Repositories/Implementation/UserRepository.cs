@@ -10,23 +10,34 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     public async Task<UserEntity> AddAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
-        await context.AddAsync(userEntity, cancellationToken);
+        var user = await context
+           .Users.FirstOrDefaultAsync(u => u.AuthId == userEntity.AuthId, cancellationToken);
 
-        await context.SaveChangesAsync();
+        if (user != null)
+        {
+            return user;
+        }
+
+        await context.AddAsync(userEntity, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return userEntity;
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await GetByIdAsync(id, cancellationToken);
-        if (entity == null)
-        {
-            throw new ArgumentException($"Entity with id {id} not found.");
-        }
+        var entity = await GetByIdAsync(id, cancellationToken) 
+            ?? throw new ArgumentException($"Entity with id {id} not found.");
 
         context.Remove(entity);
         await context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<UserEntity> GetByAuth0Id(string id, CancellationToken cancellationToken)
+    {
+        var user = await context.Users.FirstAsync(u => u.AuthId == id, cancellationToken);
+
+        return user;
     }
 
     public async Task<UserEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -43,7 +54,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
         List<UserEntity> items = await contextQuery.Skip((query.Page - 1) * query.PageSize)
                                              .Take(query.PageSize)
                                              .ToListAsync(cancellationToken);
-        
+
         return new PageResult<UserEntity>
         {
             Items = items,

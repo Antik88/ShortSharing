@@ -31,7 +31,7 @@ public class UserController(
         return newUserDto;
     }
 
-    [Authorize (Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet("/getRange")]
     public async Task<PageResult<UserDto>> GetRangeAsync(
       [FromQuery] Query query,
@@ -45,6 +45,17 @@ public class UserController(
             PageSize = query.PageSize,
             CurrentPage = query.Page
         };
+    }
+
+    [AllowAnonymous]
+    [HttpGet("/auth0/{authId}")]
+    public async Task<UserDto> GetByAuth0Id(
+        [FromRoute] string authId, 
+        CancellationToken cancellationToken)
+    {
+        var user = await userService.GetByAuth0Id(authId, cancellationToken);
+
+        return mapper.Map<UserDto>(user);
     }
 
     [AllowAnonymous]

@@ -16,8 +16,7 @@ public class CreateRentCommandValidator : AbstractValidator<CreateRentCommand>
 
         RuleFor(v => v.EndRentDate)
             .NotEmpty().WithMessage(ValidationMessages.EndDateRequired)
-            .Must(BeAValidDate).WithMessage(ValidationMessages.EndDateInvalid)
-            .GreaterThan(v => v.StartRentDate).WithMessage(ValidationMessages.EndDateAfterStartDate);
+            .Must(BeAValidDate).WithMessage(ValidationMessages.EndDateInvalid);
 
         RuleFor(v => v.ThingId)
             .NotEmpty().WithMessage(ValidationMessages.ThingIdRequired)

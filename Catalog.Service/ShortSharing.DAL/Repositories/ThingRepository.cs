@@ -63,4 +63,14 @@ public class ThingRepository(ApplicationDbContext context) : IThingRepository
 
         return result;
     }
+    public async Task<List<ThingEntity>> GetByOwnerId(Guid ownerId, CancellationToken token)
+    {
+        var result = await _context.Things
+            .AsNoTracking()
+            .Where(t => t.OwnerId == ownerId)
+            .Include(t => t.Images)
+            .ToListAsync(token);
+
+        return result;
+    }
 }

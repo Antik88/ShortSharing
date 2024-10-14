@@ -1,5 +1,6 @@
 using Gateway.DI;
 using Ocelot.Middleware;
+using Prometheus;
 
 namespace Gateway;
 
@@ -12,6 +13,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.UseHttpClientMetrics();
 
         builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
@@ -30,6 +32,9 @@ public class Program
         });
 
         var app = builder.Build();
+
+        app.UseMetricServer();
+        app.UseHttpMetrics();
 
         app.UseCors("ClientPolicy");
 
