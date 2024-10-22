@@ -3,15 +3,19 @@ import { DateRange, RangeKeyDict } from 'react-date-range';
 import { StyledButton } from "../styled/StyledButton";
 import { RentRespone } from "../types/types";
 import { eachDayOfInterval, isAfter } from "date-fns";
+import useUserStore from "../store/useUserStore";
 
 interface RentalPeriodProps {
     selectedDates: any;
     disabledDatesValues: RentRespone[];
+    ownerId: string;
     setSelectedDates: (dates: any) => void;
     openRentModal: () => void;
 }
 
-export default function RentalPeriod({ selectedDates, setSelectedDates, openRentModal, disabledDatesValues }: RentalPeriodProps) {
+export default function RentalPeriod({ selectedDates, setSelectedDates, ownerId, openRentModal, disabledDatesValues }: RentalPeriodProps) {
+    const user = useUserStore();
+
     const handleDateChange = (ranges: RangeKeyDict) => {
         const { selection } = ranges;
         if (selection) {
@@ -45,13 +49,17 @@ export default function RentalPeriod({ selectedDates, setSelectedDates, openRent
                 disabledDates={disabledDates}
                 minDate={new Date()}
             />
-            <StyledButton
-                fullWidth
-                onClick={openRentModal}
-                sx={{ mt: 1 }}
-            >
-                <Typography>Rent</Typography>
-            </StyledButton>
-        </Box>
+            {ownerId === user.user.id ?
+                <Typography sx={{ mt: 2 }}>You are owner of this thing</Typography>
+                :
+                <StyledButton
+                    fullWidth
+                    onClick={openRentModal}
+                    sx={{ mt: 1 }}
+                >
+                    <Typography>Rent</Typography>
+                </StyledButton>
+            }
+        </Box >
     );
 }

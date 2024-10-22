@@ -81,6 +81,7 @@ export default function ThingPage() {
                         disabledDatesValues={rents}
                         selectedDates={selectedDates}
                         setSelectedDates={setSelectedDates}
+                        ownerId={thing.ownerId.toString()}
                         openRentModal={rentModal.open}
                     />
                 </Grid>

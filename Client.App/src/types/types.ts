@@ -58,3 +58,17 @@ export interface RentData {
     tenantId: string | undefined;
     price: number;
 }
+
+export interface FileWithURL {
+    file: File;
+    url: string;
+}
+
+
+export interface Offer {
+    id: string | null,
+    startRentDate: Date,
+    endRentDate: Date,
+    thingId: string | null,
+    status: number
+}

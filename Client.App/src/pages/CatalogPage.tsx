@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Badge, Box, Container, Typography } from "@mui/material";
+import { Badge, Box, Container, Pagination, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { getCatalog, getCategories } from "../http/catalogAPI";
 import { CatalogResponse, Category } from "../types/types";
@@ -16,7 +16,6 @@ import NotFound from "../shared/NotFound";
 import { POSTTHING_ROUTE } from "../utils/consts";
 import { StyledButton } from "../styled/StyledButton";
 import { StyledButtonText } from "../styled/StyledButtonText";
-import { StyledPagination } from "../styled/StyledPagination";
 
 export default function CatalogPage() {
     const [catalog, setCatalog] = useState<CatalogResponse | null>(null);
@@ -113,7 +112,7 @@ export default function CatalogPage() {
                 <></>
             ) : (
                 <Box display='flex' justifyContent='center' mt={2}>
-                    <StyledPagination
+                    <Pagination
                         count={catalog?.totalPages}
                         page={currentPage}
                         onChange={handlePageChange}

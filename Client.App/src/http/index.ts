@@ -1,4 +1,5 @@
 import axios, { AxiosRequestHeaders, InternalAxiosRequestConfig } from 'axios';
+import useUserStore from '../store/useUserStore';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -7,15 +8,21 @@ const $authService = axios.create({
 });
 
 const $host = axios.create({
-    baseURL: import.meta.env.VITE_API_URL, 
+    baseURL: import.meta.env.VITE_API_URL,
 });
 
 const $authHost = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
 });
 
+const getToken = () => {
+    const { user } = useUserStore.getState();
+    return user.token
+}
+
 const authInterceptor = (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('token');
+    const token = getToken();
+
     if (token) {
         config.headers = {
             ...config.headers,
