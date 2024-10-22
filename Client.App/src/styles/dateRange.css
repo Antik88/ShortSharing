@@ -1,0 +1,64 @@
+:root {
+    --background-color: #202020;
+    --highlight-color: #ffca8b;
+    --text-color: #fff;
+}
+
+.rdrCalendarWrapper {
+    color: var(--text-color) !important;
+}
+
+.rdrNextPrevButton {
+    border-radius: 0 !important;
+    background: var(--highlight-color) !important;
+}
+
+.rdrDateDisplayWrapper {
+    display: none;
+}
+
+.rdrMonth {
+    padding: 0 !important;
+}
+
+.rdrMonthAndYearWrapper {
+    color: var(--highlight-color);
+    background: var(--background-color);
+}
+
+.rdrMonthPicker select {
+    color: var(--text-color) !important;
+}
+
+.rdrYearPicker select {
+    color: var(--text-color) !important;
+}
+
+.rdrMonths .rdrMonthsVertical {
+    background: var(--background-color) !important;
+}
+
+.rdrDayToday .rdrDayNumber span:after {
+    background: var(--highlight-color) !important;
+}
+
+.rdrDay {
+    font: 0.8rem "Fira Sans", sans-serif !important;
+}
+
+.rdrMonths {
+    color: var(--text-color) !important;
+    background: var(--background-color) !important;
+}
+
+.rdrDayNumber span {
+    color: var(--text-color) !important;
+}
+
+.rdrDayDisabled {
+    background-color: #87817a !important;
+}
+
+.rdrDayDisabled .rdrStartEdge, .rdrDayDisabled .rdrEndEdge{
+    filter: none !important;
+}

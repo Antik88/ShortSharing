@@ -27,7 +27,6 @@ export interface CatalogItem {
 }
 
 export interface Image {
-    url: string | undefined;
     name: string;
 }
 
@@ -44,8 +43,8 @@ export interface Category {
 
 export interface RentRespone {
     id: Guid;
-    startDate: Date;
-    endDate: Date;
+    startRentDate: Date;
+    endRentDate: Date;
     thingId: Guid;
     tenantId: Guid;
     status: number;
@@ -56,6 +55,6 @@ export interface RentData {
     startRentDate: Date;
     endRentDate: Date;
     thingId: Guid;
-    tenantId: Guid;
+    tenantId: string | undefined;
     price: number;
 }
