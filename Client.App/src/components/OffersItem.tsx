@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { buildImageUrl, getThing } from "../http/catalogAPI";
 import NotFound from "../shared/NotFound";
 import { format } from "date-fns";
+import { StyledButton } from "../styled/StyledButton";
 
 interface RentStatusMap {
     [key: number]: { name: string; color: string };
@@ -42,6 +43,7 @@ export default function OffersItem({ offer }: OffersItemProps) {
         <Card
             sx={{
                 minWidth: 345,
+                minHeight: 310,
                 backgroundColor: "#1c1c1c",
                 color: "primary.contrastText",
                 borderRadius: 0
@@ -60,6 +62,13 @@ export default function OffersItem({ offer }: OffersItemProps) {
                 <Typography sx={{ mt: 1 }} color={rentStatus.color}>
                     Status: {rentStatus.name}
                 </Typography>
+                {endRentDate > new Date() ?
+                    <StyledButton sx={{ mt: 1 }}>
+                        <Typography>Extend</Typography>
+                    </StyledButton>
+                    :
+                    <></>
+                }
             </CardContent>
         </Card>
     );

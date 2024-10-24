@@ -2,7 +2,7 @@ import { Container, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getThing } from "../http/catalogAPI";
-import { CatalogItem, RentRespone } from "../types/types";
+import { CatalogItem } from "../types/types";
 import Grid from '@mui/material/Grid2';
 import ImageGallery from "../components/ImageGallery";
 import RentModal from "../modals/RentModal";
@@ -20,7 +20,7 @@ import useUserStore from "../store/useUserStore";
 export default function ThingPage() {
     const { id } = useParams();
     const [thing, setThing] = useState<CatalogItem | null>(null);
-    const [rents, setRents] = useState<RentRespone[]>([]);
+    const [rents, setRents] = useState<Date[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const userStore = useUserStore();
     const rentModal = useModal();

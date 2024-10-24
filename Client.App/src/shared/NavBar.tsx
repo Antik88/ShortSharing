@@ -54,7 +54,7 @@ export default function NavBar() {
 
     const menuItems = [
         { text: 'Catalog', route: CATALOG_ROUTE },
-        { text: 'Offers', route: OFFERS_ROUTE },
+        ...(userStore.user.id ? [{ text: 'Offers', route: OFFERS_ROUTE }] : []),
         { text: 'About us', route: ABOUT_ROUTE },
     ];
 

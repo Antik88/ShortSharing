@@ -1,10 +1,18 @@
-import { addDays } from "date-fns";
+import { addDays, eachDayOfInterval, isAfter } from "date-fns";
 import { $host } from ".";
 import { Offer, RentData, RentRespone } from "../types/types";
 
-export const getRentsByThingId = async (id: string): Promise<RentRespone[]> => {
-    const { data } = await $host.get<RentRespone[]>(`rent/thing/${id}`);
-    return data;
+export const getRentsByThingId = async (id: string): Promise<Date[]> => {
+    const { data: rents } = await $host.get<RentRespone[]>(`rent/thing/${id}`);
+    
+    return rents
+        .filter((rent) => isAfter(rent.endRentDate, new Date()))
+        .flatMap((rent) =>
+            eachDayOfInterval({
+                start: new Date(rent.startRentDate),
+                end: new Date(rent.endRentDate),
+            })
+        );
 };
 
 export const rentThing = async (rentData: RentData): Promise<RentData> => {

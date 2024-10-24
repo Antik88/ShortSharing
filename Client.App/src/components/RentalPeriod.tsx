@@ -1,13 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { DateRange, RangeKeyDict } from 'react-date-range';
 import { StyledButton } from "../styled/StyledButton";
-import { RentRespone } from "../types/types";
-import { eachDayOfInterval, isAfter } from "date-fns";
 import useUserStore from "../store/useUserStore";
 
 interface RentalPeriodProps {
     selectedDates: any;
-    disabledDatesValues: RentRespone[];
+    disabledDatesValues: Date[];
     ownerId: string;
     setSelectedDates: (dates: any) => void;
     openRentModal: () => void;
@@ -23,15 +21,6 @@ export default function RentalPeriod({ selectedDates, setSelectedDates, ownerId,
         }
     };
 
-    const disabledDates = disabledDatesValues
-        .filter((rent) => isAfter(rent.endRentDate, new Date()))
-        .flatMap((rent) =>
-            eachDayOfInterval({
-                start: new Date(rent.startRentDate),
-                end: new Date(rent.endRentDate),
-            })
-        );
-
     return (
         <Box sx={{ mt: 2 }}>
             <Typography
@@ -46,7 +35,7 @@ export default function RentalPeriod({ selectedDates, setSelectedDates, ownerId,
                 rangeColors={['#ffca8b']}
                 ranges={[selectedDates]}
                 onChange={handleDateChange}
-                disabledDates={disabledDates}
+                disabledDates={disabledDatesValues}
                 minDate={new Date()}
             />
             {ownerId === user.user.id ?
