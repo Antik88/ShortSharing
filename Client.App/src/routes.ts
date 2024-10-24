@@ -11,7 +11,9 @@ import {
     ABOUT_ROUTE,
     POSTTHING_ROUTE,
     THING_ROUTE,
+    OFFERS_ROUTE,
 } from './utils/consts.ts';
+import OffersPage from './pages/OffersPage.tsx';
 
 
 export const authRoutes: RouteConfig[] = [
@@ -19,6 +21,10 @@ export const authRoutes: RouteConfig[] = [
         path: POSTTHING_ROUTE,
         Component: PostThing
     },
+    {
+        path: OFFERS_ROUTE,
+        Component: OffersPage
+    }
 ]
 
 export const publicRoutes: RouteConfig[] = [

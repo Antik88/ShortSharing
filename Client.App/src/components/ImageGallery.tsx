@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box } from '@mui/material';
 import { Image } from '../types/types';
 import { buildImageUrl } from '../http/catalogAPI';
+import notFound from '../assets/no-image.jpeg';
 
 interface ImageGalleryProps {
     images: Image[];
@@ -40,9 +41,9 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
                             onClick={() => handleImageClick(index)}
                         >
                             <img
-                            src={buildImageUrl(image.name)}
-                            alt={`Image ${index + 1}`}
-                            style={{ width: '100%' }}
+                                src={buildImageUrl(image.name)}
+                                alt={`Image ${index + 1}`}
+                                style={{ width: '100%' }}
                             />
                         </Box>
                     ))}
@@ -50,7 +51,7 @@ export default function ImageGallery({ images }: ImageGalleryProps) {
             </Box>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <img
-                    src={buildImageUrl(images[selectedImageIndex].name)}
+                    src={images.length > 0 ? buildImageUrl(images[selectedImageIndex].name) : notFound}
                     alt={`Selected ${selectedImageIndex + 1}`}
                     style={{ width: '100%' }}
                 />
