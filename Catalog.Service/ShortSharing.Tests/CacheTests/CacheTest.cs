@@ -1,47 +1,88 @@
-﻿using ShortSharing.BLL.Abstractions;
+﻿using System.Text.Json;
+using Microsoft.Extensions.Caching.Distributed;
 using NSubstitute;
+using ShortSharing.BLL.Services;
 using Xunit;
 
 namespace ShortSharing.Tests.CacheTests
 {
     public class CacheTest
     {
-        private readonly ICacheService _cacheService;
+        private readonly IDistributedCache _cache;
+        private readonly CacheService _cacheService;
 
         public CacheTest()
         {
-            _cacheService = Substitute.For<ICacheService>();
+            _cache = Substitute.For<IDistributedCache>();
+            _cacheService = new CacheService(_cache);
         }
 
-        [Theory]
-        [InlineData("testKey", "testData")]
-        public async Task GetData_ShouldReturnCorrectData_WhenDataExists(string key, string expectedData)
+        [Fact]
+        public async Task GetData_ReturnsDefault_WhenCacheIsEmpty()
         {
-            _cacheService.GetData<string>(key).Returns(expectedData);
+            // Arrange
+            var key = "nonexistent-key";
+            _cache.GetAsync(key).Returns((byte[]?)null);
 
+            // Act
             var result = await _cacheService.GetData<string>(key);
 
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetData_ReturnsDeserializedData_WhenCacheHasData()
+        {
+            // Arrange
+            var key = "existing-key";
+            var expectedData = "cached data";
+            var serializedData = JsonSerializer.SerializeToUtf8Bytes(expectedData);
+
+            _cache.GetAsync(key).Returns(serializedData);
+
+            // Act
+            var result = await _cacheService.GetData<string>(key);
+
+            // Assert
             Assert.Equal(expectedData, result);
         }
 
         [Theory]
-        [InlineData("testKey")]
-        public async Task GetData_ShouldReturnNull_WhenNoData(string key)
+        [InlineData("testKey", "testData")]
+        public async Task SetData_ShouldStoreDataInCache(string key, string data)
         {
-            _cacheService.GetData<string>(key).Returns((string)null);
+            var jsonData = JsonSerializer.Serialize(data);
+            var options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+            };
 
-            var result = await _cacheService.GetData<string>(key);
-
-            Assert.Null(result);
+            await _cache.SetStringAsync(key, jsonData, options);
         }
 
-        [Theory]
-        [InlineData("testKey")]
-        public async Task GetData_ShouldCallGetDataWithCorrectKey(string key)
+        [Fact]
+        public async Task SetData_CallsSetAsyncWithCorrectParameters()
         {
-            await _cacheService.GetData<string>(key);
+            // Arrange
+            var key = "test-key";
+            var data = "test data";
+            var expectedData = JsonSerializer.SerializeToUtf8Bytes(data);
+            var options = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+            };
 
-            await _cacheService.Received(1).GetData<string>(key);
+            // Act
+            await _cacheService.SetData(key, data);
+
+            // Assert
+            await _cache.Received(1).SetAsync(
+                key,
+                Arg.Is<byte[]>(bytes => bytes.SequenceEqual(expectedData)),
+                Arg.Is<DistributedCacheEntryOptions>(opt =>
+                    opt.AbsoluteExpirationRelativeToNow == options.AbsoluteExpirationRelativeToNow
+                ));
         }
     }
 }
