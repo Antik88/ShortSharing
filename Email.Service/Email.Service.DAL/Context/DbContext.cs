@@ -12,8 +12,7 @@ public class DbContext
     {
         _configuration = configuration;
 
-        //var connectionString = _configuration.GetConnectionString("DbConnection");
-        var connectionString = Environment.GetEnvironmentVariable("DbConnection");
+        var connectionString = _configuration.GetConnectionString("DbConnection");
         var mongoUrl = MongoUrl.Create(connectionString);
         var mongoClient = new MongoClient(mongoUrl);
         _database = mongoClient.GetDatabase(mongoUrl.DatabaseName);

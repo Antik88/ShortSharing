@@ -12,4 +12,5 @@ public interface IThingsService
     Task DeleteAsync(Guid id, CancellationToken token);
     Task<ThingModel> CreateAsync(ThingModel entity, CancellationToken token);
     Task<List<ThingModel>?> GetByOwnerId(Guid ownerId, CancellationToken token);
+    Task<ThingModel> GetShortThing(Guid id, CancellationToken token);
 }

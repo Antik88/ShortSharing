@@ -66,4 +66,13 @@ public class ThingController(IThingsService thingsService, IMapper mapper) : Con
 
         return mapper.Map<List<ThingDto>>(result);
     }
+
+    [Authorize]
+    [HttpGet(ApiConstants.ShortThing)]
+    public async Task<ShortThingDto> GetShortThingById(Guid id, CancellationToken token)
+    {
+        var result = await thingsService.GetShortThing(id, token);
+
+        return mapper.Map<ShortThingDto>(result);
+    }
 }

@@ -1,17 +1,18 @@
-﻿using Email.Service.Interfaces;
+﻿using Email.Service.BLL.Service;
+using Email.Service.DAL.Entities;
+using Email.Service.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Email.Service.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmailController : ControllerBase
+    public class EmailController(ITemplateService templateService) : ControllerBase
     {
-        private readonly IEmailSender _emailSender;
-
-        public EmailController(IEmailSender emailSender)
+        [HttpGet]
+        public async Task<List<TemplateEntity>> GetTemplates()
         {
-            _emailSender = emailSender;
+            return await templateService.GetAll();
         }
     }
 }

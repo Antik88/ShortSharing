@@ -27,9 +27,11 @@ services:
     depends_on: 
       - rent.service.db   
       - rabbitmq
+      - redis
     environment:
       - ConnectionStrings__CatalogueBaseUrl=http://catalog.service:8005/api/Thing/
       - ConnectionStrings__UserBaseUrl=http://user.service:8006/api/User/
+      - ConnectionStrings__Redis=redis:6379
       - ConnectionStrings__DefaultConnection=Data Source=rent.service.db;Initial Catalog=rent_service_api;User ID=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=true;
       - RabbitMQ__Host=rabbitmq
       - RabbitMQ__VirtualHost=/
@@ -66,21 +68,22 @@ services:
       - RabbitMQ__VirtualHost=/
       - RabbitMQ__Username=${RABBITMQ_DEFAULT_USER}
       - RabbitMQ__Password=${RABBITMQ_DEFAULT_PASS}
-      - DbConnection=email.service.db://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb/ShortSharing
+      - ConnectionStrings__DbConnection=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@email.service.db:27017/ShortSharing?authSource=admin
     networks:
       - shortsharing
     volumes:
       - email_service_data:/app/data
 
   email.service.db:
-    container_name: email.service.db
     image: mongo:latest
-    restart: unless-stopped 
+    container_name: email.service.db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-    ports:
-      - 27017:27017
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    ports: 
+      - 27018:27017
+    networks:
+      - shortsharing
     volumes:
       - email_service_db_data:/data/db
     
@@ -92,8 +95,10 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - catalog.db 
+      - redis
     environment:
       - ConnectionStrings__DefaultConnection=User ID=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Server=catalog.db;Port=5432;Database=${POSTGRES_DB}; IntegratedSecurity=true;Pooling=true;
+      - ConnectionStrings__Redis=redis:6379
     networks:
       - shortsharing
     volumes:
@@ -195,6 +200,13 @@ services:
       - prometheus
     networks:
       - shortsharing 
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - shortsharing
 
 volumes:
   rent_service_data:
