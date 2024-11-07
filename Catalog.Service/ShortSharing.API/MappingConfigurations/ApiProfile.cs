@@ -14,6 +14,9 @@ public class ApiProfile : Profile
     {
         CreateMap<ThingModel, CreateThingDto>().ReverseMap();
         CreateMap<ThingDto, ThingModel>().ReverseMap();
+        CreateMap<ThingModel, ShortThingDto>()
+           .ForMember(dest => dest.Image, 
+               opt => opt.MapFrom(src => src.Images.FirstOrDefault()));
 
         CreateMap<TypeModel, TypeDto>().ReverseMap();
         CreateMap<TypeModel, CreateTypeDto>().ReverseMap();

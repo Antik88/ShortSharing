@@ -9,4 +9,5 @@ public interface IThingRepository
     Task<PagedResult<ThingEntity>> GetAllAsync(QueryParameters queryParameters, CancellationToken token);
     Task<ThingEntity> GetById(Guid id, CancellationToken token);
     Task<List<ThingEntity>> GetByOwnerId(Guid ownerId, CancellationToken token);
+    Task<ThingEntity> GetShortThing(Guid id, CancellationToken token);
 }

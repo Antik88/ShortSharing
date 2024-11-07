@@ -4,6 +4,7 @@ using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
 using ShortSharing.Shared;
+using System.Formats.Asn1;
 
 namespace ShortSharing.BLL.Services;
 
@@ -12,12 +13,16 @@ public class ThingsService : IThingsService
     private readonly IGenericRepository<ThingEntity> _repository;
     private readonly IThingRepository _thingRepository;
     private readonly IMapper _mapper;
+    private readonly ICacheService _cacheService;
 
-    public ThingsService(IGenericRepository<ThingEntity> repository, IThingRepository thingRepository, IMapper mapper)
+    public ThingsService(IGenericRepository<ThingEntity> repository,
+        IThingRepository thingRepository, IMapper mapper,
+        ICacheService cache)
     {
         _repository = repository;
         _mapper = mapper;
         _thingRepository = thingRepository;
+        _cacheService = cache;
     }
 
     public async Task<ThingModel> CreateAsync(ThingModel entity, CancellationToken token)
@@ -65,6 +70,17 @@ public class ThingsService : IThingsService
     public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity entity, CancellationToken token)
     {
         var thing = await _repository.UpdateAsync(id, entity, token);
+
+        return _mapper.Map<ThingModel>(thing);
+    }
+    public async Task<ThingModel> GetShortThing(Guid id, CancellationToken token)
+    {
+        var thing = await _cacheService.GetData<ThingEntity>($"thing-{id}");
+
+        if (thing != null)
+            return _mapper.Map<ThingModel>(thing);
+
+        thing = await _thingRepository.GetShortThing(id, token);
 
         return _mapper.Map<ThingModel>(thing);
     }

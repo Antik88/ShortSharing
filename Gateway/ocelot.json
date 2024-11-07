@@ -20,6 +20,19 @@
       "SwaggerKey": "catalog"
     },
     {
+      "UpstreamPathTemplate": "/gateway/catalog/short/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/Thing/short/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "catalog.service",
+          "Port": 8005
+        }
+      ],
+      "SwaggerKey": "catalog"
+    },
+    {
       "UpstreamPathTemplate": "/gateway/catalog/{id}",
       "UpstreamHttpMethod": [ "Get" ],
       "DownstreamPathTemplate": "/api/Thing/{id}",

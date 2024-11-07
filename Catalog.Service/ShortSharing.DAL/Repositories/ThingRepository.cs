@@ -73,4 +73,14 @@ public class ThingRepository(ApplicationDbContext context) : IThingRepository
 
         return result;
     }
+
+    public async Task<ThingEntity> GetShortThing(Guid id, CancellationToken token)
+    {
+        var result = await _context.Things
+            .AsNoTracking()
+            .Include(t => t.Images)
+            .SingleAsync(t => t.Id == id, token);
+
+        return result;
+    }
 }

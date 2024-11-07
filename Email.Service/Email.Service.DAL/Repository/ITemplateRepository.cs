@@ -6,4 +6,5 @@ namespace Email.Service.DAL.Repository;
 public interface ITemplateRepository
 {
     public Task<TemplateEntity> FetchTemplateAsync(RentTemplateType templateType);
+    Task<List<TemplateEntity>> GetAll();
 }

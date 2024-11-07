@@ -6,10 +6,10 @@ using Polly.Extensions.Http;
 using Rent.Service.Application;
 using Rent.Service.Application.Abstractions;
 using Rent.Service.Application.Abstractions.Notification;
-using Rent.Service.Infrastructure.Consts;
 using Rent.Service.Infrastructure.Data;
 using Rent.Service.Infrastructure.Repository;
 using Rent.Service.Infrastructure.Service;
+using Rent.Service.Infrastructure.Service.Caching;
 
 namespace Rent.Service.Infrastructure;
 
@@ -21,6 +21,12 @@ public static class ConfigureServices
         services.AddDbContext<RentDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+        });
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("Redis");
+            options.InstanceName = "Rents";
         });
 
         var retryPolicy = HttpPolicyExtensions
@@ -47,6 +53,8 @@ public static class ConfigureServices
         services.AddScoped<IRentStatusChanger, RentRepository>();
 
         services.AddScoped<IRentNotification, RentNotificationPublisher>();
+
+        services.AddScoped<IRedisCacheService, RedisCacheService>();
 
         services.AddScoped(typeof(IExternalServiceRequests<>), typeof(ExternalServiceRequests<>));
 
