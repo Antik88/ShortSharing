@@ -4,46 +4,33 @@ using ShortSharing.BLL.Models;
 using ShortSharing.DAL.Abstractions;
 using ShortSharing.DAL.Entities;
 using ShortSharing.Shared;
-using System.Formats.Asn1;
 
 namespace ShortSharing.BLL.Services;
 
-public class ThingsService : IThingsService
-{
-    private readonly IGenericRepository<ThingEntity> _repository;
-    private readonly IThingRepository _thingRepository;
-    private readonly IMapper _mapper;
-    private readonly ICacheService _cacheService;
-
-    public ThingsService(IGenericRepository<ThingEntity> repository,
+public class ThingsService(IGenericRepository<ThingEntity> repository,
         IThingRepository thingRepository, IMapper mapper,
-        ICacheService cache)
-    {
-        _repository = repository;
-        _mapper = mapper;
-        _thingRepository = thingRepository;
-        _cacheService = cache;
-    }
+        ICacheService cache) : IThingsService
+{
 
     public async Task<ThingModel> CreateAsync(ThingModel entity, CancellationToken token)
     {
-        var thingEntity = _mapper.Map<ThingEntity>(entity);
+        var thingEntity = mapper.Map<ThingEntity>(entity);
 
-        var thing = await _thingRepository.CreateAsync(thingEntity, token);
+        var thing = await thingRepository.CreateAsync(thingEntity, token);
 
-        return _mapper.Map<ThingModel>(thing);
+        return mapper.Map<ThingModel>(thing);
     }
 
     public Task DeleteAsync(Guid id, CancellationToken token)
     {
-        return _repository.DeleteAsync(id, token);
+        return repository.DeleteAsync(id, token);
     }
 
     public async Task<PagedResult<ThingModel>> GetAllAsync(QueryParameters queryParameters, CancellationToken token)
     {
-        var result = await _thingRepository.GetAllAsync(queryParameters, token);
+        var result = await thingRepository.GetAllAsync(queryParameters, token);
 
-        var items = _mapper.Map<List<ThingModel>>(result.Items);
+        var items = mapper.Map<List<ThingModel>>(result.Items);
 
         return new PagedResult<ThingModel> {
             Items = items,
@@ -55,33 +42,33 @@ public class ThingsService : IThingsService
 
     public async Task<ThingModel?> GetByIdAsync(Guid id, CancellationToken token)
     {
-        var things = await _thingRepository.GetById(id, token);
+        var things = await thingRepository.GetById(id, token);
 
-        return _mapper.Map<ThingModel>(things);
+        return mapper.Map<ThingModel>(things);
     }
 
     public async Task<List<ThingModel>?> GetByOwnerId(Guid ownerId, CancellationToken token)
     {
-        var things = await _thingRepository.GetByOwnerId(ownerId, token);
+        var things = await thingRepository.GetByOwnerId(ownerId, token);
 
-        return _mapper.Map<List<ThingModel>>(things);
+        return mapper.Map<List<ThingModel>>(things);
     }
 
     public async Task<ThingModel?> UpdateAsync(Guid id, ThingEntity entity, CancellationToken token)
     {
-        var thing = await _repository.UpdateAsync(id, entity, token);
+        var thing = await repository.UpdateAsync(id, entity, token);
 
-        return _mapper.Map<ThingModel>(thing);
+        return mapper.Map<ThingModel>(thing);
     }
     public async Task<ThingModel> GetShortThing(Guid id, CancellationToken token)
     {
-        var thing = await _cacheService.GetData<ThingEntity>($"thing-{id}");
+        var thing = await cache.GetData<ThingEntity>($"thing-{id}");
 
         if (thing != null)
-            return _mapper.Map<ThingModel>(thing);
+            return mapper.Map<ThingModel>(thing);
 
-        thing = await _thingRepository.GetShortThing(id, token);
+        thing = await thingRepository.GetShortThing(id, token);
 
-        return _mapper.Map<ThingModel>(thing);
+        return mapper.Map<ThingModel>(thing);
     }
 }
