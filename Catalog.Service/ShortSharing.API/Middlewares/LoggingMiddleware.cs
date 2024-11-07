@@ -35,7 +35,7 @@ public class LoggingMiddleware
         var path = context.Request.Path;
         var statusCode = context.Response.StatusCode;
 
-        _logger.LogInformation(
+        _logger.LogWarning(
             "HTTP {@Method} {@Path} responded with {@StatusCode} in {@TotalMilliseconds}ms",
             method, path, statusCode, duration.TotalMilliseconds
         );

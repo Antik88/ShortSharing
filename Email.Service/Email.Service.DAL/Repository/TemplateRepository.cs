@@ -5,14 +5,9 @@ using MongoDB.Driver;
 
 namespace Email.Service.DAL.Repository;
 
-public class TemplateRepository : ITemplateRepository
+public class TemplateRepository(DbContext dbContext) : ITemplateRepository
 {
-    private readonly IMongoCollection<TemplateEntity> _templates;
-
-    public TemplateRepository(DbContext dbContext)
-    {
-        _templates = dbContext.Database.GetCollection<TemplateEntity>("templates");
-    }
+    private readonly IMongoCollection<TemplateEntity> _templates = dbContext.Database.GetCollection<TemplateEntity>("templates");
 
     public async Task<TemplateEntity> FetchTemplateAsync(RentTemplateType templateType)
     {
@@ -20,6 +15,12 @@ public class TemplateRepository : ITemplateRepository
 
         var result = await _templates.Find(filter).FirstOrDefaultAsync();
 
+        return result;
+    }
+
+    public async Task<List<TemplateEntity>> GetAll()
+    {
+        var result = await _templates.Find(_ => true).ToListAsync();
         return result;
     }
 }

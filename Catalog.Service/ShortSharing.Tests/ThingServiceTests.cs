@@ -20,6 +20,7 @@ public class ThingServiceTests
     private readonly IGenericRepository<ThingEntity> _thingsRepository;
     private readonly IMapper _mapper;
     private readonly IThingRepository _thingRepository;
+    private readonly ICacheService _cache;
 
     public ThingServiceTests()
     {
@@ -28,7 +29,7 @@ public class ThingServiceTests
 
         _mapper = Substitute.For<IMapper>();
 
-        _thingsService = new ThingsService(_thingsRepository, _thingRepository, _mapper);
+        _thingsService = new ThingsService(_thingsRepository, _thingRepository, _mapper, _cache);
     }
 
     [Theory, AutoMoqData]

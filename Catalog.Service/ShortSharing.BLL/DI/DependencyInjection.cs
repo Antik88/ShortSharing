@@ -33,6 +33,16 @@ namespace ShortSharing.BLL.DI
             });
 
             services.AddScoped<IImageService, ImageService>();
+
+            services.AddScoped<ICacheService, CacheService>();
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "Things";
+            });
+
+            services.AddScoped<ICacheService, CacheService>();
         }
     }
 }

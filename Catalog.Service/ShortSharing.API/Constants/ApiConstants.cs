@@ -6,4 +6,5 @@ public class ApiConstants
     public const string Id = "{id:guid}";
     public const string All = "all";
     public const string OwnerId = "owner/{id}";
+    public const string ShortThing = "short/{id:guid}";
 }
